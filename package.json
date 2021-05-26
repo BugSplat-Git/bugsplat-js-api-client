@@ -1,0 +1,36 @@
+{
+  "name": "bugsplat-js-client",
+  "description": "JS client for consuming the BugSplat API",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "test": "ts-node --project spec/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
+    "e2e": "ts-node --project spec/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
+    "dist": "rm -rf ./dist && npm run build && cp {package.json,README.md,LICENSE} ./dist",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc -p tsconfig.json",
+    "build:esm": "tsc -p tsconfig.esm.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BugSplat-Git/bugsplat-js-client.git"
+  },
+  "author": "@bobbyg603",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BugSplat-Git/bugsplat-js-client/issues"
+  },
+  "homepage": "https://github.com/BugSplat-Git/bugsplat-js-client#readme",
+  "dependencies": {
+    "fetch-ponyfill": "^7.1.0",
+    "form-data": "^4.0.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.7.4",
+    "@types/node": "^15.6.1",
+    "jasmine": "^3.7.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.2.4"
+  }
+}
