@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": [
+            "es5",
+            "es2015",
+            "DOM"
+        ],
+        "moduleResolution": "Node",
+        "outDir": "./dist/esm",
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "strict": true,
+    },
+    "files": [
+        "./index.ts"
+    ]
+}
