@@ -1,57 +1,107 @@
 import { BugSplatApiClient } from '../index';
+import { config } from './config';
 
 describe('BugSplatApiClient', () => {
-
-    const expectedStatus = 'success';
-    const expectedJson = { success: 'true' };
+    const email = 'bobby@bugsplat.com';
+    const password = 'password';
+    const xsrfToken = '🪙';
+    const cookie = `🍪;xsrf-token=${xsrfToken}`;
     
     let client: BugSplatApiClient;
     let appendSpy;
+    let expectedStatus;
+    let expectedJson;
     let fakeFormData;
     let fakeSuccessReponseBody;
-    let email;
-    let password;
-    let result;
 
-    beforeEach(async () => {
+    beforeEach(() => {
         appendSpy = jasmine.createSpy();
+        expectedStatus = 'success';
+        expectedJson = { success: 'true' };
         fakeFormData = { append: appendSpy, toString: () => 'BugSplat rocks!' };
-        fakeSuccessReponseBody = {
-            status: expectedStatus,
-            json: async() => (expectedJson),
-            ok: true,
-            headers: { raw: () => ({ 'set-cookie': [] }) }
-        };
-        client = new BugSplatApiClient();
+        fakeSuccessReponseBody = createFakeSuccessResponseBody(expectedStatus, expectedJson, cookie);
+        client = new BugSplatApiClient(email, password, config.host);
         (<any>client)._fetch = jasmine.createSpy();
         (<any>client)._fetch.and.returnValue(fakeSuccessReponseBody);
-        (<any>client)._formData = () => fakeFormData;
-
-        email = 'bobby@bugsplat.com';
-        password = 'password';
-        result = await client.login(email, password);
+        (<any>client)._createFormData = () => fakeFormData;
     });
 
-    it('should call fetch with correct url', () => {
-        expect((<any>client)._fetch).toHaveBeenCalledWith('https://app.bugsplat.com/api/authenticatev3', jasmine.anything());
+    describe('fetch', () => {
+        const route = '/api/crash/data';
+        let body;
+        let headers;
+        let init;
+        let result;
+
+        beforeEach(async () => {
+            body = fakeFormData;
+            headers = { woah: 'dude' };
+            init = { body, headers };
+            result = await client.fetch(route, init);
+        });
+
+        it('should call login if cookie or xsrfToken are falsey', () => {
+            expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}/api/authenticatev3`, jasmine.anything());
+        });
+
+        it('should call fetch with correct route', () => {
+            expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}${route}`, jasmine.anything());
+        });
+
+        it('should call fetch with cookie and xsrf-token headers attached to request init', () => {
+            expect((<any>client)._fetch).toHaveBeenCalledWith(
+                jasmine.any(String),
+                jasmine.objectContaining({
+                    body,
+                    headers: {
+                        ...headers,
+                        cookie,
+                        'xsrf-token': xsrfToken
+                    }
+                })
+            );
+        });
+
+        it('should return result', () => {
+            expect(result).toEqual(fakeSuccessReponseBody);
+        });
     });
 
-    it('should append email, password and Login properties to formData', () => {
-        expect(appendSpy).toHaveBeenCalledWith('email', email);
-        expect(appendSpy).toHaveBeenCalledWith('password', password);
-        expect(appendSpy).toHaveBeenCalledWith('Login', 'Login');
-    });
+    describe('login', () => {
+        let result;
 
-    it('should call fetch with formData', () => {
-        expect((<any>client)._fetch).toHaveBeenCalledWith(
-            jasmine.any(String),
-            jasmine.objectContaining({
-                method: 'POST',
-                body: fakeFormData,
-                cache: 'no-cache',
-                credentials: 'include',
-                redirect: 'follow'
-            })
-        );
-    });
+        beforeEach(async () => result = await client.login(email, password));
+
+        it('should call fetch with correct url', () => {
+            expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}/api/authenticatev3`, jasmine.anything());
+        });
+    
+        it('should append email, password and Login properties to formData', () => {
+            expect(appendSpy).toHaveBeenCalledWith('email', email);
+            expect(appendSpy).toHaveBeenCalledWith('password', password);
+            expect(appendSpy).toHaveBeenCalledWith('Login', 'Login');
+        });
+    
+        it('should call fetch with formData', () => {
+            expect((<any>client)._fetch).toHaveBeenCalledWith(
+                jasmine.any(String),
+                jasmine.objectContaining({
+                    method: 'POST',
+                    body: fakeFormData,
+                    cache: 'no-cache',
+                    credentials: 'include',
+                    redirect: 'follow'
+                })
+            );
+        });
+    })
 });
+
+function createFakeSuccessResponseBody(status, json, headers) {
+    return {
+        status: status,
+        json: async() => (json),
+        ok: true,
+        headers: { get: () => headers }
+    };
+}
