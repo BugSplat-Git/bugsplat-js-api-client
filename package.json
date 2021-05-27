@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "main": "index.ts",
   "scripts": {
-    "test": "ts-node --project spec/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
-    "e2e": "ts-node --project spec/tsconfig.spec.json node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
+    "test": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
+    "e2e": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
     "dist": "rm -rf ./dist && npm run build && cp {package.json,README.md,LICENSE} ./dist",
     "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.json",
