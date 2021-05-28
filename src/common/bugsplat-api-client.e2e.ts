@@ -1,5 +1,5 @@
-import { BugSplatApiClient } from '../index';
-import { config } from './config';
+import { BugSplatApiClient } from '.';
+import { config } from '../../spec/config';
 
 describe('BugSplatApiClient', () => {
     const email = 'fred@bugsplat.com';

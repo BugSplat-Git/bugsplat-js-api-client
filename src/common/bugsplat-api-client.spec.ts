@@ -1,5 +1,6 @@
-import { BugSplatApiClient } from '../index';
-import { config } from './config';
+import { BugSplatApiClient } from '.';
+import { config } from '../../spec/config';
+import { createFakeSuccessResponseBody } from '../../spec/fakes/response';
 
 describe('BugSplatApiClient', () => {
     const email = 'bobby@bugsplat.com';
@@ -96,12 +97,3 @@ describe('BugSplatApiClient', () => {
         });
     })
 });
-
-function createFakeSuccessResponseBody(status, json, headers) {
-    return {
-        status: status,
-        json: async() => (json),
-        ok: true,
-        headers: { get: () => headers }
-    };
-}
