@@ -1,17 +1,18 @@
 import { CrashApiClient } from '..';
+import { fakeCrashApiResponse } from '../../../spec/fakes/crash-api-response';
 import { createFakeSuccessResponseBody } from '../../../spec/fakes/response';
+import { CrashDetails } from '../crash-details/crash-details';
 
 describe('CrashApiClient', () => {
     const database = 'fred';
     const id = 100000;
-    const json = 'json!';
     let client: CrashApiClient;
     let fakeBugSplatApiClient;
     let fakeFormData;
     let result;
 
     beforeEach(async () => {
-        const fakeResponse = createFakeSuccessResponseBody(200, json, []);
+        const fakeResponse = createFakeSuccessResponseBody(200, fakeCrashApiResponse, []);
         fakeFormData = jasmine.createSpyObj('FormData', ['append']);
         fakeBugSplatApiClient = jasmine.createSpyObj('BugSplatApiClient', [
             'createFormData',
@@ -45,7 +46,9 @@ describe('CrashApiClient', () => {
         });
 
         it('should return response json', () => {
-            expect(result).toEqual(json);
+            expect(result).toEqual(
+                jasmine.objectContaining(new CrashDetails(fakeCrashApiResponse))
+            );
         });
 
         it('should throw if database is falsy', async () => {

@@ -27,7 +27,10 @@ export class BugSplatApiClient {
         }
 
         init.headers['cookie'] = this._cookie;
-        init.headers['xsrf-token'] = this._xsrfToken;
+
+        if (init.method === 'POST') {
+            init.headers['xsrf-token'] = this._xsrfToken;
+        }
 
         const url = new URL(route, this._host);
         return this._fetch(url.href, init);
