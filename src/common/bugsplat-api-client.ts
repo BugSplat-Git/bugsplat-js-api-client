@@ -28,7 +28,7 @@ export class BugSplatApiClient {
 
         init.headers['cookie'] = this._cookie;
 
-        if (init.method === 'POST') {
+        if (init.method?.toUpperCase() !== 'GET') {
             init.headers['xsrf-token'] = this._xsrfToken;
         }
 
