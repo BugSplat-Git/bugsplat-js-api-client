@@ -16,7 +16,6 @@ describe('CrashApiClient', () => {
     });
 
     describe('getCrashById', () => {
-        // TODO BG improve this test
         it('should return 200 for database fred and crashId 100000', async () => {
             const response = await client.getCrashById(database, id);
 
