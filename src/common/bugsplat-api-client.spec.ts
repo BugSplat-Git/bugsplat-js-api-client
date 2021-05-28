@@ -37,7 +37,7 @@ describe('BugSplatApiClient', () => {
         beforeEach(async () => {
             body = fakeFormData;
             headers = { woah: 'dude' };
-            init = { body, headers };
+            init = { body, headers, method: 'POST' };
             result = await client.fetch(route, init);
         });
 
@@ -49,7 +49,7 @@ describe('BugSplatApiClient', () => {
             expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}${route}`, jasmine.anything());
         });
 
-        it('should call fetch with cookie and xsrf-token headers attached to request init', () => {
+        it('should call fetch with cookie and xsrf-token headers attached to request init if method is POST', () => {
             expect((<any>client)._fetch).toHaveBeenCalledWith(
                 jasmine.any(String),
                 jasmine.objectContaining({
@@ -58,6 +58,27 @@ describe('BugSplatApiClient', () => {
                         ...headers,
                         cookie,
                         'xsrf-token': xsrfToken
+                    }
+                })
+            );
+        });
+
+        it('should call fetch with cookie headers attached to request init if method is GET', async () => {
+            await client.fetch(route, {
+                body,
+                headers,
+                method: 'GET'
+            });
+
+            const args = (<jasmine.Spy>(<any>client)._fetch).calls.mostRecent().args[1];
+            expect(args['xsrf-token']).toBeFalsy();
+            expect((<any>client)._fetch).toHaveBeenCalledWith(
+                jasmine.any(String),
+                jasmine.objectContaining({
+                    body,
+                    headers: {
+                        ...headers,
+                        cookie
                     }
                 })
             );

@@ -1,4 +1,4 @@
-import { AdditionalInfo } from "..";
+import { AdditionalInfo } from '..';
 
 describe('AdditionalInfo', () => {
   describe('fromRawResponse', () => {
