@@ -17,7 +17,7 @@ export class BugSplatApiClient {
         return this._createFormData();
     }
 
-    async fetch(route: string, init: RequestInit): Promise<Response> {
+    async fetch(route: string, init: RequestInit = {}): Promise<Response> {
         if (!this._cookie || !this._xsrfToken) {
             await this.login(this._email, this._password);
         }
