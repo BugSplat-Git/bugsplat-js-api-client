@@ -11,7 +11,7 @@ export function convertEventsToEventStreamEvents(eventsArray: Array<any>): Array
         action: EventStreamActionType.comment,
         createdDate: new Date(event.timestamp),
         subject: {
-          initials: event.username.substring(0, 2),
+          initials: getInitialsOrDefault(event),
           email: event.username,
         },
         comment: event.message,
@@ -20,4 +20,14 @@ export function convertEventsToEventStreamEvents(eventsArray: Array<any>): Array
   });
 
   return results.reverse();
+}
+
+function getInitialsOrDefault(event: any): string {
+  if (event.firstName && event.lastName) {
+    const firstInitial = event.firstName[0];
+    const lastInitial = event.lastName[0];
+    return `${firstInitial}${lastInitial}`;
+  }
+
+  return event.username.substring(0, 2);
 }
