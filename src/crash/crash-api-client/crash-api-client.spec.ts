@@ -1,4 +1,7 @@
-import { CrashApiClient } from "..";
+import { CrashApiClient } from '..';
+import { fakeCrashApiResponse } from '../../../spec/fakes/crash-api-response';
+import { createFakeSuccessResponseBody } from '../../../spec/fakes/response';
+import { CrashDetails } from '../crash-details/crash-details';
 
 describe('CrashApiClient', () => {
     const database = 'fred';
@@ -6,12 +9,11 @@ describe('CrashApiClient', () => {
     let client: CrashApiClient;
     let fakeBugSplatApiClient;
     let fakeFormData;
-    let fakeResponse;
     let result;
 
     beforeEach(async () => {
+        const fakeResponse = createFakeSuccessResponseBody(200, fakeCrashApiResponse, []);
         fakeFormData = jasmine.createSpyObj('FormData', ['append']);
-        fakeResponse = { status: 9001 };
         fakeBugSplatApiClient = jasmine.createSpyObj('BugSplatApiClient', [
             'createFormData',
             'fetch'
@@ -43,8 +45,28 @@ describe('CrashApiClient', () => {
             );
         });
 
-        it('should return response', () => {
-            expect(result).toEqual(fakeResponse);
+        it('should return response json', () => {
+            expect(result).toEqual(
+                jasmine.objectContaining(new CrashDetails(fakeCrashApiResponse))
+            );
+        });
+
+        it('should throw if database is falsy', async () => {
+            try {
+                await client.getCrashById('', id);
+                fail('getCrashById was supposed to throw!');
+            } catch(error) {
+                expect(error.message).toMatch(/to be a non white space string/);
+            }
+        });
+
+        it('should throw if id is less than or equal to 0', async () => {
+            try {
+                await client.getCrashById(database, 0);
+                fail('getCrashById was supposed to throw!');
+            } catch(error) {
+                expect(error.message).toMatch(/to be a positive non-zero number/);
+            }
         });
     });
 });

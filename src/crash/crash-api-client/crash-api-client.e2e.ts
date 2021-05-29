@@ -1,5 +1,6 @@
-import { BugSplatApiClient, CrashApiClient } from '..';
-import { config } from './config';
+import { CrashApiClient } from './crash-api-client';
+import { config } from '../../../spec/config';
+import { BugSplatApiClient } from '../../common';
 
 describe('CrashApiClient', () => {
     const email = 'fred@bugsplat.com';
@@ -17,10 +18,8 @@ describe('CrashApiClient', () => {
     describe('getCrashById', () => {
         it('should return 200 for database fred and crashId 100000', async () => {
             const response = await client.getCrashById(database, id);
-            const json = await response.json();
 
-            expect(response.status).toEqual(200);
-            expect(json.id).toEqual(id)
+            expect(response.id).toEqual(id);
         });
     });
 });

@@ -1,0 +1,1 @@
+export { BugSplatApiClient } from './bugsplat-api-client';

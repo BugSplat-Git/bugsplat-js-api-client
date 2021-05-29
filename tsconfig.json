@@ -8,7 +8,7 @@
           "DOM"
       ],
       "moduleResolution": "Node",
-      "outDir": "./dist",
+      "outDir": "./dist/cjs",
       "declaration": true,
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,
@@ -17,6 +17,6 @@
       "strict": true,
   },
   "files": [
-      "./index.ts"
+      "./src/index.ts"
   ]
 }

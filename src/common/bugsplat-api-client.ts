@@ -17,7 +17,7 @@ export class BugSplatApiClient {
         return this._createFormData();
     }
 
-    async fetch(route: string, init: RequestInit): Promise<Response> {
+    async fetch(route: string, init: RequestInit = {}): Promise<Response> {
         if (!this._cookie || !this._xsrfToken) {
             await this.login(this._email, this._password);
         }
@@ -27,7 +27,10 @@ export class BugSplatApiClient {
         }
 
         init.headers['cookie'] = this._cookie;
-        init.headers['xsrf-token'] = this._xsrfToken;
+
+        if (init.method?.toUpperCase() !== 'GET') {
+            init.headers['xsrf-token'] = this._xsrfToken;
+        }
 
         const url = new URL(route, this._host);
         return this._fetch(url.href, init);
