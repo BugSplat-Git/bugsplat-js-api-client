@@ -8,7 +8,7 @@
     "require": "./dist/cjs/index.js"
   },
   "files": [
-    "./dist/**"
+    "dist"
   ],
   "scripts": {
     "test": "ts-node -P tsconfig.cjs.json node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
