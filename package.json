@@ -16,7 +16,9 @@
     "dist": "rm -rf ./dist && npm run build && cp {package.json,README.md,LICENSE} ./dist",
     "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build:esm": "tsc -p tsconfig.esm.json"
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "watch:cjs": "tsc -p tsconfig.cjs.json -w",
+    "watch:esm": "tsc -p tsconfig.esm.json -w"
   },
   "repository": {
     "type": "git",
