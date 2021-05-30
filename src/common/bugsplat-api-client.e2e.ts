@@ -6,7 +6,7 @@ describe('BugSplatApiClient', () => {
     const password = 'Flintstone';
     let client: BugSplatApiClient;
 
-    beforeEach(() => client = new BugSplatApiClient(email, password, config.host));
+    beforeEach(() => client = new BugSplatApiClient(config.host));
 
     describe('login', () => {
         it('should return 200 for correct email and password', async () => {

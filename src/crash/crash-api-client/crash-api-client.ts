@@ -1,10 +1,10 @@
 import ac from 'argument-contracts';
 import { CrashDetails } from '..';
-import { BugSplatApiClient } from '../../common';
+import { ApiClient } from '../../common';
 
 export class CrashApiClient {
 
-    constructor(private _client: BugSplatApiClient) { }
+    constructor(private _client: ApiClient) { }
 
     async getCrashById(database: string, id: number): Promise<CrashDetails> {
         ac.assertNonWhiteSpaceString(database, 'database');
