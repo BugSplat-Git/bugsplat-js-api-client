@@ -1,12 +1,12 @@
 import ac from 'argument-contracts';
-import { fakeCrashApiResponse } from '../../../spec/fakes/crash-api-response';
+import { createFakeCrashApiResponse } from '../../../spec/fakes/crash/crash-api-response';
 import { EventStreamActionType } from '../../events';
 import * as ThreadCollectionModule from '../thread-collection/thread-collection';
 import { CrashDetails, ProcessingStatus } from './crash-details';
 
 describe('Crash Details', () => {
   it('should set all properties', () => {
-    const options = fakeCrashApiResponse;
+    const options = createFakeCrashApiResponse();
 
     const result = new CrashDetails(options);
 

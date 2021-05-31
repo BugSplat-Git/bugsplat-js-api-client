@@ -1,6 +1,8 @@
 import { CrashApiClient } from '..';
-import { fakeCrashApiResponse } from '../../../spec/fakes/crash-api-response';
-import { createFakeSuccessResponseBody } from '../../../spec/fakes/response';
+import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
+import { createFakeFormData } from '../../../spec/fakes/common/form-data';
+import { createFakeSuccessResponseBody } from '../../../spec/fakes/common/response';
+import { createFakeCrashApiResponse } from '../../../spec/fakes/crash/crash-api-response';
 import { CrashDetails } from '../crash-details/crash-details';
 
 describe('CrashApiClient', () => {
@@ -8,18 +10,15 @@ describe('CrashApiClient', () => {
     const id = 100000;
     let client: CrashApiClient;
     let fakeBugSplatApiClient;
+    let fakeCrashApiResponse;
     let fakeFormData;
     let result;
 
     beforeEach(async () => {
+        fakeCrashApiResponse = createFakeCrashApiResponse();
         const fakeResponse = createFakeSuccessResponseBody(200, fakeCrashApiResponse, []);
-        fakeFormData = jasmine.createSpyObj('FormData', ['append']);
-        fakeBugSplatApiClient = jasmine.createSpyObj('BugSplatApiClient', [
-            'createFormData',
-            'fetch'
-        ]);
-        fakeBugSplatApiClient.createFormData.and.returnValue(fakeFormData);
-        fakeBugSplatApiClient.fetch.and.returnValue(Promise.resolve(fakeResponse));
+        fakeFormData = createFakeFormData();
+        fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
         client = new CrashApiClient(fakeBugSplatApiClient);
 
         result = await client.getCrashById(database, id);
