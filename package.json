@@ -1,5 +1,5 @@
 {
-  "name": "@bugsplat/js-client",
+  "name": "@bugsplat/js-api-client",
   "description": "JS client for consuming the BugSplat API",
   "version": "0.0.1",
   "main": "./src/index.ts",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BugSplat-Git/bugsplat-js-client.git"
+    "url": "git+https://github.com/BugSplat-Git/bugsplat-js-api-client.git"
   },
   "author": "@bobbyg603",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/BugSplat-Git/bugsplat-js-client/issues"
+    "url": "https://github.com/BugSplat-Git/bugsplat-js-api-client/issues"
   },
-  "homepage": "https://github.com/BugSplat-Git/bugsplat-js-client#readme",
+  "homepage": "https://github.com/BugSplat-Git/bugsplat-js-api-client#readme",
   "dependencies": {
     "argument-contracts": "^1.2.3",
     "fetch-ponyfill": "^7.1.0",
