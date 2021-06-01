@@ -1,7 +1,7 @@
-import { GroupableThreadCollection, ProcessingStatus } from "../../src/crash";
-import { fakeEvents } from "./events";
+import { GroupableThreadCollection, ProcessingStatus } from "../../../src/crash";
+import { createFakeEvents } from "../events/events";
 
-export const fakeCrashApiResponse = {
+export const createFakeCrashApiResponse = () => ({
     processed: ProcessingStatus.Complete,
     additionalFiles: ['1.txt', '2.png'],
     appKey: 'ardvark',
@@ -14,7 +14,7 @@ export const fakeCrashApiResponse = {
     description: 'haa!',
     dumpfile: '💩',
     email: 'bobby@newayz.net',
-    events: fakeEvents,
+    events: createFakeEvents(),
     exceptionCode: '0010',
     exceptionMessage: 'u dun goofd',
     id: 999,
@@ -29,4 +29,4 @@ export const fakeCrashApiResponse = {
     stackKeyDefectUrl: 'http://toppong.com',
     thread: new GroupableThreadCollection({ stackFrames: [], stackKeyId: 117 }),
     user: 'Fred'
-};
+});

@@ -9,10 +9,10 @@ describe('CrashApiClient', () => {
     const id = 100000;
     let client: CrashApiClient;
 
-    beforeEach(() => {
-        client = new CrashApiClient(
-            new BugSplatApiClient(email, password, config.host)
-        );
+    beforeEach(async () => {
+        const bugsplat = new BugSplatApiClient(config.host); 
+        await bugsplat.login(email, password);
+        client = new CrashApiClient(bugsplat);
     });
 
     describe('getCrashById', () => {

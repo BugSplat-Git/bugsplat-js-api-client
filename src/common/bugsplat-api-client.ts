@@ -1,71 +1,64 @@
 import fetchPonyfill from 'fetch-ponyfill';
 import FormData from 'form-data';
+import { ApiClient, Environment } from '.';
+import { BugSplatResponse } from './api-client';
 
-export class BugSplatApiClient { 
-    private _cookie = '';
-    private _xsrfToken = '';
-    private _fetch = fetchPonyfill().fetch;
+export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
-    
+    private _fetch = fetchPonyfill().fetch;
+    private _headers = {};
+
     constructor(
-        private _email: string,
-        private _password: string,
         private _host: string = 'https://app.bugsplat.com',
+        private _environment: Environment = Environment.Node
     ) { }
 
     createFormData(): FormData {
         return this._createFormData();
     }
 
-    async fetch(route: string, init: RequestInit = {}): Promise<Response> {
-        if (!this._cookie || !this._xsrfToken) {
-            await this.login(this._email, this._password);
-        }
-
+    async fetch(route: string, init: RequestInit = {}): Promise<BugSplatResponse> {
         if (!init.headers) {
             init.headers = {};
         }
 
-        init.headers['cookie'] = this._cookie;
+        if (this._environment === Environment.Browser) {
+            init.credentials = 'include';
+        }
 
-        if (init.method?.toUpperCase() !== 'GET') {
-            init.headers['xsrf-token'] = this._xsrfToken;
+        if (this._environment === Environment.Node) {
+            init.headers ? init.headers = { ...init.headers, ...this._headers } : null;
         }
 
         const url = new URL(route, this._host);
         return this._fetch(url.href, init);
     }
 
-    async login(email: string, password: string): Promise<Response> {
-        const postOptions = this.createLoginPostRequestOptions(email, password);
-        const response = await this._fetch(postOptions.url, postOptions.init);
-        
-        if (response.status === 401) {
-            throw new Error('Invalid email or password');
-        }
-
-        const cookie = this.parseCookies(response);
-        this._xsrfToken = this.parseXsrfToken(cookie);
-        this._cookie = cookie;
-        return response;
-    }
-
-    private createLoginPostRequestOptions(email: string, password: string): { url: string, init: RequestInit } {
+    async login(email: string, password: string): Promise<BugSplatResponse> {
         const url = new URL('/api/authenticatev3', this._host);
         const formData = <any>this._createFormData();
         formData.append('email', email);
         formData.append('password', password);
         formData.append('Login', 'Login');
-        return {
-            url: url.href,
-            init: {
-                method: 'POST',
-                body: formData,
-                cache: 'no-cache',
-                credentials: 'include',
-                redirect: 'follow'
-            }
-        };
+        const response = await this._fetch(url.href, {
+            method: 'POST',
+            body: formData,
+            cache: 'no-cache',
+            redirect: 'follow'
+        });
+
+        if (response.status === 401) {
+            throw new Error('Invalid email or password');
+        }
+
+        if (this._environment === Environment.Node) {
+            const cookie = this.parseCookies(response);
+            const xsrfToken = this.parseXsrfToken(cookie);
+            this._headers['cookie'] = cookie;
+            this._headers['xsrf-token'] = xsrfToken;
+        }
+
+        return response;
     }
     
     private parseCookies(response: Response): string {

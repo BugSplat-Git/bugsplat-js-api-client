@@ -1,6 +1,7 @@
 import { BugSplatApiClient } from '.';
 import { config } from '../../spec/config';
-import { createFakeSuccessResponseBody } from '../../spec/fakes/response';
+import { createFakeSuccessResponseBody } from '../../spec/fakes/common/response';
+import { Environment } from './environment';
 
 describe('BugSplatApiClient', () => {
     const email = 'bobby@bugsplat.com';
@@ -21,10 +22,11 @@ describe('BugSplatApiClient', () => {
         expectedJson = { success: 'true' };
         fakeFormData = { append: appendSpy, toString: () => 'BugSplat rocks!' };
         fakeSuccessReponseBody = createFakeSuccessResponseBody(expectedStatus, expectedJson, cookie);
-        client = new BugSplatApiClient(email, password, config.host);
-        (<any>client)._fetch = jasmine.createSpy();
-        (<any>client)._fetch.and.returnValue(fakeSuccessReponseBody);
-        (<any>client)._createFormData = () => fakeFormData;
+        client = createFakeBugSplatApiClient(
+            Environment.Node,
+            fakeSuccessReponseBody,
+            fakeFormData
+        );
     });
 
     describe('fetch', () => {
@@ -38,51 +40,49 @@ describe('BugSplatApiClient', () => {
             body = fakeFormData;
             headers = { woah: 'dude' };
             init = { body, headers, method: 'POST' };
+            await client.login(email, password);
             result = await client.fetch(route, init);
-        });
-
-        it('should call login if cookie or xsrfToken are falsey', () => {
-            expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}/api/authenticatev3`, jasmine.anything());
         });
 
         it('should call fetch with correct route', () => {
             expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}${route}`, jasmine.anything());
         });
 
-        it('should call fetch with cookie and xsrf-token headers attached to request init if method is POST', () => {
-            expect((<any>client)._fetch).toHaveBeenCalledWith(
-                jasmine.any(String),
-                jasmine.objectContaining({
-                    body,
-                    headers: {
-                        ...headers,
-                        cookie,
-                        'xsrf-token': xsrfToken
-                    }
-                })
-            );
-        });
+        describe('when environment is Browser', () => {
+            it('should call fetch with include credentials in request init', async () => {
+                client = createFakeBugSplatApiClient(
+                    Environment.Browser,
+                    fakeSuccessReponseBody,
+                    fakeFormData
+                );
 
-        it('should call fetch with cookie headers attached to request init if method is GET', async () => {
-            await client.fetch(route, {
-                body,
-                headers,
-                method: 'GET'
+                await client.fetch(route, init);
+
+                expect((<any>client)._fetch).toHaveBeenCalledWith(
+                    jasmine.any(String),
+                    jasmine.objectContaining({
+                        body,
+                        credentials: 'include'
+                    })
+                );
             });
-
-            const args = (<jasmine.Spy>(<any>client)._fetch).calls.mostRecent().args[1];
-            expect(args['xsrf-token']).toBeFalsy();
-            expect((<any>client)._fetch).toHaveBeenCalledWith(
-                jasmine.any(String),
-                jasmine.objectContaining({
-                    body,
-                    headers: {
-                        ...headers,
-                        cookie
-                    }
-                })
-            );
         });
+
+        describe('when environment is Node', () => {
+            it('should call fetch with cookie and xsrf-token headers in request init', () => {
+                expect((<any>client)._fetch).toHaveBeenCalledWith(
+                    jasmine.any(String),
+                    jasmine.objectContaining({
+                        body,
+                        headers: {
+                            ...headers,
+                            cookie,
+                            'xsrf-token': xsrfToken
+                        }
+                    })
+                );
+            });
+        })
 
         it('should return result', () => {
             expect(result).toEqual(fakeSuccessReponseBody);
@@ -111,10 +111,37 @@ describe('BugSplatApiClient', () => {
                     method: 'POST',
                     body: fakeFormData,
                     cache: 'no-cache',
-                    credentials: 'include',
                     redirect: 'follow'
                 })
             );
         });
-    })
+
+        it('should return result', () => {
+            expect(result).toEqual(fakeSuccessReponseBody);
+        });
+
+        describe('error', () => {
+            it('should throw if response status is 401', async () => {
+                try {
+                    (<any>client)._fetch.and.returnValue({ status: 401 });
+                    await client.login(email, password);
+                    fail('login was supposed to throw!');
+                } catch (error) {
+                    expect(error).toMatch(/Invalid email or password/);
+                }
+            });
+        });
+    });
 });
+
+function createFakeBugSplatApiClient(
+    environment,
+    responseBody,
+    formData
+): BugSplatApiClient {
+    const client = new BugSplatApiClient(config.host, environment);
+    (<any>client)._fetch = jasmine.createSpy();
+    (<any>client)._fetch.and.returnValue(responseBody);
+    (<any>client)._createFormData = () => formData;
+    return client;
+}
