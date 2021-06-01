@@ -1,6 +1,6 @@
 import { BugSplatApiClient } from '.';
 import { config } from '../../spec/config';
-import { createFakeSuccessResponseBody } from '../../spec/fakes/response';
+import { createFakeSuccessResponseBody } from '../../spec/fakes/common/response';
 import { Environment } from './environment';
 
 describe('BugSplatApiClient', () => {
