@@ -2,11 +2,8 @@
   "name": "@bugsplat/js-api-client",
   "description": "JS client for consuming the BugSplat API",
   "version": "0.0.2",
-  "main": "./src/index.ts",
-  "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
-  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "files": [
     "dist"
   ],
