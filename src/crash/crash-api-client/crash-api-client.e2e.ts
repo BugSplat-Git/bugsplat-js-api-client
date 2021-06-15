@@ -3,14 +3,16 @@ import { config } from '../../../spec/config';
 import { BugSplatApiClient } from '../../common';
 
 describe('CrashApiClient', () => {
-    const email = 'fred@bugsplat.com';
-    const password = 'Flintstone';
+    let client: CrashApiClient;
+    let host = config.host;
+    let email = config.email;
+    let password = config.password;
+
     const database = 'fred';
     const id = 100000;
-    let client: CrashApiClient;
 
     beforeEach(async () => {
-        const bugsplat = new BugSplatApiClient(config.host); 
+        const bugsplat = new BugSplatApiClient(host); 
         await bugsplat.login(email, password);
         client = new CrashApiClient(bugsplat);
     });

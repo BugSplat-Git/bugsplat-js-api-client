@@ -2,11 +2,12 @@ import { BugSplatApiClient } from '.';
 import { config } from '../../spec/config';
 
 describe('BugSplatApiClient', () => {
-    const email = 'fred@bugsplat.com';
-    const password = 'Flintstone';
     let client: BugSplatApiClient;
+    let host = config.host;
+    let email = config.email;
+    let password = config.password;
 
-    beforeEach(() => client = new BugSplatApiClient(config.host));
+    beforeEach(() => client = new BugSplatApiClient(host));
 
     describe('login', () => {
         it('should return 200 for correct email and password', async () => {
