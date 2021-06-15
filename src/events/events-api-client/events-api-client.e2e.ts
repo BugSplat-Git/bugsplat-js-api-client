@@ -4,15 +4,17 @@ import { BugSplatApiClient } from '../../common';
 import { EventStreamEventComment } from '../event-stream/event-stream-event';
 
 describe('CrashApiClient', () => {
-    const email = 'fred@bugsplat.com';
-    const password = 'Flintstone';
+    let client: EventsApiClient;
+    let host = config.host;
+    let email = config.email;
+    let password = config.password;
+    
     const database = 'fred';
     const crashId = 100000;
     const stackKeyId = 799;
-    let client: EventsApiClient;
 
     beforeEach(async () => {
-        const bugsplat = new BugSplatApiClient(config.host); 
+        const bugsplat = new BugSplatApiClient(host); 
         await bugsplat.login(email, password);
         client = new EventsApiClient(bugsplat);
     });
