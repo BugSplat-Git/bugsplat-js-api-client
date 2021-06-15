@@ -1,0 +1,12 @@
+{
+    "spec_dir": "src",
+    "spec_files": [
+      "**/*.spec.ts"
+    ],
+    "helpers": [
+        "../spec/support/teamcity.ts"
+    ],
+    "stopSpecOnExpectationFailure": false,
+    "random": true
+  }
+  
