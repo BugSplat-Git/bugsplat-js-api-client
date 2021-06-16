@@ -18,7 +18,7 @@ describe('Events', () => {
                     id: parseInt(fakeEvents[0].id),
                     action: EventStreamActionType.comment,
                     createdDate: new Date(fakeEvents[0].timestamp),
-                    comment: fakeEvents[0].message
+                    message: fakeEvents[0].message
                 })
             );
         });

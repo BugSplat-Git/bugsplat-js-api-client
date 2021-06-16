@@ -22,7 +22,7 @@ describe('Crash Details', () => {
               initials: options.events[0].username.substring(0, 2),
               email: options.events[0].username,
             },
-            comment: options.events[0].message,
+            message: options.events[0].message,
           })
         ]));
       }
