@@ -15,7 +15,7 @@ export function convertEventsToEventStreamEvents(eventsArray: Array<any>): Array
           initials: getInitialsOrDefault(event),
           email: event.username,
         },
-        comment: event.message,
+        message: event.message,
       });
     }
   });

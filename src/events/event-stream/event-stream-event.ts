@@ -1,6 +1,7 @@
 export interface EventStreamEvent {
   id: number;
   createdDate: Date;
+  message: string;
   subject: EventStreamSubject;
   action: EventStreamActionType;
 }
@@ -34,7 +35,6 @@ export interface EventStreamEventAssign extends EventStreamEvent {
 
 export interface EventStreamEventComment extends EventStreamEvent {
   action: EventStreamActionType.comment;
-  comment: string;
 }
 
 export interface EventStreamEventStatus extends EventStreamEvent {

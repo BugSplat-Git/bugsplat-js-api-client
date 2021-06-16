@@ -24,7 +24,7 @@ describe('CrashApiClient', () => {
             const response = await client.getEventsForCrashId(database, crashId);
             const event = <EventStreamEventComment>response[0];
 
-            expect(event.comment).toEqual('hello world!');
+            expect(event.message).toEqual('hello world!');
         });
     });
 
@@ -33,7 +33,7 @@ describe('CrashApiClient', () => {
             const response = await client.getEventsForStackKeyId(database, stackKeyId);
             const event = <EventStreamEventComment>response[0];
 
-            expect(event.comment).toEqual('hello world!');
+            expect(event.message).toEqual('hello world!');
         });
     });
 });
