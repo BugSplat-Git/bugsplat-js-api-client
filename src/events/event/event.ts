@@ -8,6 +8,7 @@ export function convertEventsToEventStreamEvents(eventsArray: Array<any>): Array
   eventsArray.forEach((event) => {
     if (event.type === 'Comment') {
       results.push({
+        id: parseInt(event.id),
         action: EventStreamActionType.comment,
         createdDate: new Date(event.timestamp),
         subject: {
