@@ -24,4 +24,13 @@ describe('CrashApiClient', () => {
             expect(response.id).toEqual(id);
         });
     });
+
+    describe('reprocessCrash', () => {
+        it('should return 200 for database fred and a recent crash that has symbols', async () => {
+            // TODO BG https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/19
+            const response = await client.reprocessCrash(database, 100820);
+
+            expect(response.success).toEqual(true);
+        });
+    });
 });

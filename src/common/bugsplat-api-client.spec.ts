@@ -1,6 +1,6 @@
 import { BugSplatApiClient } from '.';
 import { config } from '../../spec/config';
-import { createFakeSuccessResponseBody } from '../../spec/fakes/common/response';
+import { createFakeResponseBody } from '../../spec/fakes/common/response';
 import { Environment } from './environment';
 
 describe('BugSplatApiClient', () => {
@@ -21,7 +21,7 @@ describe('BugSplatApiClient', () => {
         expectedStatus = 'success';
         expectedJson = { success: 'true' };
         fakeFormData = { append: appendSpy, toString: () => 'BugSplat rocks!' };
-        fakeSuccessReponseBody = createFakeSuccessResponseBody(expectedStatus, expectedJson, cookie);
+        fakeSuccessReponseBody = createFakeResponseBody(expectedStatus, expectedJson, cookie);
         client = createFakeBugSplatApiClient(
             Environment.Node,
             fakeSuccessReponseBody,
