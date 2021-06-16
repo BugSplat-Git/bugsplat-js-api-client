@@ -1,4 +1,5 @@
 export interface EventStreamEvent {
+  id: number;
   createdDate: Date;
   subject: EventStreamSubject;
   action: EventStreamActionType;

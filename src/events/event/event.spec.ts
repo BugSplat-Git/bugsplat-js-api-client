@@ -15,6 +15,7 @@ describe('Events', () => {
         it('should create an event stream for Comment events', () => {
             expect(results[0]).toEqual(
                 jasmine.objectContaining({
+                    id: parseInt(fakeEvents[0].id),
                     action: EventStreamActionType.comment,
                     createdDate: new Date(fakeEvents[0].timestamp),
                     comment: fakeEvents[0].message
