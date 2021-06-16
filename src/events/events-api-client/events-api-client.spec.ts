@@ -1,7 +1,7 @@
 import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
 import { fakeEventsApiResponse } from '../../../spec/fakes/events/events-api-response';
 import { createFakeFormData } from '../../../spec/fakes/common/form-data';
-import { createFakeSuccessResponseBody } from '../../../spec/fakes/common/response';
+import { createFakeResponseBody } from '../../../spec/fakes/common/response';
 import { EventsApiClient } from './events-api-client';
 import { convertEventsToEventStreamEvents } from '../event/event';
 import { createFakeEvents } from '../../../spec/fakes/events/events';
@@ -16,7 +16,7 @@ describe('CrashApiClient', () => {
     let result;
 
     beforeEach(() => {
-        const fakeResponse = createFakeSuccessResponseBody(200, fakeEventsApiResponse, []);
+        const fakeResponse = createFakeResponseBody(200, fakeEventsApiResponse, []);
         fakeEvents = createFakeEvents();
         fakeFormData = createFakeFormData();
         fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
