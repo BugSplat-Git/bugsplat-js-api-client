@@ -1,6 +1,8 @@
 import { createFakeEvents } from "../../../spec/fakes/events/events";
 import { EventStreamActionType } from "../event-stream/event-stream-event";
 import { convertEventsToEventStreamEvents } from "./event";
+import { EventType } from "../events-api-client/events-api-client";
+import { createEventFromApiResponse } from "./create-event-from-api-response";
 
 describe('Events', () => {
     describe('convertEventsToEventStreamEvents', () => {
@@ -9,34 +11,47 @@ describe('Events', () => {
         
         beforeEach(() => {
             fakeEvents = createFakeEvents();
-            results = convertEventsToEventStreamEvents(fakeEvents)
+            results = convertEventsToEventStreamEvents(fakeEvents);
         });
 
         it('should create an event stream for Comment events', () => {
-            expect(results[0]).toEqual(
-                jasmine.objectContaining({
-                    id: parseInt(fakeEvents[0].id),
-                    action: EventStreamActionType.comment,
-                    createdDate: new Date(fakeEvents[0].timestamp),
-                    message: fakeEvents[0].message
-                })
+            const commentEvent = fakeEvents.find(event => event.type === EventType.Comment);
+            const expected = createEventFromApiResponse(commentEvent, EventStreamActionType.comment);
+            expect(results).toEqual(
+                jasmine.arrayContaining([expected])
             );
         });
 
-        it('should create comment event with first two letters of email if firstName and lastName are not available', () => {
-            expect(results[0].subject.initials).toEqual(`${fakeEvents[0].username[0]}${fakeEvents[0].username[1]}`);
+        it('should create an event stream for AddCrashDefect events', () => {
+            const defectEvent = fakeEvents.find(event => event.type === EventType.AddCrashDefect);
+            const expected = createEventFromApiResponse(defectEvent, EventStreamActionType.defect);
+            expect(results).toEqual(
+                jasmine.arrayContaining([expected])
+            );
         });
 
-        it('should create comment event with initials if firstName and lastName are available', () => {
-            const firstName = 'Bobby';
-            const lastName = 'Ganoosh';
-            const events = [...fakeEvents];
-            events[0].firstName = firstName;
-            events[0].lastName = lastName;
+        it('should create an event stream for RemoveCrashDefect events', () => {
+            const defectEvent = fakeEvents.find(event => event.type === EventType.RemoveCrashDefect);
+            const expected = createEventFromApiResponse(defectEvent, EventStreamActionType.defect);
+            expect(results).toEqual(
+                jasmine.arrayContaining([expected])
+            );
+        });
 
-            const results = convertEventsToEventStreamEvents(events);
+        it('should create an event stream for AddStackKeyDefect events', () => {
+            const defectEvent = fakeEvents.find(event => event.type === EventType.AddStackKeyDefect);
+            const expected = createEventFromApiResponse(defectEvent, EventStreamActionType.defect);
+            expect(results).toEqual(
+                jasmine.arrayContaining([expected])
+            );
+        });
 
-            expect(results[0].subject.initials).toEqual(`${firstName[0]}${lastName[0]}`);
+        it('should create an event stream for RemoveStackKeyDefect events', () => {
+            const defectEvent = fakeEvents.find(event => event.type === EventType.RemoveStackKeyDefect);
+            const expected = createEventFromApiResponse(defectEvent, EventStreamActionType.defect);
+            expect(results).toEqual(
+                jasmine.arrayContaining([expected])
+            );
         });
     });
 });

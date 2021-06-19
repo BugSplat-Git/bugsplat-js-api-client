@@ -16,6 +16,7 @@ export enum EventStreamActionType {
   assign = 'assign',
   comment = 'comment',
   status = 'status',
+  defect = 'defect'
 }
 
 export enum EventStreamStatus {

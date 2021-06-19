@@ -1,4 +1,5 @@
 import { GroupableThreadCollection, ProcessingStatus } from "../../../src/crash";
+import { EventType } from "../../../src/events/events-api-client/events-api-client";
 import { createFakeEvents } from "../events/events";
 
 export const createFakeCrashApiResponse = () => ({
@@ -14,7 +15,7 @@ export const createFakeCrashApiResponse = () => ({
     description: 'haa!',
     dumpfile: '💩',
     email: 'bobby@newayz.net',
-    events: createFakeEvents(),
+    events: createFakeEvents([EventType.Comment]),
     exceptionCode: '0010',
     exceptionMessage: 'u dun goofd',
     id: 999,

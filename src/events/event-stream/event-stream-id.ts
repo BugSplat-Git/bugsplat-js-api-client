@@ -2,6 +2,7 @@ import ac from 'argument-contracts';
 
 export enum EventStreamType {
   crashId = 'crashId',
+  stackKeyId = 'stackKeyId'
 }
 
 export class EventStreamId {

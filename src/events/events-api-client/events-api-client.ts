@@ -2,6 +2,14 @@ import ac from 'argument-contracts';
 import { convertEventsToEventStreamEvents, Event } from '..';
 import { ApiClient } from '../../common';
 
+export enum EventType {
+    Comment = 'Comment',
+    AddCrashDefect = 'AddCrashDefect',
+    RemoveCrashDefect = 'RemoveCrashDefect',
+    AddStackKeyDefect = 'AddStackKeyDefect',
+    RemoveStackKeyDefect = 'RemoveStackKeyDefect'
+}
+
 export class EventsApiClient {
 
     constructor(private _client: ApiClient) { }
