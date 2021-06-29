@@ -1,4 +1,8 @@
-export function createFakeResponseBody(status, json, headers) {
+export function createFakeResponseBody(
+    status: number,
+    json: any = {},
+    headers: any = []
+) {
     return {
         status: status,
         json: async() => (json),
