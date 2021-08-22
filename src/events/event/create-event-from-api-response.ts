@@ -21,5 +21,5 @@ function getInitialsOrDefault(event: any): string {
         return `${firstInitial}${lastInitial}`;
     }
 
-    return event.username.substring(0, 2);
+    return event.username?.substring(0, 2) ?? '';
 }

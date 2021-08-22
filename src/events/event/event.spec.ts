@@ -53,5 +53,16 @@ describe('Events', () => {
                 jasmine.arrayContaining([expected])
             );
         });
+
+        it('should return empty string if username is null or undefined', () => {
+            const eventWithoutUsername = {
+                ...fakeEvents[0],
+                username: undefined
+            };
+
+            const results = convertEventsToEventStreamEvents([eventWithoutUsername]);
+
+            expect(results[0].subject.initials).toEqual('');
+        });
     });
 });
