@@ -1,16 +1,12 @@
-import fs from 'fs';
-import path from 'path';
+import type fs from 'fs';
 import { lastValueFrom, timer } from 'rxjs';
-import util from 'util';
 import { ApiClient, BugSplatResponse } from '../../common';
-import { exists } from '../exists';
 import { S3ApiClient } from '../s3-api-client/s3-api-client';
-const stat = util.promisify(fs.stat);
 
 export class SymbolsApiClient {
 
     private readonly route = '/api/symbols';
-    private _stat = stat;
+
     private _timer = timer;
 
     constructor(private _client: ApiClient) { }
@@ -45,17 +41,12 @@ export class SymbolsApiClient {
         database: string,
         application: string,
         version: string,
-        files: Array<string>
+        files: Array<{ name: string, size: number, file: File | fs.ReadStream }>
     ): Promise<Array<BugSplatResponse>> {
         const promises = files
             .map(async (file) => {
-                if (!exists(file)) {
-                    throw new Error(`File does not exist at path: ${file}!`);
-                }
-                
-                const stats = await this._stat(file);
-                const size = stats.size;
-                const name = path.basename(file);
+                const name = file.name;
+                const size = file.size;
                 const presignedUrl = await this.getPresignedUrl(
                     database,
                     application,
@@ -65,7 +56,7 @@ export class SymbolsApiClient {
                 );
     
                 const s3Client = new S3ApiClient();
-                const response = s3Client.uploadFileToPresignedUrl(presignedUrl, file, size);
+                const response = s3Client.uploadFileToPresignedUrl(presignedUrl, file.file, size);
                 await lastValueFrom(this._timer(1000));
 
                 return response;

@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from 'path';
 import { config } from "../../../spec/config";
 import { BugSplatApiClient } from "../../common";
 import { SymbolsApiClient } from "./symbols-api-client";
@@ -32,7 +34,14 @@ describe('SymbolsApiClient', () => {
 
     describe('post', () => {
         it('should return 200 for post with valid database, application, version and files', async () => {
-            const file = './dist/cjs/index.js.map';
+            const filePath = './dist/cjs/index.js.map';
+            const name = path.basename(filePath);
+            const size = fs.statSync(filePath).size;
+            const file = {
+                name,
+                size,
+                file: fs.createReadStream(filePath)
+            };
             const response = await client.post(
                 database,
                 application,
