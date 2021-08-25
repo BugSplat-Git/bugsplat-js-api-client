@@ -3,7 +3,6 @@ import path from 'path';
 import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '../../../spec/fakes/common/form-data';
 import { createFakeResponseBody } from '../../../spec/fakes/common/response';
-import * as ExistsModule from '../exists';
 import { SymbolsApiClient } from './symbols-api-client';
 import * as S3ApiClientModule from '../s3-api-client/s3-api-client';
 import { of } from 'rxjs';
@@ -87,21 +86,16 @@ describe('SymbolsApiClient', () => {
             let fakeS3ApiClient;
             let files;
             let result;
-            let stat;
-            let size;
             let timer;
 
             beforeEach(async () => {
-                files = ['file/📄'];
-                size = 1337;
-                stat = jasmine.createSpy();
-                stat.and.returnValue({ size });
+                files = [{
+                    name: '📄.sym',
+                    size: 1337
+                }];
                 timer = jasmine.createSpy();
                 timer.and.returnValue(of(0));
-                (<any>symbolsApiClient)._stat = stat;
                 (<any>symbolsApiClient)._timer = timer;
-
-                spyOn(ExistsModule, 'exists').and.returnValue(true);
 
                 fakeS3ApiClient = jasmine.createSpyObj('S3ApiClient', ['uploadFileToPresignedUrl']);
                 fakeS3ApiClient.uploadFileToPresignedUrl.and.resolveTo(fakeSuccessResponse);
@@ -115,23 +109,12 @@ describe('SymbolsApiClient', () => {
                 );
             });
 
-            it('should throw if file does not exist', async () => {
-                (<jasmine.Spy>ExistsModule.exists).and.returnValue(false);
-                
-                await expectAsync(symbolsApiClient.post(
-                    database,
-                    application,
-                    version,
-                    files
-                )).toBeRejectedWithError(`File does not exist at path: ${files[0]}!`);
-            });
-
             it('should append dbName, appName, appVersion, size and symFileName to FormData', () => {
                 expect(fakeFormData.append).toHaveBeenCalledWith('dbName', database);
                 expect(fakeFormData.append).toHaveBeenCalledWith('appName', application);
                 expect(fakeFormData.append).toHaveBeenCalledWith('appVersion', version);
-                expect(fakeFormData.append).toHaveBeenCalledWith('size', size.toString());
-                expect(fakeFormData.append).toHaveBeenCalledWith('symFileName', path.basename(files[0]));
+                expect(fakeFormData.append).toHaveBeenCalledWith('size', files[0].size.toString());
+                expect(fakeFormData.append).toHaveBeenCalledWith('symFileName', path.basename(files[0].name));
             });
 
             it('should call fetch with correct route', () => {
@@ -153,7 +136,7 @@ describe('SymbolsApiClient', () => {
             });
 
             it('should call uploadFileToPresignedUrl with url, file and size', () => {
-                expect(fakeS3ApiClient.uploadFileToPresignedUrl).toHaveBeenCalledWith(url, files[0], size);
+                expect(fakeS3ApiClient.uploadFileToPresignedUrl).toHaveBeenCalledWith(url, files[0].file, files[0].size);
             });
 
             it('should sleep between requests', () => {
@@ -176,7 +159,7 @@ describe('SymbolsApiClient', () => {
                         application,
                         version,
                         files
-                    )).toBeRejectedWithError(`Error getting presignedUrl for ${path.basename(files[0])}`);
+                    )).toBeRejectedWithError(`Error getting presignedUrl for ${files[0].name}`);
                 });
 
                 it('should throw if response json Status is \'Failed\'', async () => {
