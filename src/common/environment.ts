@@ -1,4 +1,4 @@
 export enum Environment {
-    Browser,
+    WebBrowser,
     Node
 }

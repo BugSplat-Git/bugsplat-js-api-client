@@ -12,6 +12,26 @@ export class BugSplatApiClient implements ApiClient {
         private _host: string = 'https://app.bugsplat.com',
         private _environment: Environment = Environment.Node
     ) { }
+    
+    static async createAuthenticatedClientForNode(
+        host: string,
+        email: string,
+        password: string
+    ): Promise<BugSplatApiClient> {
+        const client = new BugSplatApiClient(host, Environment.Node);
+        await client.login(email, password);
+        return client;
+    }
+
+    static async createAuthenticatedClientForWebBrowser(
+        host: string,
+        email: string,
+        password: string
+    ): Promise<BugSplatApiClient> {
+        const client = new BugSplatApiClient(host, Environment.WebBrowser);
+        await client.login(email, password);
+        return client;
+    }
 
     createFormData(): FormData {
         return this._createFormData();
@@ -22,7 +42,7 @@ export class BugSplatApiClient implements ApiClient {
             init.headers = {};
         }
 
-        if (this._environment === Environment.Browser) {
+        if (this._environment === Environment.WebBrowser) {
             init.credentials = 'include';
         }
 

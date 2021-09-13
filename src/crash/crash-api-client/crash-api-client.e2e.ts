@@ -12,8 +12,7 @@ describe('CrashApiClient', () => {
     const id = 100000;
 
     beforeEach(async () => {
-        const bugsplat = new BugSplatApiClient(host); 
-        await bugsplat.login(email, password);
+        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
         client = new CrashApiClient(bugsplat);
     });
 
