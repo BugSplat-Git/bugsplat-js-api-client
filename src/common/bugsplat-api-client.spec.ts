@@ -51,7 +51,7 @@ describe('BugSplatApiClient', () => {
         describe('when environment is Browser', () => {
             it('should call fetch with include credentials in request init', async () => {
                 client = createFakeBugSplatApiClient(
-                    Environment.Browser,
+                    Environment.WebBrowser,
                     fakeSuccessReponseBody,
                     fakeFormData
                 );
