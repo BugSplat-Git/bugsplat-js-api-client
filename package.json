@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "pretest": "npm run lint:fix",
     "test": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
     "test:teamcity": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.spec.json",
     "lint": "eslint . --ext .js,.ts",
