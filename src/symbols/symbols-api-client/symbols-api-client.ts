@@ -24,7 +24,7 @@ export class SymbolsApiClient {
             redirect: 'follow'
         };
 
-        const response = await this._client.fetch(route, <any>init);
+        const response = await this._client.fetch(route, <RequestInit>init);
         if (response.status !== 200) {
             throw new Error(`Error deleting symbols for ${database}-${application}-${version} status ${response.status}`);
         }
@@ -86,7 +86,7 @@ export class SymbolsApiClient {
             redirect: 'follow'
         };
 
-        const response = await this._client.fetch(this.route, <any>init);
+        const response = await this._client.fetch(this.route, <RequestInit><unknown>init);
         if (response.status !== 200) {
             throw new Error(`Error getting presignedUrl for ${symFileName}`);
         }

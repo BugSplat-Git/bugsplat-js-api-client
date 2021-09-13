@@ -1,7 +1,7 @@
 export function createFakeBugSplatApiClient(
-    formData,
-    response
-) {
+    formData: FormData,
+    response: any
+): any {
     const fakeBugSplatApiClient = jasmine.createSpyObj('BugSplatApiClient', [
         'createFormData',
         'fetch'

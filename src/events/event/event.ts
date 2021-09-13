@@ -5,7 +5,17 @@ import { createEventFromApiResponse } from './create-event-from-api-response';
 
 export type Event = EventStreamEvent | EventStreamEventAssign | EventStreamEventComment | EventStreamEventStatus;
 
-export function convertEventsToEventStreamEvents(eventsArray: Array<any>): Array<Event> {
+export interface EventResponseObject {
+  id: string;
+  type: string;
+  timestamp: string;
+  firstName?: string;
+  lastName?: string;
+  username: string;
+  message: string;
+}
+
+export function convertEventsToEventStreamEvents(eventsArray: Array<EventResponseObject>): Array<Event> {
   const results: Array<Event> = [];
 
   eventsArray.forEach((event) => {

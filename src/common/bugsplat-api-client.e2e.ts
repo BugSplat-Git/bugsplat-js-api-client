@@ -3,9 +3,9 @@ import { config } from '../../spec/config';
 
 describe('BugSplatApiClient', () => {
     let client: BugSplatApiClient;
-    let host = config.host;
-    let email = config.email;
-    let password = config.password;
+    const host = config.host;
+    const email = config.email;
+    const password = config.password;
 
     beforeEach(() => client = new BugSplatApiClient(host));
 

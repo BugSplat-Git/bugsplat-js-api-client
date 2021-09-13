@@ -39,7 +39,7 @@ describe('thread collection', () => {
   });
 });
 
-function createRawResponse(subKeyDepth: number = 0): any {
+function createRawResponse(subKeyDepth = 0): any {
   return {
     'stackId': 123456789,
     'subKeyDepth': subKeyDepth,

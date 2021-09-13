@@ -5,6 +5,7 @@ describe('Module', () => {
     it('should rename properties', () => {
       const responseObject = {
         order: 'Tiger Woods',
+        name: 'Tony Fineau',
         address: 'Justin Thomas',
         path: 'Rickie Fowler',
         symbolsloaded: 'Jordan Speith',
@@ -17,6 +18,7 @@ describe('Module', () => {
       const result = Module.fromResponseObject(responseObject);
 
       expect(result.order).toEqual(responseObject.order);
+      expect(result.name).toEqual(responseObject.name);
       expect(result.address).toEqual(responseObject.address);
       expect(result.path).toEqual(responseObject.path);
       expect(result.status).toEqual(responseObject.symbolsloaded);

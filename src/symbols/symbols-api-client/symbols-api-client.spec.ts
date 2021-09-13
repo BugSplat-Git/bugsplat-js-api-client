@@ -1,4 +1,3 @@
-
 import path from 'path';
 import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '../../../spec/fakes/common/form-data';
@@ -24,7 +23,7 @@ describe('SymbolsApiClient', () => {
         fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeSuccessResponse);
 
         symbolsApiClient = new SymbolsApiClient(fakeBugSplatApiClient);
-    })
+    });
     describe('delete', () => {
         let result;
 
@@ -119,7 +118,7 @@ describe('SymbolsApiClient', () => {
 
             it('should call fetch with correct route', () => {
                 expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                    `/api/symbols`,
+                    '/api/symbols',
                     jasmine.anything()
                 );
             });

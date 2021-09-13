@@ -5,9 +5,9 @@ import { EventStreamEventComment } from '../event-stream/event-stream-event';
 
 describe('CrashApiClient', () => {
     let client: EventsApiClient;
-    let host = config.host;
-    let email = config.email;
-    let password = config.password;
+    const host = config.host;
+    const email = config.email;
+    const password = config.password;
     
     const database = 'fred';
     const crashId = 100000;

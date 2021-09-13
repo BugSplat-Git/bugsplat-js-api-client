@@ -24,7 +24,7 @@ export class CrashApiClient {
             redirect: 'follow'
         };
 
-        const response = await this._client.fetch('/api/crash/data', <any>init);
+        const response = await this._client.fetch('/api/crash/data', <RequestInit><unknown>init);
         const json = await response.json();
 
         if (response.status !== 200) {
@@ -34,7 +34,7 @@ export class CrashApiClient {
         return new CrashDetails(json);
     }
 
-    async reprocessCrash(database: string, crashId: number, force: boolean = false): Promise<{ success: boolean }> {
+    async reprocessCrash(database: string, crashId: number, force = false): Promise<{ success: boolean }> {
         ac.assertNonWhiteSpaceString(database, 'database');
         ac.assertBoolean(force, 'force');
         if (crashId <= 0) {
@@ -53,7 +53,7 @@ export class CrashApiClient {
             redirect: 'follow'
         };
 
-        const response = await this._client.fetch('/api/crash/reprocess', <any>init);
+        const response = await this._client.fetch('/api/crash/reprocess', <RequestInit><unknown>init);
         const json = await response.json();
 
         if (response.status !== 202) {
