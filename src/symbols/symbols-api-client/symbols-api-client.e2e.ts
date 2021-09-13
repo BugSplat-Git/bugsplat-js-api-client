@@ -15,8 +15,7 @@ describe('SymbolsApiClient', () => {
     const version = '1.0.0';
 
     beforeEach(async () => {
-        const bugsplat = new BugSplatApiClient(host); 
-        await bugsplat.login(email, password);
+        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
         client = new SymbolsApiClient(bugsplat);
     });
 
