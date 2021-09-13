@@ -25,22 +25,37 @@ import { BugSplatApiClient, Environment } from '@bugsplat/js-api-client';
 
 ## Authenticate
 
-Create an authenticated `BugSplatApiClient` following the steps below. Authentication is slightly different depending on if you are use `@bugsplat/js-api-client` in a Node.js or Web Browser environment.
+Create an authenticated `BugSplatApiClient` following the steps below. Authentication is slightly different depending on if you are use `@bugsplat/js-api-client` in a Node.js or Web Browser environment. The method used to authenticate also depends on if you already have access to the user's email and password, or if you have to prompt for it at a later time.
+
+The `host` value used to create a new instance of `BugSplatApiClient` is `https://app.bugsplat.com` for most scenarios. When using this library to upload a crash reports the host value will be `https://{{database}}.bugsplat.com`.
 
 ### Node.js
-
-Node.js client's will need to authenticate in order to access most APIs. For convenience, the static factory function `createAuthenticatedClientForNode` can be used to return an authenticated instance of `BugSplatApiClient`.
+The static factory function `createAuthenticatedClientForNode` can be used to return an authenticated instance of `BugSplatApiClient` in Node.js environments.
 
 ```ts
 const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
 ```
 
+If you need to authenticate at a later time, you can create an instance of `BugSplatApiClient` and call `login` manually.
+
+```ts
+const bugsplat = new BugSplatApiClient(host, Environment.Node);
+await bugsplat.login(email, password);
+```
+
 ### Web Browser
 
-Browser clients will need to authenticate in order to access most APIs. However, the browser has access to cookies and thus may already be authenticated. If you need to authenticate, a static factory function `createAuthenticatedClientForWebBrowser` can be used to return an authenticated instance of `BugSplatApiClient`.
+The static factory function `createAuthenticatedClientForWebBrowser` can be used to return an authenticated instance of `BugSplatApiClient`.
 
 ```ts
 const bugsplat = await BugSplatApiClient.createAuthenticatedClientForBrowser(host, email, password);
+```
+
+If you need to authenticate at a later time, you can create an instance of `BugSplatApiClient` and call `login` manually.
+
+```ts
+const bugsplat = new BugSplatApiClient(host, Environment.WebBrowser);
+await bugsplat.login(email, password);
 ```
 
 ## Usage
