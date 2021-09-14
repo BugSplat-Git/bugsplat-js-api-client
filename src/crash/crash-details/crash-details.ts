@@ -1,6 +1,7 @@
 import ac from 'argument-contracts';
 import { convertEventsToEventStreamEvents, Event } from '../../events';
-import { AdditionalInfo } from '../additional-info/additional-info';
+import { EventResponseObject } from '../../events/event/event';
+import { AdditionalInfo, AdditionalInfoResponseObject } from '../additional-info/additional-info';
 import { GroupableThreadCollection } from '../thread-collection/groupable-thread-collection';
 import { ThreadCollection } from '../thread-collection/thread-collection';
 
@@ -35,7 +36,7 @@ interface CrashDetailsConstructorOptions {
   description?: string;
   dumpfile?: string;
   email?: string;
-  events: Array<any>;
+  events: Array<EventResponseObject>;
   exceptionCode?: string;
   exceptionMessage?: string;
   id?: number;
@@ -50,19 +51,19 @@ interface CrashDetailsConstructorOptions {
   stackKeyDefectUrl?: string;
   thread?: GroupableThreadCollection;
   user?: string;
-  debuggerOutput?: AdditionalInfo;
+  debuggerOutput?: AdditionalInfoResponseObject;
 }
 
 function defaultToEmptyString(value, name) {
   if(value) {
     ac.assertString(value, name);
-    return value
+    return value;
   } else {
     return '';
   }
 }
 
-export class CrashDetails implements CrashDetailsConstructorOptions {
+export class CrashDetails {
   processed: ProcessingStatus;
 
   additionalFiles?: Array<string>;

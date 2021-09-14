@@ -56,11 +56,11 @@ export class BugSplatApiClient implements ApiClient {
 
     async login(email: string, password: string): Promise<BugSplatResponse> {
         const url = new URL('/api/authenticatev3', this._host);
-        const formData = <any>this._createFormData();
+        const formData = this._createFormData();
         formData.append('email', email);
         formData.append('password', password);
         formData.append('Login', 'Login');
-        const response = await this._fetch(url.href, {
+        const response = await this._fetch(url.href, <RequestInit><unknown>{
             method: 'POST',
             body: formData,
             cache: 'no-cache',

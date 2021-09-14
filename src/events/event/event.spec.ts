@@ -1,8 +1,8 @@
-import { createFakeEvents } from "../../../spec/fakes/events/events";
-import { EventStreamActionType } from "../event-stream/event-stream-event";
-import { convertEventsToEventStreamEvents } from "./event";
-import { EventType } from "../events-api-client/events-api-client";
-import { createEventFromApiResponse } from "./create-event-from-api-response";
+import { createFakeEvents } from '../../../spec/fakes/events/events';
+import { EventStreamActionType } from '../event-stream/event-stream-event';
+import { convertEventsToEventStreamEvents } from './event';
+import { EventType } from '../events-api-client/events-api-client';
+import { createEventFromApiResponse } from './create-event-from-api-response';
 
 describe('Events', () => {
     describe('convertEventsToEventStreamEvents', () => {

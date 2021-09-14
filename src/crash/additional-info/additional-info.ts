@@ -1,4 +1,5 @@
 import { ThreadCollection, StackFrame, Module, Register } from '..';
+import { ModuleResponseObject } from '../module/module';
 
 const ATTRIBUTES = '@attributes';
 
@@ -8,6 +9,40 @@ export interface AdditionalInfoConstructorOptions {
   registers: Array<Register>;
   modules: Array<Module>;
   threads: Array<ThreadCollection>;
+}
+
+export interface AdditionalInfoResponseObject {
+  os: string;
+  process: {
+    DebugOutput: {
+      DbgEngOutput: string;
+    },
+    exception: {
+      registers: Record<string, string>;
+    },
+    threads: {
+      thread: ThreadResponseObject | Array<ThreadResponseObject>;
+    },
+    modules: {
+      module: Array<ModuleResponseObject>;
+    }
+  };
+}
+
+export interface FrameResponseObject {
+  file: string,
+  symbol: string,
+  line: string,
+  arguments: Array<unknown>,
+  locals: Array<unknown>
+}
+
+export interface ThreadResponseObject {
+  '@attribute': {
+    id: string,
+    current: string
+  },
+  frame: FrameResponseObject | Array<FrameResponseObject>
 }
 
 export class AdditionalInfo implements AdditionalInfoConstructorOptions {
@@ -28,7 +63,7 @@ export class AdditionalInfo implements AdditionalInfoConstructorOptions {
     Object.freeze(this);
   }
 
-  static fromRawResponse(response: any): AdditionalInfo {
+  static fromRawResponse(response: AdditionalInfoResponseObject | undefined): AdditionalInfo {
 
     if (!response) {
       return new AdditionalInfo({
@@ -68,7 +103,7 @@ export class AdditionalInfo implements AdditionalInfoConstructorOptions {
   }
 }
 
-function createModulesArray(modules: Array<any>): Array<Module> {
+function createModulesArray(modules: Array<ModuleResponseObject>): Array<Module> {
   if (!modules) {
     modules = [];
   }
@@ -80,11 +115,11 @@ function createModulesArray(modules: Array<any>): Array<Module> {
   return modules.map(module => Module.fromResponseObject(module));
 }
 
-function createRegistersArray(registers: any): Array<Register> {
+function createRegistersArray(registers: Record<string, string>): Array<Register> {
   return Register.fromResponseObject(registers);
 }
 
-function createThreadCollectionArray(threads: Array<any>): Array<ThreadCollection> {
+function createThreadCollectionArray(threads: ThreadResponseObject | Array<ThreadResponseObject>): Array<ThreadCollection> {
   if (!threads) {
     threads = [];
   }
@@ -101,16 +136,17 @@ function createThreadCollectionArray(threads: Array<any>): Array<ThreadCollectio
     }));
 }
 
-function createThreadId(thread: any): string {
+function createThreadId(thread: ThreadResponseObject): string {
   return !isEmpty(thread[ATTRIBUTES].id) ? thread[ATTRIBUTES].id : '';
 }
 
-function createStackFramesArray(thread: any): Array<StackFrame> {
-  if (!Array.isArray(thread.frame)) {
-    thread.frame = [thread.frame];
-  }
+function createStackFramesArray(thread: ThreadResponseObject): Array<StackFrame> {
 
-  return thread.frame.map(frame => new StackFrame({
+  const frames = !isFrameResponseArray(thread.frame)
+    ? [thread.frame]
+    : thread.frame;
+
+  return frames.map(frame => new StackFrame({
     fileName: !isEmpty(frame.file) ? frame.file : '',
     functionName: !isEmpty(frame.symbol) ? frame.symbol : '',
     lineNumber: !isEmpty(frame.line) ? parseInt(frame.line) : 0,
@@ -119,9 +155,13 @@ function createStackFramesArray(thread: any): Array<StackFrame> {
   }));
 }
 
-function isEmpty(obj: object): boolean {
+function isEmpty(obj: unknown): boolean {
   if (!obj) {
     return true;
   }
-  return Object.keys(obj) && Object.keys(obj).length == 0;
+  return Object.keys(<Record<string, unknown>>obj) && Object.keys(<Record<string, unknown>>obj).length == 0;
+}
+
+function isFrameResponseArray(frame: FrameResponseObject | Array<FrameResponseObject>): frame is Array<FrameResponseObject> {
+  return Array.isArray(frame);
 }

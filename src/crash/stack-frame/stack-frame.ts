@@ -7,8 +7,8 @@ export interface StackFrameConstructorOptions {
   functionName: string;
   lineNumber?: number;
   stackFrameLevel?: number;
-  arguments?: Array<any>;
-  locals?: Array<any>;
+  arguments?: Array<unknown>;
+  locals?: Array<unknown>;
 }
 
 export class StackFrame implements StackFrameConstructorOptions {
@@ -16,34 +16,34 @@ export class StackFrame implements StackFrameConstructorOptions {
   functionName: string;
   lineNumber?: number;
   stackFrameLevel?: number;
-  arguments?: Array<any>;
-  locals?: Array<any>;
+  arguments?: Array<unknown>;
+  locals?: Array<unknown>;
 
   constructor(options: StackFrameConstructorOptions) {
     let fileName = options.fileName;
     if (fileName) {
-      ac.assertString(<string>options.fileName, 'options.fileName')
+      ac.assertString(<string>options.fileName, 'options.fileName');
     } else {
       fileName = '';
     }
 
     let functionName = options.functionName;
     if (functionName) {
-      ac.assertString(options.functionName, 'options.functionName')
+      ac.assertString(options.functionName, 'options.functionName');
     } else {
       functionName = '';
     }
 
     let lineNumber = options.lineNumber;
     if (lineNumber) {
-      ac.assertNumber(<number>options.lineNumber, 'options.lineNumber')
+      ac.assertNumber(<number>options.lineNumber, 'options.lineNumber');
     } else {
       lineNumber = undefined;
     }
 
     let stackFrameLevel = options.stackFrameLevel;
     if (stackFrameLevel) {
-      ac.assertNumber(<number>options.stackFrameLevel, 'options.stackFrameLevel')
+      ac.assertNumber(<number>options.stackFrameLevel, 'options.stackFrameLevel');
     } else {
       stackFrameLevel = undefined;
     }

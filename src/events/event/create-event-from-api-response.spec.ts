@@ -1,7 +1,7 @@
-import { createFakeEvents } from "../../../spec/fakes/events/events";
-import { EventStreamActionType } from "../event-stream/event-stream-event";
-import { EventType } from "../events-api-client/events-api-client";
-import { createEventFromApiResponse } from "./create-event-from-api-response";
+import { createFakeEvents } from '../../../spec/fakes/events/events';
+import { EventStreamActionType } from '../event-stream/event-stream-event';
+import { EventType } from '../events-api-client/events-api-client';
+import { createEventFromApiResponse } from './create-event-from-api-response';
 
 describe('createEventFromApiResponse', () => {    
     it('should create value with id, action, createdDate, subject and message', () => {

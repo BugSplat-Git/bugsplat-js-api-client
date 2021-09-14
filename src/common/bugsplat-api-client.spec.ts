@@ -82,7 +82,7 @@ describe('BugSplatApiClient', () => {
                     })
                 );
             });
-        })
+        });
 
         it('should return result', () => {
             expect(result).toEqual(fakeSuccessReponseBody);

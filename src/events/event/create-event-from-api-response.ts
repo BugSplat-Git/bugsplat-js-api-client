@@ -1,7 +1,7 @@
-import { EventStreamActionType } from "../event-stream/event-stream-event";
-import { Event } from './event';
+import { EventStreamActionType } from '../event-stream/event-stream-event';
+import { Event, EventResponseObject } from './event';
 
-export function createEventFromApiResponse(event: any, type: EventStreamActionType): Event {
+export function createEventFromApiResponse(event: EventResponseObject, type: EventStreamActionType): Event {
     return {
         id: parseInt(event.id),
         action: type,
@@ -14,7 +14,7 @@ export function createEventFromApiResponse(event: any, type: EventStreamActionTy
     };
 }
 
-function getInitialsOrDefault(event: any): string {
+function getInitialsOrDefault(event: EventResponseObject): string {
     if (event.firstName && event.lastName) {
         const firstInitial = event.firstName[0];
         const lastInitial = event.lastName[0];

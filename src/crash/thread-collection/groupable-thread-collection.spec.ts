@@ -21,6 +21,6 @@ describe('GroupableThreadCollection', () => {
 
     const result = new GroupableThreadCollection(options);
 
-    expect(result).toEqual(jasmine.objectContaining(options))
+    expect(result).toEqual(jasmine.objectContaining(options));
   });
 });

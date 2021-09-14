@@ -189,7 +189,7 @@ describe('stackFrame', () => {
       expect(result).toEqual(expectedFileName);
     });
 
-    it('should split on \ and return last item', () => {
+    it('should split on \\ and return last item', () => {
       const expectedFileName = 'black.ts';
 
       const result = new StackFrame(<any>{ fileName: `.\\this\\suit\\is\\not\\${expectedFileName}`, lineNumber: null }).getLocation();

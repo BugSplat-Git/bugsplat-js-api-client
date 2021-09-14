@@ -4,9 +4,9 @@ import { BugSplatApiClient } from '../../common';
 
 describe('CrashApiClient', () => {
     let client: CrashApiClient;
-    let host = config.host;
-    let email = config.email;
-    let password = config.password;
+    const host = config.host;
+    const email = config.email;
+    const password = config.password;
 
     const database = 'fred';
     const id = 100000;

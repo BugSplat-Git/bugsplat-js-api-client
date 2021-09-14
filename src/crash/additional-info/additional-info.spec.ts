@@ -84,7 +84,7 @@ describe('AdditionalInfo', () => {
   });
 });
 
-function isEmpty(obj: object): boolean {
+function isEmpty(obj: any): boolean {
   return Object.keys(obj) && Object.keys(obj).length == 0;
 }
 
@@ -118,7 +118,7 @@ function createApiResponse(): any {
           'name': 'BugSplatRc',
           'order': '0',
           'address': '00d50000-00d69000',
-          'path': 'C:\/www\/BugsplatAutomation\/BugsplatAutomation\/bin\/x64\/Release\/temp\/aedf8ff7-8cc6-49df-821a-88b961e1e12b\/BugSplat\/bin\/BugSplatRc.dll',
+          'path': 'C:\\www\\BugsplatAutomation\\BugsplatAutomation\\bin\\x64\\Release\\temp\\aedf8ff7-8cc6-49df-821a-88b961e1e12b\\BugSplat\\bin\\BugSplatRc.dll',
           'symbolsloaded': 'file not found',
           'fileversion': '1.0.0.1',
           'productversion': '1.0.0.1',
@@ -128,7 +128,7 @@ function createApiResponse(): any {
           'name': 'myConsoleCrasher',
           'order': '1',
           'address': '00da0000-00dc1000',
-          'path': 'C:\/www\/BugsplatAutomation\/BugsplatAutomation\/bin\/x64\/Release\/temp\/aedf8ff7-8cc6-49df-821a-88b961e1e12b\/BugSplat\/bin\/myConsoleCrasher.exe',
+          'path': 'C:\\www\\BugsplatAutomation\\BugsplatAutomation\\bin\\x64\\Release\\temp\\aedf8ff7-8cc6-49df-821a-88b961e1e12b\\BugSplat\\bin\\myConsoleCrasher.exe',
           'symbolsloaded': 'deferred',
           'fileversion': {},
           'productversion': {},
@@ -181,5 +181,5 @@ function createApiResponse(): any {
         'DbgEngOutput': 'stuff!'
       },
     }
-  }
+  };
 }

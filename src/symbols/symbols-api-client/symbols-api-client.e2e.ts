@@ -1,14 +1,14 @@
-import fs from "fs";
+import fs from 'fs';
 import path from 'path';
-import { config } from "../../../spec/config";
-import { BugSplatApiClient } from "../../common";
-import { SymbolsApiClient } from "./symbols-api-client";
+import { config } from '../../../spec/config';
+import { BugSplatApiClient } from '../../common';
+import { SymbolsApiClient } from './symbols-api-client';
 
 describe('SymbolsApiClient', () => {
     let client: SymbolsApiClient;
-    let host = config.host;
-    let email = config.email;
-    let password = config.password;
+    const host = config.host;
+    const email = config.email;
+    const password = config.password;
 
     const database = 'fred';
     const application = 'bugsplat-js-api-client';

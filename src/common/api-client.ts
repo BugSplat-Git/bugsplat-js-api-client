@@ -1,4 +1,4 @@
-import FormData from 'form-data';
+import type FormData from 'form-data';
 
 export interface ApiClient {
     createFormData(): FormData;
@@ -7,5 +7,5 @@ export interface ApiClient {
 
 export interface BugSplatResponse {
     status: number;
-    json: () => Promise<any>;
+    json: () => Promise<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

@@ -101,7 +101,7 @@ describe('CrashApiClient', () => {
             fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
             client = new CrashApiClient(fakeBugSplatApiClient);
 
-            result = await client.reprocessCrash(database, id, true)
+            result = await client.reprocessCrash(database, id, true);
         });
 
         it('should call fetch with correct route', () => {
