@@ -1,9 +1,11 @@
 import { CrashApiClient } from './crash-api-client';
 import { config } from '../../../spec/config';
 import { BugSplatApiClient } from '../../common';
+import { CrashesApiClient } from '../../crashes/crashes-api-client/crashes-api-client';
 
 describe('CrashApiClient', () => {
-    let client: CrashApiClient;
+    let crashClient: CrashApiClient;
+    let crashesClient: CrashesApiClient;
     const host = config.host;
     const email = config.email;
     const password = config.password;
@@ -13,12 +15,13 @@ describe('CrashApiClient', () => {
 
     beforeEach(async () => {
         const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
-        client = new CrashApiClient(bugsplat);
+        crashClient = new CrashApiClient(bugsplat);
+        crashesClient = new CrashesApiClient(bugsplat);
     });
 
     describe('getCrashById', () => {
         it('should return 200 for database fred and crashId 100000', async () => {
-            const response = await client.getCrashById(database, id);
+            const response = await crashClient.getCrashById(database, id);
 
             expect(response.id).toEqual(id);
         });
@@ -26,8 +29,14 @@ describe('CrashApiClient', () => {
 
     describe('reprocessCrash', () => {
         it('should return 200 for database fred and a recent crash that has symbols', async () => {
-            // TODO BG https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/19
-            const response = await client.reprocessCrash(database, 103339);
+            const pageSize = 100;
+            const crashesResponse = await crashesClient.getCrashes({ database, pageSize });
+            const crashWithSymbols = crashesResponse.rows.find(row => {
+                return Number(row.stackKeyId) > 0 && row.stackKey.includes('myConsoleCrasher!MemoryException');
+            });
+            const id = Number(crashWithSymbols?.id);
+
+            const response = await crashClient.reprocessCrash(database, id);
 
             expect(response.success).toEqual(true);
         });
