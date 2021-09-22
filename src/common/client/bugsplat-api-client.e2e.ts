@@ -1,5 +1,5 @@
-import { BugSplatApiClient } from '.';
-import { config } from '../../spec/config';
+import { BugSplatApiClient } from './bugsplat-api-client';
+import { config } from '../../../spec/config';
 
 describe('BugSplatApiClient', () => {
     let client: BugSplatApiClient;

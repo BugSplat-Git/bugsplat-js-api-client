@@ -1,0 +1,10 @@
+export const EQUAL = 'EQUAL';
+export const NOT_EQUAL = 'NOT_EQUAL';
+export const CONTAINS = 'CONTAINS';
+export const DOES_NOT_CONTAIN = 'DOES_NOT_CONTAIN';
+export const EMPTY = 'EMPTY';
+export const NOT_EMPTY = 'NOT_EMPTY';
+export const STARTS_WITH = 'STARTS_WITH';
+export const ENDS_WITH = 'ENDS_WITH';
+export const LESS_THAN = 'LESS_THAN';
+export const GREATER_THAN = 'GREATER_THAN';
