@@ -1,4 +1,4 @@
-import { ApiDataFilter, ApiDataFilterGroup, FilterOperator } from "@common";
+import { ApiDataFilter, ApiDataFilterGroup, FilterOperator } from '@common';
 
 describe('ApiDataFilterGroup', () => {
   describe('fromApiDataFilter', () => {

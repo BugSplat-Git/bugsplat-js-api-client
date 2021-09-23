@@ -1,4 +1,4 @@
-import { ApiDataFilterGroup, OrderFilter } from "@common";
+import { ApiDataFilterGroup, OrderFilter } from '@common';
 
 export interface TableDataRequest {
   database?: string;

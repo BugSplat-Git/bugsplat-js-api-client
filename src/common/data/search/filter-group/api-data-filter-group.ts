@@ -1,4 +1,4 @@
-import { ApiDataFilter, EQUAL, FilterOperator, GREATER_THAN, LESS_THAN } from "@common";
+import { ApiDataFilter, EQUAL, FilterOperator, GREATER_THAN, LESS_THAN } from '@common';
 
 export class ApiDataFilterGroup {
   constructor(

@@ -1,4 +1,4 @@
-import { Event, EventResponseObject, EventStreamActionType } from "@events";
+import { Event, EventResponseObject, EventStreamActionType } from '@events';
 
 export function createEventFromApiResponse(event: EventResponseObject, type: EventStreamActionType): Event {
     return {

@@ -1,5 +1,5 @@
-import { TableDataClient } from "@common";
-import * as TableDataFormDataBuilder from "../table-data-form-data-builder/table-data-form-data-builder";
+import { TableDataClient } from '@common';
+import * as TableDataFormDataBuilder from '../table-data-form-data-builder/table-data-form-data-builder';
 
 describe('TableDataClient', () => {
   let dataTableFormDataBuilder;

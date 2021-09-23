@@ -1,4 +1,4 @@
-import { EventStreamEvent, EventStreamEventAssign, EventStreamEventComment, EventStreamEventStatus, createEventFromApiResponse, EventStreamActionType, EventType } from "@events";
+import { EventStreamEvent, EventStreamEventAssign, EventStreamEventComment, EventStreamEventStatus, createEventFromApiResponse, EventStreamActionType, EventType } from '@events';
 
 export type Event = EventStreamEvent | EventStreamEventAssign | EventStreamEventComment | EventStreamEventStatus;
 
