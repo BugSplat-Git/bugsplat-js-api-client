@@ -1,8 +1,6 @@
+import { ApiClient, BugSplatResponse, Environment } from '@common';
 import fetchPonyfill from 'fetch-ponyfill';
 import FormData from 'form-data';
-import { Environment } from '../environment';
-import { ApiClient } from './api-client';
-import { BugSplatResponse } from './api-client';
 
 export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();

@@ -1,6 +1,6 @@
+import { ApiClient } from '@common';
+import { CrashDetails } from '@crash';
 import ac from 'argument-contracts';
-import { CrashDetails } from '..';
-import { ApiClient } from '../../common';
 
 export class CrashApiClient {
 

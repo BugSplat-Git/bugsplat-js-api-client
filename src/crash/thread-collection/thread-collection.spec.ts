@@ -1,4 +1,4 @@
-import { StackFrame, ThreadCollection } from '..';
+import { StackFrame, ThreadCollection } from '@crash';
 
 describe('thread collection', () => {
 

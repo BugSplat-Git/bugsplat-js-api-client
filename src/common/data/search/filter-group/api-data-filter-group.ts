@@ -1,6 +1,4 @@
-import { EQUAL, GREATER_THAN, LESS_THAN } from '../filter-condition/filter-condition';
-import { FilterOperator } from '../filter-operator/filter-operator';
-import { ApiDataFilter } from '../filter/api-data-filter';
+import { ApiDataFilter, EQUAL, FilterOperator, GREATER_THAN, LESS_THAN } from "@common";
 
 export class ApiDataFilterGroup {
   constructor(

@@ -1,7 +1,7 @@
-import { CrashApiClient } from './crash-api-client';
-import { config } from '../../../spec/config';
-import { BugSplatApiClient } from '../../common';
-import { CrashesApiClient } from '../../crashes/crashes-api-client/crashes-api-client';
+import { BugSplatApiClient } from '@common';
+import { CrashApiClient } from '@crash';
+import { CrashesApiClient } from '@crashes';
+import { config } from '@spec/config';
 
 describe('CrashApiClient', () => {
     let crashClient: CrashApiClient;

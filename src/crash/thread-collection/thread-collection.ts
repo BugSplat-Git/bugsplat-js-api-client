@@ -1,5 +1,5 @@
 import ac from 'argument-contracts';
-import { StackFrame } from '..';
+import { StackFrame } from '@crash';
 
 export interface ThreadCollectionConstructorOptions {
   threadId?: string;

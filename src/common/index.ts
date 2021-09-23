@@ -1,3 +1,3 @@
-export { ApiClient, BugSplatResponse } from './client/api-client';
-export { BugSplatApiClient } from './client/bugsplat-api-client';
+export * from './client';
+export * from './data';
 export { Environment } from './environment';

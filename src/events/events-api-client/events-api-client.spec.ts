@@ -1,10 +1,9 @@
-import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
-import { fakeEventsApiResponse } from '../../../spec/fakes/events/events-api-response';
-import { createFakeFormData } from '../../../spec/fakes/common/form-data';
-import { createFakeResponseBody } from '../../../spec/fakes/common/response';
-import { EventsApiClient } from './events-api-client';
-import { convertEventsToEventStreamEvents } from '../event/event';
-import { createFakeEvents } from '../../../spec/fakes/events/events';
+import { convertEventsToEventStreamEvents, EventsApiClient } from '@events';
+import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
+import { createFakeFormData } from '@spec/fakes/common/form-data';
+import { createFakeResponseBody } from '@spec/fakes/common/response';
+import { createFakeEvents } from '@spec/fakes/events/events';
+import { fakeEventsApiResponse } from '@spec/fakes/events/events-api-response';
 
 describe('CrashApiClient', () => {
     const database = 'fred';
@@ -31,7 +30,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.getEventsForCrashId('', id);
                 fail('getCrashById was supposed to throw!');
-            } catch(error) {
+            } catch(error: any) {
                 expect(error.message).toMatch(/to be a non white space string/);
             }
         });
@@ -40,7 +39,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.getEventsForCrashId(database, 0);
                 fail('getCrashById was supposed to throw!');
-            } catch(error) {
+            } catch(error: any) {
                 expect(error.message).toMatch(/to be a positive non-zero number/);
             }
         });
@@ -62,7 +61,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.getEventsForStackKeyId('', id);
                 fail('getCrashById was supposed to throw!');
-            } catch(error) {
+            } catch(error: any) {
                 expect(error.message).toMatch(/to be a non white space string/);
             }
         });
@@ -71,7 +70,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.getEventsForStackKeyId(database, 0);
                 fail('getCrashById was supposed to throw!');
-            } catch(error) {
+            } catch(error: any) {
                 expect(error.message).toMatch(/to be a positive non-zero number/);
             }
         });

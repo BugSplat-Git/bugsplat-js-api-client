@@ -1,4 +1,5 @@
-import { OrderFilter } from './order-filter';
+import { OrderFilter } from '@common';
+
 describe('OrderFilter', () => {
   it('should exist', () => {
     expect(OrderFilter).toEqual(jasmine.any(Function));

@@ -1,10 +1,10 @@
+import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
+import { createFakeFormData } from '@spec/fakes/common/form-data';
+import { createFakeResponseBody } from '@spec/fakes/common/response';
+import { SymbolsApiClient } from '@symbols';
 import path from 'path';
-import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
-import { createFakeFormData } from '../../../spec/fakes/common/form-data';
-import { createFakeResponseBody } from '../../../spec/fakes/common/response';
-import { SymbolsApiClient } from './symbols-api-client';
-import * as S3ApiClientModule from '../s3-api-client/s3-api-client';
 import { of } from 'rxjs';
+import * as S3ApiClientModule from '../s3-api-client/s3-api-client';
 
 describe('SymbolsApiClient', () => {
     const database = 'fred';

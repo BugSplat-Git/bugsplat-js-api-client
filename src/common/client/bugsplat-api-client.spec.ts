@@ -1,7 +1,6 @@
-import { BugSplatApiClient } from '..';
-import { config } from '../../../spec/config';
-import { createFakeResponseBody } from '../../../spec/fakes/common/response';
-import { Environment } from '../environment';
+import { BugSplatApiClient, Environment } from '@common';
+import { config } from '@spec/config';
+import { createFakeResponseBody } from '@spec/fakes/common/response';
 
 describe('BugSplatApiClient', () => {
     const email = 'bobby@bugsplat.com';

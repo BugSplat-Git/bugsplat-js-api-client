@@ -1,6 +1,5 @@
-import { ApiClient, BugSplatResponse } from '../../..';
-import { TableDataFormDataBuilder } from '../table-data-form-data-builder/table-data-form-data-builder';
-import { TableDataRequest } from './table-data-request';
+import { ApiClient, TableDataRequest, BugSplatResponse } from "@common";
+import { TableDataFormDataBuilder } from "../table-data-form-data-builder/table-data-form-data-builder";
 
 export class TableDataClient {
 

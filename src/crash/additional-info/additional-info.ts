@@ -1,4 +1,4 @@
-import { ThreadCollection, StackFrame, Module, Register } from '..';
+import { Module, Register, StackFrame, ThreadCollection } from '@crash';
 import { ModuleResponseObject } from '../module/module';
 
 const ATTRIBUTES = '@attributes';

@@ -1,5 +1,4 @@
-import { ApiDataFilterGroup } from '../../search/filter-group/api-data-filter-group';
-import { OrderFilter } from '../../search/order-filter/order-filter'; // TODO BG from index?
+import { ApiDataFilterGroup, OrderFilter } from "@common";
 
 export interface TableDataRequest {
   database?: string;

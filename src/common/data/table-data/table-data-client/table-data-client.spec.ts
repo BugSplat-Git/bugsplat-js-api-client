@@ -1,5 +1,5 @@
-import * as DataTableFormDataBuilderModule from '../table-data-form-data-builder/table-data-form-data-builder';
-import { TableDataClient } from './table-data-client';
+import { TableDataClient } from "@common";
+import * as TableDataFormDataBuilder from "../table-data-form-data-builder/table-data-form-data-builder";
 
 describe('TableDataClient', () => {
   let dataTableFormDataBuilder;
@@ -32,7 +32,7 @@ describe('TableDataClient', () => {
     dataTableFormDataBuilder.withSortColumn.and.returnValue(dataTableFormDataBuilder);
     dataTableFormDataBuilder.withSortOrder.and.returnValue(dataTableFormDataBuilder);
     dataTableFormDataBuilder.build.and.returnValue(formData);
-    spyOn(DataTableFormDataBuilderModule, 'TableDataFormDataBuilder').and.returnValue(dataTableFormDataBuilder);
+    spyOn(TableDataFormDataBuilder, 'TableDataFormDataBuilder').and.returnValue(dataTableFormDataBuilder);
 
     const json = () => response;
     bugSplatApiClient = jasmine.createSpyObj('BugSplatApiClient', ['fetch']);

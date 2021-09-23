@@ -1,7 +1,4 @@
-import { EventStreamActionType, EventStreamEventAssign, EventStreamEventComment, EventStreamEventStatus } from '..';
-import { EventStreamEvent } from '../event-stream/event-stream-event';
-import { EventType } from '../events-api-client/events-api-client';
-import { createEventFromApiResponse } from './create-event-from-api-response';
+import { EventStreamEvent, EventStreamEventAssign, EventStreamEventComment, EventStreamEventStatus, createEventFromApiResponse, EventStreamActionType, EventType } from "@events";
 
 export type Event = EventStreamEvent | EventStreamEventAssign | EventStreamEventComment | EventStreamEventStatus;
 

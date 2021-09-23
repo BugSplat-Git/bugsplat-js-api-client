@@ -1,5 +1,5 @@
-import { ApiDataFilterGroup } from '../../search/filter-group/api-data-filter-group';
-import { OrderFilter } from '../../search/order-filter/order-filter';
+
+import { ApiDataFilterGroup, OrderFilter } from '@common';
 import FormData from 'form-data';
 
 export class TableDataFormDataBuilder {

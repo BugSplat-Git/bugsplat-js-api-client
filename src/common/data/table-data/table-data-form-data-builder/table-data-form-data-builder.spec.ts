@@ -1,7 +1,5 @@
-import { ApiDataFilterGroup } from '../../search/filter-group/api-data-filter-group';
-import { ApiDataFilter } from '../../search/filter/api-data-filter';
-import { OrderFilter } from '../../search/order-filter/order-filter';
-import { TableDataFormDataBuilder } from './table-data-form-data-builder';
+import { ApiDataFilter, ApiDataFilterGroup, OrderFilter } from "@common";
+import { TableDataFormDataBuilder } from "./table-data-form-data-builder";
 
 describe('TableDataFormDataBuilder', () => {
   let fakeFormData;

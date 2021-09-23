@@ -1,5 +1,5 @@
-import { BugSplatApiClient } from './bugsplat-api-client';
-import { config } from '../../../spec/config';
+import { BugSplatApiClient } from '@common';
+import { config } from '@spec/config';
 
 describe('BugSplatApiClient', () => {
     let client: BugSplatApiClient;
@@ -22,7 +22,7 @@ describe('BugSplatApiClient', () => {
             try {
                 await client.login(email, 'password');
                 fail('login was supposed to throw!');
-            } catch (error) {
+            } catch (error: any) {
                 expect(error.message).toMatch(/Invalid email or password/);
             }
         });

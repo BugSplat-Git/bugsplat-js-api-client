@@ -1,8 +1,5 @@
-import { ApiClient, BugSplatResponse } from '../../common';
-import { TableDataClient } from '../../common/data/table-data/table-data-client/table-data-client';
-import { TableDataRequest } from '../../common/data/table-data/table-data-client/table-data-request';
-import { TableDataResponse } from '../../common/data/table-data/table-data-client/table-data-response';
-import { CrashesApiRow } from './crashes-api-row';
+import { ApiClient, BugSplatResponse, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
+import { CrashesApiRow } from '@crashes';
 
 export class CrashesApiClient {
 

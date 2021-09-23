@@ -1,6 +1,6 @@
-import { GroupableThreadCollection, ProcessingStatus } from '../../../src/crash';
-import { EventType } from '../../../src/events/events-api-client/events-api-client';
-import { createFakeEvents } from '../events/events';
+import { GroupableThreadCollection, ProcessingStatus } from "@crash";
+import { EventType } from "@events";
+import { createFakeEvents } from "@spec/fakes/events/events";
 
 export const createFakeCrashApiResponse = () => ({
     processed: ProcessingStatus.Complete,

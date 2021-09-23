@@ -1,4 +1,4 @@
-import { Register } from './register';
+import { Register } from '@crash';
 
 describe('fromResponseObject', () => {
   it('should convert object keys and values into array of name value pairs', () => {

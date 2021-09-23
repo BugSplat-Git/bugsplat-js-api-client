@@ -1,4 +1,4 @@
-import { StackFrame } from '..';
+import { StackFrame } from '@crash';
 
 describe('stackFrame', () => {
 

@@ -1,7 +1,6 @@
-import { EventsApiClient } from './events-api-client';
-import { config } from '../../../spec/config';
-import { BugSplatApiClient } from '../../common';
-import { EventStreamEventComment } from '../event-stream/event-stream-event';
+import { BugSplatApiClient } from '@common';
+import { EventsApiClient, EventStreamEventComment } from '@events';
+import { config } from '@spec/config';
 
 describe('CrashApiClient', () => {
     let client: EventsApiClient;

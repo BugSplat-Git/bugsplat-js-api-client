@@ -1,5 +1,3 @@
-import { Event } from '../../events';
-
 interface CrashData {
   id: string;
   stackKey: string;

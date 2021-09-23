@@ -1,9 +1,8 @@
-import { CrashesApiClient } from './crashes-api-client';
+import { CrashesApiClient } from '@crashes';
+import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
+import { createFakeFormData } from '@spec/fakes/common/form-data';
+import { createFakeResponseBody } from '@spec/fakes/common/response';
 import * as TableDataClientModule from '../../common/data/table-data/table-data-client/table-data-client';
-import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
-import { createFakeFormData } from '../../../spec/fakes/common/form-data';
-import { createFakeResponseBody } from '../../../spec/fakes/common/response';
-
 
 describe('CrashesApiClient', () => {
     let sut: CrashesApiClient;
