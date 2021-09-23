@@ -52,12 +52,11 @@ describe('CrashesApiClient', () => {
             expect(tableDataClient.getData).toHaveBeenCalledWith(request);
         });
 
-        it('should return value with Comments and IpAddress values mapped to lower-case and events defaulted to empty array', () => {
+        it('should return value with Comments and IpAddress values mapped to lower-case', () => {
             expect(result.pageData).toEqual(pageData);
             expect(result.rows[0].id).toEqual(id);
             expect(result.rows[0].comments).toEqual(Comments);
             expect(result.rows[0].ipAddress).toEqual(IpAddress);
-            expect(result.rows[0].events).toEqual([]);
         });
     });
 

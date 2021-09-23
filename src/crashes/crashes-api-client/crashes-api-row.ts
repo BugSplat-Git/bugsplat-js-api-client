@@ -14,7 +14,6 @@ interface CrashData {
   defectId: string;
   defectUrl: string;
   defectLabel: string;
-  events: Array<Event>;
   skDefectId: string;
   skDefectUrl: string;
   skDefectLabel: string;
@@ -43,7 +42,6 @@ export class CrashesApiRow {
   public userDescription: string;
   public user: string;
   public email: string;
-  public events: Array<Event>;
   public ipAddress: string;
   public crashTime: string;
   public defectId: string;
@@ -67,7 +65,6 @@ export class CrashesApiRow {
     this.userDescription = rawApiRow.userDescription;
     this.user = rawApiRow.user;
     this.email = rawApiRow.email;
-    this.events = rawApiRow.events ?? [];
     this.ipAddress = rawApiRow.IpAddress;
     this.crashTime = rawApiRow.crashTime;
     this.defectId = rawApiRow.defectId;
