@@ -22,7 +22,7 @@ describe('CrashesApiClient', () => {
 
     beforeEach(() => {
         fakeFormData = createFakeFormData();
-        apiClientResponse = createFakeResponseBody(200);  // TODO BG
+        apiClientResponse = createFakeResponseBody(200);
         apiClient = createFakeBugSplatApiClient(fakeFormData, apiClientResponse);
 
         id = 9001;
