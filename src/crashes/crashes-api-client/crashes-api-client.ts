@@ -16,17 +16,7 @@ export class CrashesApiClient {
         const response = await this._tableDataClient.getData(request);
         const json = await response.json();
         const pageData = json.pageData;
-        const rows = json.rows
-            .map(row => {
-                const newRow = {
-                    ...row,
-                    ipAddress: row.IpAddress,
-                    comments: row.Comments
-                };
-                delete newRow.IpAddress;
-                delete newRow.Comments;
-                return newRow;
-            });
+        const rows = json.rows.map(row => new CrashesApiRow(row));
 
         return {
             rows,

@@ -1,4 +1,6 @@
-export interface CrashData {
+import { Event } from '../../events';
+
+interface CrashData {
   id: string;
   stackKey: string;
   stackKeyId: string;
@@ -8,21 +10,30 @@ export interface CrashData {
   userDescription: string;
   user: string;
   email: string;
-  ipAddress: string;
   crashTime: string;
   defectId: string;
   defectUrl: string;
   defectLabel: string;
+  events: Array<Event>;
   skDefectId: string;
   skDefectUrl: string;
   skDefectLabel: string;
-  comments: string;
   skComments: string;
   exceptionCode: string;
   exceptionMessage: string;
 }
 
-export class CrashesApiRow implements CrashData {
+export interface CrashDataWithMappedProperties extends CrashData {
+  comments: string;
+  ipAddress: string;
+}
+
+export interface CrashesApiResponseRow extends CrashData {
+  Comments: string;
+  IpAddress: string;
+}
+
+export class CrashesApiRow {
   public id: string;
   public stackKey: string;
   public stackKeyId: string;
@@ -32,7 +43,7 @@ export class CrashesApiRow implements CrashData {
   public userDescription: string;
   public user: string;
   public email: string;
-  public events: Array<Event>; // TODO BG is this correct?
+  public events: Array<Event>;
   public ipAddress: string;
   public crashTime: string;
   public defectId: string;
@@ -46,13 +57,29 @@ export class CrashesApiRow implements CrashData {
   public exceptionCode: string;
   public exceptionMessage: string;
 
-  constructor(rawApiRow: { Comments: string, IpAddress: string }) {
-    const { Comments, IpAddress, ...sameNamedProperties } = rawApiRow;
-
-    Object.assign(this, sameNamedProperties, {
-      comments: Comments || '',
-      ipAddress: IpAddress,
-    });
+  constructor(rawApiRow: CrashesApiResponseRow) {
+    this.id = rawApiRow.id;
+    this.stackKey = rawApiRow.stackKey;
+    this.stackKeyId = rawApiRow.stackKeyId;
+    this.appName = rawApiRow.appName;
+    this.appVersion = rawApiRow.appVersion;
+    this.appDescription = rawApiRow.appDescription;
+    this.userDescription = rawApiRow.userDescription;
+    this.user = rawApiRow.user;
+    this.email = rawApiRow.email;
+    this.events = rawApiRow.events ?? [];
+    this.ipAddress = rawApiRow.IpAddress;
+    this.crashTime = rawApiRow.crashTime;
+    this.defectId = rawApiRow.defectId;
+    this.defectUrl = rawApiRow.defectUrl;
+    this.defectLabel = rawApiRow.defectLabel;
+    this.skDefectId = rawApiRow.skDefectId;
+    this.skDefectUrl = rawApiRow.skDefectUrl;
+    this.skDefectLabel = rawApiRow.skDefectLabel;
+    this.comments = rawApiRow.Comments;
+    this.skComments = rawApiRow.skComments;
+    this.exceptionCode = rawApiRow.exceptionCode;
+    this.exceptionMessage = rawApiRow.exceptionMessage;
 
     Object.freeze(this);
   }
