@@ -1,8 +1,8 @@
+import { CrashDetails, ProcessingStatus } from '@crash';
+import { EventStreamActionType } from '@events';
+import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
 import ac from 'argument-contracts';
-import { createFakeCrashApiResponse } from '../../../spec/fakes/crash/crash-api-response';
-import { EventStreamActionType } from '../../events';
 import * as ThreadCollectionModule from '../thread-collection/thread-collection';
-import { CrashDetails, ProcessingStatus } from './crash-details';
 
 describe('Crash Details', () => {
   it('should set all properties', () => {

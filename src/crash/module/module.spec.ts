@@ -1,4 +1,4 @@
-import { Module } from '..';
+import { Module } from '@crash';
 
 describe('Module', () => {
   describe('fromResponseObject', () => {

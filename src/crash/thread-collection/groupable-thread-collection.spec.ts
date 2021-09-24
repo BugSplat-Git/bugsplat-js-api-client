@@ -1,4 +1,4 @@
-import { GroupableThreadCollection } from '..';
+import { GroupableThreadCollection } from '@crash';
 
 describe('GroupableThreadCollection', () => {
   it('should throw if stackKeyId is not a number', () => {

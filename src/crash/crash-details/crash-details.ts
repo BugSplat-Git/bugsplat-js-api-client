@@ -1,9 +1,7 @@
+import { AdditionalInfo, GroupableThreadCollection, ThreadCollection } from '@crash';
+import { convertEventsToEventStreamEvents, Event, EventResponseObject } from '@events';
 import ac from 'argument-contracts';
-import { convertEventsToEventStreamEvents, Event } from '../../events';
-import { EventResponseObject } from '../../events/event/event';
-import { AdditionalInfo, AdditionalInfoResponseObject } from '../additional-info/additional-info';
-import { GroupableThreadCollection } from '../thread-collection/groupable-thread-collection';
-import { ThreadCollection } from '../thread-collection/thread-collection';
+import { AdditionalInfoResponseObject } from '../additional-info/additional-info';
 
 export enum ProcessingStatus {
   Processing,

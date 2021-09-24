@@ -9,12 +9,12 @@
   ],
   "scripts": {
     "pretest": "npm run lint:fix",
-    "test": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
-    "test:teamcity": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.spec.json",
+    "test": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
+    "test:teamcity": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.spec.json",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "npm run lint -- --fix",
-    "e2e": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
-    "e2e:teamcity": "ts-node node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.e2e.json",
+    "e2e": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
+    "e2e:teamcity": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.e2e.json",
     "release": "npm run build && npm publish --access public",
     "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.cjs.json",
@@ -48,6 +48,7 @@
     "jasmine": "^3.7.0",
     "jasmine-reporters": "^2.4.0",
     "ts-node": "^10.0.0",
-    "typescript": "^4.2.4"
+    "tsconfig-paths": "^3.11.0",
+    "typescript": "^4.4.3"
   }
 }

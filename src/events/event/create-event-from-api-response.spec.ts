@@ -1,6 +1,5 @@
-import { createFakeEvents } from '../../../spec/fakes/events/events';
-import { EventStreamActionType } from '../event-stream/event-stream-event';
-import { EventType } from '../events-api-client/events-api-client';
+import { EventStreamActionType, EventType } from '@events';
+import { createFakeEvents } from '@spec/fakes/events/events';
 import { createEventFromApiResponse } from './create-event-from-api-response';
 
 describe('createEventFromApiResponse', () => {    

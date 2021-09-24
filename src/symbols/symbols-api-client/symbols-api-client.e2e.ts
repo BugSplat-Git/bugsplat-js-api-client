@@ -1,8 +1,8 @@
+import { BugSplatApiClient } from '@common';
+import { config } from '@spec/config';
+import { SymbolsApiClient } from '@symbols';
 import fs from 'fs';
 import path from 'path';
-import { config } from '../../../spec/config';
-import { BugSplatApiClient } from '../../common';
-import { SymbolsApiClient } from './symbols-api-client';
 
 describe('SymbolsApiClient', () => {
     let client: SymbolsApiClient;

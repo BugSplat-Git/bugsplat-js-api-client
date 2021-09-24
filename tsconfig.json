@@ -1,23 +1,29 @@
 {
   "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "lib": [
-          "es5",
-          "es2015",
-          "DOM"
-      ],
-      "moduleResolution": "Node",
-      "outDir": "./dist/cjs",
-      "declaration": true,
-      "sourceMap": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "noImplicitAny": false,
-      "removeComments": true,
-      "strict": true,
-  },
-  "files": [
-      "./src/index.ts"
-  ]
+    "baseUrl": ".",
+    "target": "es5",
+    "module": "commonjs",
+    "lib": [
+      "es5",
+      "es2015",
+      "DOM"
+    ],
+    "moduleResolution": "Node",
+    "outDir": "./dist/cjs",
+    "declaration": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "strict": true,
+    "paths": {
+      "@common": ["src/common/index"],
+      "@crash": ["src/crash/index"],
+      "@crashes": ["src/crashes/index"],
+      "@events": ["src/events/index"],
+      "@symbols": ["src/symbols/index"],
+      "@spec/*": ["spec/*"]
+    }
+  }
 }

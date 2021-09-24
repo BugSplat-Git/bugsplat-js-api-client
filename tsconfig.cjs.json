@@ -4,5 +4,8 @@
         "target": "es5",
         "module": "commonjs",
         "outDir": "./dist/cjs",
-    }
+    },
+    "files": [
+        "./src/index.ts"
+    ]
   }

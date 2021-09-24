@@ -1,9 +1,8 @@
-import { CrashApiClient } from '..';
-import { createFakeBugSplatApiClient } from '../../../spec/fakes/common/bugsplat-api-client';
-import { createFakeFormData } from '../../../spec/fakes/common/form-data';
-import { createFakeResponseBody } from '../../../spec/fakes/common/response';
-import { createFakeCrashApiResponse } from '../../../spec/fakes/crash/crash-api-response';
-import { CrashDetails } from '../crash-details/crash-details';
+import { CrashApiClient, CrashDetails } from '@crash';
+import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
+import { createFakeFormData } from '@spec/fakes/common/form-data';
+import { createFakeResponseBody } from '@spec/fakes/common/response';
+import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
 
 describe('CrashApiClient', () => {
     const database = 'fred';
@@ -65,7 +64,7 @@ describe('CrashApiClient', () => {
 
                 await client.getCrashById(database, id);
                 fail('getCrashById was supposed to throw!');
-            } catch (error) {
+            } catch (error: any) {
                 expect(error.message).toEqual(message);
             }
         });
@@ -74,7 +73,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.getCrashById('', id);
                 fail('getCrashById was supposed to throw!');
-            } catch (error) {
+            } catch (error: any) {
                 expect(error.message).toMatch(/to be a non white space string/);
             }
         });
@@ -83,7 +82,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.getCrashById(database, 0);
                 fail('getCrashById was supposed to throw!');
-            } catch (error) {
+            } catch (error: any) {
                 expect(error.message).toMatch(/to be a positive non-zero number/);
             }
         });
@@ -139,7 +138,7 @@ describe('CrashApiClient', () => {
 
                 await client.reprocessCrash(database, id);
                 fail('reprocessCrash was supposed to throw!');
-            } catch (error) {
+            } catch (error: any) {
                 expect(error.message).toEqual(message);
             }
         });
@@ -148,7 +147,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.reprocessCrash('', id);
                 fail('reprocessCrash was supposed to throw!');
-            } catch (error) {
+            } catch (error: any) {
                 expect(error.message).toMatch(/to be a non white space string/);
             }
         });
@@ -157,7 +156,7 @@ describe('CrashApiClient', () => {
             try {
                 await client.reprocessCrash(database, 0);
                 fail('reprocessCrash was supposed to throw!');
-            } catch (error) {
+            } catch (error: any) {
                 expect(error.message).toMatch(/to be a positive non-zero number/);
             }
         });

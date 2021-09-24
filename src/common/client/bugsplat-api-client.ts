@@ -1,7 +1,6 @@
+import { ApiClient, BugSplatResponse, Environment } from '@common';
 import fetchPonyfill from 'fetch-ponyfill';
 import FormData from 'form-data';
-import { ApiClient, Environment } from '.';
-import { BugSplatResponse } from './api-client';
 
 export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
@@ -12,7 +11,7 @@ export class BugSplatApiClient implements ApiClient {
         private _host: string = 'https://app.bugsplat.com',
         private _environment: Environment = Environment.Node
     ) { }
-    
+
     static async createAuthenticatedClientForNode(
         host: string,
         email: string,
