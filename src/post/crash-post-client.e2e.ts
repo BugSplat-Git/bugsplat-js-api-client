@@ -1,9 +1,8 @@
-import { BugSplatApiClient, BugSplatFile } from "@common";
-import { SymbolsApiClient } from "@symbols";
+import { BugSplatFile } from '@common';
+import { CrashPostClient, CrashType } from '@post';
 import { config } from '@spec/config';
-import fs, { statSync } from "fs";
-import path from 'path'
-import { CrashPostClient, CrashType } from "@post";
+import fs, { statSync } from 'fs';
+import path from 'path';
 
 describe('CrashPostClient', () => {
     
