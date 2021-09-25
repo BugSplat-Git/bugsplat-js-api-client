@@ -1,9 +1,7 @@
 import { BugSplatApiClient } from '@common';
 import { CrashApiClient } from '@crash';
-import { CrashPostClient, CrashType } from '@post';
 import { config } from '@spec/config';
-import { createBugSplatFile } from '@spec/files/create-bugsplat-file';
-import { SymbolsApiClient } from '@symbols';
+import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
 
 describe('CrashApiClient', () => {
     let crashClient: CrashApiClient;
@@ -12,36 +10,17 @@ describe('CrashApiClient', () => {
     let id;
 
     beforeEach(async () => {
+        const { host, email, password } = config;
+        const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
         application = 'myConsoleCrasher';
         version = `${Math.random() * 1000000}`;
-        const exeFile = createBugSplatFile('./spec/files/native/myConsoleCrasher.exe');
-        const pdbFile = createBugSplatFile('./spec/files/native/myConsoleCrasher.pdb');
-        const files = [exeFile, pdbFile];
-        const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(
-            config.host,
-            config.email,
-            config.password
-        );
-        const symbolsApiClient = new SymbolsApiClient(bugsplatApiClient);
-        await symbolsApiClient.post(
+        id = await postNativeCrashAndSymbols(
+            bugsplatApiClient,
             config.database,
             application,
-            version,
-            files
+            version
         );
-
-        const crashFile = createBugSplatFile('./spec/files/native/myConsoleCrasher.zip');
-        const crashPostClient = new CrashPostClient(config.database);
-        const postCrashResult = await crashPostClient.postCrash(
-            application,
-            version,
-            CrashType.native,
-            crashFile,
-            'ebe24c1cd1a0912904658fa4fad2b539'
-        );
-        const json = await postCrashResult.json();
-
-        id = json.crashId;
+        
         crashClient = new CrashApiClient(bugsplatApiClient);
     });
 
