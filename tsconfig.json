@@ -22,6 +22,7 @@
       "@crash": ["src/crash/index"],
       "@crashes": ["src/crashes/index"],
       "@events": ["src/events/index"],
+      "@post": ["src/post/index"],
       "@symbols": ["src/symbols/index"],
       "@spec/*": ["spec/*"]
     }
