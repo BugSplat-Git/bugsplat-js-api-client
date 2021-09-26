@@ -1,6 +1,6 @@
 export const config = {
-    host: 'https://app.bugsplat.com',
-    email: 'fred@bugsplat.com',
-    password: <string>process.env.FRED_PASSWORD,
-    database: 'fred'
+    host: <string>process.env.BUGSPLAT_HOST,
+    email: <string>process.env.BUGSPLAT_USER,
+    password: <string>process.env.BUGSPLAT_PASSWORD,
+    database: <string>process.env.BUGSPLAT_DATABASE
 };
