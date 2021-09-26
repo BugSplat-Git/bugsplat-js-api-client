@@ -29,7 +29,7 @@ describe('CrashesApiClient', () => {
     describe('getCrashes', () => {
         it('should return 200 and array of crashes', async () => {
             const database = config.database;
-            const pageSize = 10;
+            const pageSize = 1;
             
             const result = await crashesClient.getCrashes({ database, pageSize });
             
