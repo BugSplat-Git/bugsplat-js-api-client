@@ -1,5 +1,5 @@
+import { BugSplatFile } from '@common';
 import fetchPonyfill from 'fetch-ponyfill';
-import { BugSplatFile } from 'src/common/file/bugsplat-file';
 
 export class S3ApiClient {
 
