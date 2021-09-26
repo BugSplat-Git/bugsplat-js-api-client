@@ -3,6 +3,9 @@
   "spec_files": [
     "**/*.e2e.ts"
   ],
+  "helpers": [
+    "../spec/support/timeout.ts"
+],
   "stopSpecOnExpectationFailure": false,
   "random": true
 }

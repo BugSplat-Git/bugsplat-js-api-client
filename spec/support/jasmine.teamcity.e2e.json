@@ -4,7 +4,8 @@
         "**/*.e2e.ts"
     ],
     "helpers": [
-        "../spec/support/teamcity.ts"
+        "../spec/support/teamcity.ts",
+        "../spec/support/timeout.ts"
     ],
     "stopSpecOnExpectationFailure": false,
     "random": true
