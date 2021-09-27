@@ -64,7 +64,7 @@ describe('CrashPostClient', () => {
         });
 
         it('should call fetch with getCrashUploadUrl route to get presignedUrl for crash upload', () => {
-            const presignedUrl = `api/getCrashUploadUrl.php?database=${database}&appName=${application}&appVersion=${version}&crashPostSize=${file.size}`;
+            const presignedUrl = `api/getCrashUploadUrl?database=${database}&appName=${application}&appVersion=${version}&crashPostSize=${file.size}`;
             expect(bugsplatApiClient.fetch).toHaveBeenCalledWith(presignedUrl);
         });
 
@@ -80,7 +80,7 @@ describe('CrashPostClient', () => {
             expect(fakeFormData.append).toHaveBeenCalledWith('s3key', url);
             expect(fakeFormData.append).toHaveBeenCalledWith('md5', md5);
             expect(bugsplatApiClient.fetch).toHaveBeenCalledWith(
-                '/api/commitS3CrashUpload.php',
+                '/api/commitS3CrashUpload',
                 jasmine.objectContaining({
                     method: 'POST',
                     body: fakeFormData

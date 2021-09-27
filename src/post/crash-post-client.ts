@@ -51,7 +51,7 @@ export class CrashPostClient {
         version: string,
         size: number
     ): Promise<string> {
-        const route = 'api/getCrashUploadUrl.php'
+        const route = 'api/getCrashUploadUrl'
             + `?database=${database}`
             + `&appName=${application}`
             + `&appVersion=${version}`
@@ -74,7 +74,7 @@ export class CrashPostClient {
         md5: string,
         processor?: string,
     ): Promise<BugSplatResponse> {
-        const route = '/api/commitS3CrashUpload.php';
+        const route = '/api/commitS3CrashUpload';
         const formData = this._processorApiClient.createFormData();
         formData.append('database', database);
         formData.append('appName', application);
