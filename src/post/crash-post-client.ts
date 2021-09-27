@@ -9,7 +9,7 @@ export class CrashPostClient {
     constructor(
         private _database: string,
         private _environment: Environment = Environment.Node,
-        private _processorIpAddress: string = ''
+        private _processor: string = '' // Internal use only
     ) {
         this._processorApiClient = new BugSplatApiClient(
             `https://${this._database}.bugsplat.com`,
@@ -41,7 +41,7 @@ export class CrashPostClient {
             version,
             type,
             md5,
-            this._processorIpAddress
+            this._processor
         );
     }
 
@@ -72,7 +72,7 @@ export class CrashPostClient {
         version: string,
         crashType: CrashType,
         md5: string,
-        ipAddress?: string,
+        processor?: string,
     ): Promise<BugSplatResponse> {
         const route = '/api/commitS3CrashUpload.php';
         const formData = this._processorApiClient.createFormData();
@@ -83,8 +83,7 @@ export class CrashPostClient {
         formData.append('s3key', s3Key);
         formData.append('md5', md5);
 
-        if (ipAddress) {
-            const processor = `OBAN-${ipAddress}`;
+        if (processor) {
             formData.append('processor', processor);
         }
 
