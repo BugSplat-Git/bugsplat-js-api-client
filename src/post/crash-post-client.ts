@@ -1,4 +1,4 @@
-import { BugSplatApiClient, BugSplatFile, BugSplatResponse, Environment, S3ApiClient } from '@common';
+import { BugSplatApiClient, UploadableFile, BugSplatResponse, Environment, S3ApiClient } from '@common';
 import { CrashType } from '@post';
 
 export class CrashPostClient {
@@ -22,7 +22,7 @@ export class CrashPostClient {
         application: string,
         version: string,
         type: CrashType,
-        file: BugSplatFile,
+        file: UploadableFile,
         md5 = ''
     ): Promise<BugSplatResponse> {
         const uploadUrl = await this.getCrashUploadUrl(

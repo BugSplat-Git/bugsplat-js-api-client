@@ -1,11 +1,11 @@
-import { BugSplatFile } from '@common';
+import { UploadableFile } from '@common';
 import fetchPonyfill from 'fetch-ponyfill';
 
 export class S3ApiClient {
 
     private _fetch = fetchPonyfill().fetch;
 
-    async uploadFileToPresignedUrl(presignedUrl: string, file: BugSplatFile): Promise<Response> {
+    async uploadFileToPresignedUrl(presignedUrl: string, file: UploadableFile): Promise<Response> {
         const response = await this._fetch(presignedUrl, {
             method: 'PUT',
             headers: {

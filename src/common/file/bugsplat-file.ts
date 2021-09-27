@@ -1,6 +1,6 @@
 import type fs from 'fs';
 
-export class BugSplatFile {
+export class UploadableFile {
     constructor(
         public readonly name: string,
         public readonly size: number,

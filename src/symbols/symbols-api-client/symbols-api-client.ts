@@ -1,4 +1,4 @@
-import { ApiClient, BugSplatFile, BugSplatResponse, S3ApiClient } from '@common';
+import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
 
 export class SymbolsApiClient {
@@ -42,7 +42,7 @@ export class SymbolsApiClient {
         database: string,
         application: string,
         version: string,
-        files: Array<BugSplatFile> 
+        files: Array<UploadableFile> 
     ): Promise<Array<BugSplatResponse>> {
         const promises = files
             .map(async (file) => {

@@ -1,6 +1,6 @@
 import { CrashPostClient, CrashType } from '@post';
 import { config } from '@spec/config';
-import { createBugSplatFile } from '@spec/files/create-bugsplat-file';
+import { createUploadableFile } from '@spec/files/create-bugsplat-file';
 
 describe('CrashPostClient', () => {
     
@@ -9,7 +9,7 @@ describe('CrashPostClient', () => {
             const application = 'myConsoleCrasher';
             const version = `${Math.random() * 1000000}`;
             const md5 = 'ebe24c1cd1a0912904658fa4fad2b539';
-            const crashFile = createBugSplatFile('spec/files/native/myConsoleCrasher.zip');
+            const crashFile = createUploadableFile('spec/files/native/myConsoleCrasher.zip');
             const crashPostClient = new CrashPostClient(config.database);
             const result = await crashPostClient.postCrash(
                 application,

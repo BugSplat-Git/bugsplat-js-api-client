@@ -1,4 +1,4 @@
-import { BugSplatApiClient, BugSplatFile } from '@common';
+import { BugSplatApiClient, UploadableFile } from '@common';
 import { config } from '@spec/config';
 import { SymbolsApiClient } from '@symbols';
 import fs from 'fs';
@@ -35,7 +35,7 @@ describe('SymbolsApiClient', () => {
             const filePath = './spec/files/js/index.js.map';
             const name = path.basename(filePath);
             const size = fs.statSync(filePath).size;
-            const file = new BugSplatFile(name, size, fs.createReadStream(filePath));
+            const file = new UploadableFile(name, size, fs.createReadStream(filePath));
             const response = await client.postSymbols(
                 config.database,
                 application,
