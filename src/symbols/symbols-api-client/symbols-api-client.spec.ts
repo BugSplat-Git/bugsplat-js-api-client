@@ -4,7 +4,7 @@ import { createFakeResponseBody } from '@spec/fakes/common/response';
 import { SymbolsApiClient } from '@symbols';
 import path from 'path';
 import { of } from 'rxjs';
-import * as S3ApiClientModule from '../s3-api-client/s3-api-client';
+import * as S3ApiClientModule from '../../common/client/s3-api-client/s3-api-client';
 
 describe('SymbolsApiClient', () => {
     const database = 'fred';
@@ -14,6 +14,7 @@ describe('SymbolsApiClient', () => {
     let fakeFormData;
     let fakeBugSplatApiClient;
     let fakeSuccessResponse;
+    let fakeS3ApiClient;
 
     let symbolsApiClient: SymbolsApiClient;
 
@@ -22,13 +23,18 @@ describe('SymbolsApiClient', () => {
         fakeSuccessResponse = createFakeResponseBody(200, { url });
         fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeSuccessResponse);
 
+        fakeS3ApiClient = jasmine.createSpyObj('S3ApiClient', ['uploadFileToPresignedUrl']);
+        fakeS3ApiClient.uploadFileToPresignedUrl.and.resolveTo(fakeSuccessResponse);
+        spyOn(S3ApiClientModule, 'S3ApiClient').and.returnValue(fakeS3ApiClient);
+
+
         symbolsApiClient = new SymbolsApiClient(fakeBugSplatApiClient);
     });
-    describe('delete', () => {
+    describe('deleteSymbols', () => {
         let result;
 
         beforeEach(async () => {
-            result = await symbolsApiClient.delete(
+            result = await symbolsApiClient.deleteSymbols(
                 database,
                 application,
                 version
@@ -61,7 +67,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErrorResponse = createFakeResponseBody(400);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-                await expectAsync(symbolsApiClient.delete(
+                await expectAsync(symbolsApiClient.deleteSymbols(
                     database,
                     application,
                     version
@@ -73,106 +79,101 @@ describe('SymbolsApiClient', () => {
                 const fakeErroResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErroResponse);
 
-                await expectAsync(symbolsApiClient.delete(
+                await expectAsync(symbolsApiClient.deleteSymbols(
                     database,
                     application,
                     version
                 )).toBeRejectedWithError(message);
             });
         });
+    });
 
-        describe('post', () => {
-            let fakeS3ApiClient;
-            let files;
-            let result;
-            let timer;
+    describe('postSymbols', () => {
+        let files;
+        let result;
+        let timer;
 
-            beforeEach(async () => {
-                files = [{
-                    name: '📄.sym',
-                    size: 1337
-                }];
-                timer = jasmine.createSpy();
-                timer.and.returnValue(of(0));
-                (<any>symbolsApiClient)._timer = timer;
+        beforeEach(async () => {
+            files = [{
+                name: '📄.sym',
+                size: 1337
+            }];
+            timer = jasmine.createSpy();
+            timer.and.returnValue(of(0));
+            (<any>symbolsApiClient)._timer = timer;
 
-                fakeS3ApiClient = jasmine.createSpyObj('S3ApiClient', ['uploadFileToPresignedUrl']);
-                fakeS3ApiClient.uploadFileToPresignedUrl.and.resolveTo(fakeSuccessResponse);
-                spyOn(S3ApiClientModule, 'S3ApiClient').and.returnValue(fakeS3ApiClient);
+            result = await symbolsApiClient.postSymbols(
+                database,
+                application,
+                version,
+                files
+            );
+        });
 
-                result = await symbolsApiClient.post(
+        it('should append dbName, appName, appVersion, size and symFileName to FormData', () => {
+            expect(fakeFormData.append).toHaveBeenCalledWith('dbName', database);
+            expect(fakeFormData.append).toHaveBeenCalledWith('appName', application);
+            expect(fakeFormData.append).toHaveBeenCalledWith('appVersion', version);
+            expect(fakeFormData.append).toHaveBeenCalledWith('size', files[0].size.toString());
+            expect(fakeFormData.append).toHaveBeenCalledWith('symFileName', path.basename(files[0].name));
+        });
+
+        it('should call fetch with correct route', () => {
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                '/api/symbols',
+                jasmine.anything()
+            );
+        });
+
+        it('should call fetch with method POST, formData and include credentials', () => {
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                jasmine.anything(),
+                jasmine.objectContaining({
+                    method: 'POST',
+                    credentials: 'include',
+                    body: fakeFormData
+                })
+            );
+        });
+
+        it('should call uploadFileToPresignedUrl with url, and file', () => {
+            expect(fakeS3ApiClient.uploadFileToPresignedUrl).toHaveBeenCalledWith(url, files[0]);
+        });
+
+        it('should sleep between requests', () => {
+            expect((<any>symbolsApiClient)._timer).toHaveBeenCalledWith(1000);
+        });
+
+        it('should return response', () => {
+            expect(result).toEqual(
+                jasmine.arrayContaining([fakeSuccessResponse])
+            );
+        });
+
+        describe('error', () => {
+            it('should throw if response status is not 200', async () => {
+                const fakeErrorResponse = createFakeResponseBody(400);
+                fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
+
+                await expectAsync(symbolsApiClient.postSymbols(
                     database,
                     application,
                     version,
                     files
-                );
+                )).toBeRejectedWithError(`Error getting presignedUrl for ${files[0].name}`);
             });
 
-            it('should append dbName, appName, appVersion, size and symFileName to FormData', () => {
-                expect(fakeFormData.append).toHaveBeenCalledWith('dbName', database);
-                expect(fakeFormData.append).toHaveBeenCalledWith('appName', application);
-                expect(fakeFormData.append).toHaveBeenCalledWith('appVersion', version);
-                expect(fakeFormData.append).toHaveBeenCalledWith('size', files[0].size.toString());
-                expect(fakeFormData.append).toHaveBeenCalledWith('symFileName', path.basename(files[0].name));
-            });
+            it('should throw if response json Status is \'Failed\'', async () => {
+                const message = '🥱';
+                const fakeErrorResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
+                fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-            it('should call fetch with correct route', () => {
-                expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                    '/api/symbols',
-                    jasmine.anything()
-                );
-            });
-
-            it('should call fetch with method POST, formData and include credentials', () => {
-                expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                    jasmine.anything(),
-                    jasmine.objectContaining({
-                        method: 'POST',
-                        credentials: 'include',
-                        body: fakeFormData
-                    })
-                );
-            });
-
-            it('should call uploadFileToPresignedUrl with url, file and size', () => {
-                expect(fakeS3ApiClient.uploadFileToPresignedUrl).toHaveBeenCalledWith(url, files[0].file, files[0].size);
-            });
-
-            it('should sleep between requests', () => {
-                expect((<any>symbolsApiClient)._timer).toHaveBeenCalledWith(1000);
-            });
-
-            it('should return response', () => {
-                expect(result).toEqual(
-                    jasmine.arrayContaining([fakeSuccessResponse])
-                );
-            });
-
-            describe('error', () => {
-                it('should throw if response status is not 200', async () => {
-                    const fakeErrorResponse = createFakeResponseBody(400);
-                    fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
-
-                    await expectAsync(symbolsApiClient.post(
-                        database,
-                        application,
-                        version,
-                        files
-                    )).toBeRejectedWithError(`Error getting presignedUrl for ${files[0].name}`);
-                });
-
-                it('should throw if response json Status is \'Failed\'', async () => {
-                    const message = '🥱';
-                    const fakeErrorResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
-                    fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
-
-                    await expectAsync(symbolsApiClient.post(
-                        database,
-                        application,
-                        version,
-                        files
-                    )).toBeRejectedWithError(message);
-                });
+                await expectAsync(symbolsApiClient.postSymbols(
+                    database,
+                    application,
+                    version,
+                    files
+                )).toBeRejectedWithError(message);
             });
         });
     });

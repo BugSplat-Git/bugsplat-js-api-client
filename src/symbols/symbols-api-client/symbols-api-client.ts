@@ -1,17 +1,18 @@
-import type fs from 'fs';
+import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
-import { ApiClient, BugSplatResponse } from '../../common';
-import { S3ApiClient } from '../s3-api-client/s3-api-client';
 
 export class SymbolsApiClient {
 
     private readonly route = '/api/symbols';
 
+    private _s3ApiClient: S3ApiClient;
     private _timer = timer;
 
-    constructor(private _client: ApiClient) { }
+    constructor(private _client: ApiClient) {
+        this._s3ApiClient = new S3ApiClient();
+    }
 
-    async delete(
+    async deleteSymbols(
         database: string,
         application: string,
         version: string
@@ -37,11 +38,11 @@ export class SymbolsApiClient {
         return response;
     }
 
-    async post(
+    async postSymbols(
         database: string,
         application: string,
         version: string,
-        files: Array<{ name: string, size: number, file: File | fs.ReadStream }>
+        files: Array<UploadableFile> 
     ): Promise<Array<BugSplatResponse>> {
         const promises = files
             .map(async (file) => {
@@ -55,8 +56,7 @@ export class SymbolsApiClient {
                     name
                 );
     
-                const s3Client = new S3ApiClient();
-                const response = s3Client.uploadFileToPresignedUrl(presignedUrl, file.file, size);
+                const response = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
                 await lastValueFrom(this._timer(1000));
 
                 return response;
