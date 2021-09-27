@@ -11,7 +11,6 @@ export class CrashPostClient {
         private _environment: Environment = Environment.Node,
         private _processorIpAddress: string = ''
     ) {
-        // TODO BG take a something like DatabaseSpecificApiClient instead?
         this._processorApiClient = new BugSplatApiClient(
             `https://${this._database}.bugsplat.com`,
             this._environment
