@@ -30,11 +30,11 @@ describe('SymbolsApiClient', () => {
 
         symbolsApiClient = new SymbolsApiClient(fakeBugSplatApiClient);
     });
-    describe('delete', () => {
+    describe('deleteSymbols', () => {
         let result;
 
         beforeEach(async () => {
-            result = await symbolsApiClient.delete(
+            result = await symbolsApiClient.deleteSymbols(
                 database,
                 application,
                 version
@@ -67,7 +67,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErrorResponse = createFakeResponseBody(400);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-                await expectAsync(symbolsApiClient.delete(
+                await expectAsync(symbolsApiClient.deleteSymbols(
                     database,
                     application,
                     version
@@ -79,7 +79,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErroResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErroResponse);
 
-                await expectAsync(symbolsApiClient.delete(
+                await expectAsync(symbolsApiClient.deleteSymbols(
                     database,
                     application,
                     version
@@ -88,7 +88,7 @@ describe('SymbolsApiClient', () => {
         });
     });
 
-    describe('post', () => {
+    describe('postSymbols', () => {
         let files;
         let result;
         let timer;
@@ -102,7 +102,7 @@ describe('SymbolsApiClient', () => {
             timer.and.returnValue(of(0));
             (<any>symbolsApiClient)._timer = timer;
 
-            result = await symbolsApiClient.post(
+            result = await symbolsApiClient.postSymbols(
                 database,
                 application,
                 version,
@@ -155,7 +155,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErrorResponse = createFakeResponseBody(400);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-                await expectAsync(symbolsApiClient.post(
+                await expectAsync(symbolsApiClient.postSymbols(
                     database,
                     application,
                     version,
@@ -168,7 +168,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErrorResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-                await expectAsync(symbolsApiClient.post(
+                await expectAsync(symbolsApiClient.postSymbols(
                     database,
                     application,
                     version,

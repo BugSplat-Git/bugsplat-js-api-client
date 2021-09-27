@@ -12,7 +12,7 @@ export class SymbolsApiClient {
         this._s3ApiClient = new S3ApiClient();
     }
 
-    async delete(
+    async deleteSymbols(
         database: string,
         application: string,
         version: string
@@ -38,7 +38,7 @@ export class SymbolsApiClient {
         return response;
     }
 
-    async post(
+    async postSymbols(
         database: string,
         application: string,
         version: string,

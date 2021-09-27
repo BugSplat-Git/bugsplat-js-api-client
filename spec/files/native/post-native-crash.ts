@@ -13,7 +13,7 @@ export async function postNativeCrashAndSymbols(
     const pdbFile = createBugSplatFile('./spec/files/native/myConsoleCrasher.pdb');
     const files = [exeFile, pdbFile];
     const symbolsApiClient = new SymbolsApiClient(authenticatedClient);
-    await symbolsApiClient.post(
+    await symbolsApiClient.postSymbols(
         database,
         application,
         version,

@@ -20,7 +20,7 @@ describe('SymbolsApiClient', () => {
 
     describe('delete', () => {
         it('should return 200 for delete with valid database, application and version', async () => {
-            const response = await client.delete(
+            const response = await client.deleteSymbols(
                 config.database,
                 application,
                 version
@@ -36,7 +36,7 @@ describe('SymbolsApiClient', () => {
             const name = path.basename(filePath);
             const size = fs.statSync(filePath).size;
             const file = new BugSplatFile(name, size, fs.createReadStream(filePath));
-            const response = await client.post(
+            const response = await client.postSymbols(
                 config.database,
                 application,
                 version,
