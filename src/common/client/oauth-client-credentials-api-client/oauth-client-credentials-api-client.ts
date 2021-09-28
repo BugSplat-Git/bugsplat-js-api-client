@@ -2,7 +2,7 @@ import { ApiClient, bugsplatAppHostUrl, BugSplatResponse } from '@common';
 import fetchPonyfill from 'fetch-ponyfill';
 import FormData from 'form-data';
 
-export class OAuthApiClient implements ApiClient {
+export class OAuthClientCredentialsClient implements ApiClient {
 
     private _accessToken = '';
     private _tokenType = '';
@@ -19,8 +19,8 @@ export class OAuthApiClient implements ApiClient {
         clientId: string,
         clientSecret: string,
         host: string = bugsplatAppHostUrl
-    ): Promise<OAuthApiClient> {
-        const client = new OAuthApiClient(
+    ): Promise<OAuthClientCredentialsClient> {
+        const client = new OAuthClientCredentialsClient(
             clientId,
             clientSecret,
             host

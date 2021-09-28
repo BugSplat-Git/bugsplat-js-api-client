@@ -1,8 +1,8 @@
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
-import { OAuthApiClient } from './oauth-api-client';
+import { OAuthClientCredentialsClient } from './oauth-client-credentials-api-client';
 
-describe('OAuthApiClient', () => {
+describe('OAuthClientCredentialsClient', () => {
     let clientId;
     let clientSecret;
     let fakeAuthorizeResponseBody;
@@ -12,7 +12,7 @@ describe('OAuthApiClient', () => {
     let fakeFormData;
     let host;
 
-    let sut: OAuthApiClient;
+    let sut: OAuthClientCredentialsClient;
 
     beforeEach(() => {
         clientId = '🎫';
@@ -24,7 +24,7 @@ describe('OAuthApiClient', () => {
         fakeFetchResult = { crashes: [1, 2, 3] };
         fakeFetchResponseBody = createFakeResponseBody(200, fakeFetchResult);
         fakeFormData = createFakeFormData();
-        sut = createFakeOAuthApiClient(
+        sut = createFakeOAuthClientCredentialsClient(
             clientId,
             clientSecret,
             host,
@@ -115,14 +115,14 @@ describe('OAuthApiClient', () => {
     });
 });
 
-function createFakeOAuthApiClient(
+function createFakeOAuthClientCredentialsClient(
     clientId,
     clientSecret,
     host,
     responseBody,
     formData
-): OAuthApiClient {
-    const client = new OAuthApiClient(clientId, clientSecret, host);
+): OAuthClientCredentialsClient {
+    const client = new OAuthClientCredentialsClient(clientId, clientSecret, host);
     (<any>client)._fetch = jasmine.createSpy();
     (<any>client)._fetch.and.returnValue(responseBody);
     (<any>client)._createFormData = () => formData;

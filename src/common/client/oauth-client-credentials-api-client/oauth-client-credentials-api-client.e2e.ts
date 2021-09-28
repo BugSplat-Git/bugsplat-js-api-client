@@ -2,9 +2,9 @@ import { BugSplatApiClient } from '@common';
 import { CrashApiClient } from '@crash';
 import { config } from '@spec/config';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
-import { OAuthApiClient } from './oauth-api-client';
+import { OAuthClientCredentialsClient } from './oauth-client-credentials-api-client';
 
-describe('OAuthApiClient', () => {
+describe('OAuthClientCredentialsClient', () => {
     const {
         clientId,
         clientSecret,
@@ -16,7 +16,7 @@ describe('OAuthApiClient', () => {
 
     describe('login', () => {
         it('should return 200 with access_token', async () => {
-            const client = new OAuthApiClient(clientId, clientSecret, 'https://octomore.bugsplat.com');
+            const client = new OAuthClientCredentialsClient(clientId, clientSecret, 'https://octomore.bugsplat.com');
 
             const result = await client.login();
             const json = await result.json();
@@ -45,7 +45,7 @@ describe('OAuthApiClient', () => {
         });
 
         it('should return 200 for endpoint that requires authentication', async () => {
-            const oauthClient = await OAuthApiClient.createAuthenticatedClient(clientId, clientSecret);
+            const oauthClient = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret);
             const crashApiClient = new CrashApiClient(oauthClient);
 
             const result = await crashApiClient.getCrashById(database, id);
