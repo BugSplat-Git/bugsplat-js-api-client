@@ -1,6 +1,6 @@
-import { createFakeFormData } from "@spec/fakes/common/form-data";
-import { createFakeResponseBody } from "@spec/fakes/common/response";
-import { OAuthApiClient } from "./oauth-api-client";
+import { createFakeFormData } from '@spec/fakes/common/form-data';
+import { createFakeResponseBody } from '@spec/fakes/common/response';
+import { OAuthApiClient } from './oauth-api-client';
 
 describe('OAuthApiClient', () => {
     let clientId;
