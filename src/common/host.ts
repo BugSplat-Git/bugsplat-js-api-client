@@ -1,0 +1,1 @@
+export const bugsplatAppHostUrl = 'https://app.bugsplat.com';

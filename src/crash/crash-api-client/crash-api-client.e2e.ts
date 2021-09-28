@@ -11,7 +11,7 @@ describe('CrashApiClient', () => {
 
     beforeEach(async () => {
         const { host, email, password } = config;
-        const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
+        const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
         application = 'myConsoleCrasher';
         version = `${Math.random() * 1000000}`;
         id = await postNativeCrashAndSymbols(
