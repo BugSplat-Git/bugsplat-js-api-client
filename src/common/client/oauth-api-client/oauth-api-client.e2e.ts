@@ -23,6 +23,7 @@ describe('OAuthApiClient', () => {
 
             expect(result.status).toEqual(200);
             expect(json.access_token).toBeDefined();
+            expect(json.token_type).toBeDefined();
         });
     });
 
