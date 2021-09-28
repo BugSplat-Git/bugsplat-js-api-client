@@ -1,10 +1,12 @@
 {
-    "spec_dir": "src",
-    "spec_files": [
-      "**/*.spec.ts",
-      "**/*.e2e.ts"
-    ],
-    "stopSpecOnExpectationFailure": false,
-    "random": true
-  }
-  
+  "spec_dir": "src",
+  "spec_files": [
+    "**/*.spec.ts",
+    "**/*.e2e.ts"
+  ],
+  "helpers": [
+    "../spec/support/timeout.ts"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": true
+}

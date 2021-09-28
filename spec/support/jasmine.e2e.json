@@ -5,7 +5,7 @@
   ],
   "helpers": [
     "../spec/support/timeout.ts"
-],
+  ],
   "stopSpecOnExpectationFailure": false,
   "random": true
 }
