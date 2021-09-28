@@ -1,6 +1,7 @@
 import { ApiClient, BugSplatResponse, Environment } from '@common';
 import fetchPonyfill from 'fetch-ponyfill';
 import FormData from 'form-data';
+import { bugsplatAppHostUrl } from 'src/common/host';
 
 export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
@@ -8,14 +9,14 @@ export class BugSplatApiClient implements ApiClient {
     private _headers = {};
 
     constructor(
-        private _host: string = 'https://app.bugsplat.com',
+        private _host: string = bugsplatAppHostUrl,
         private _environment: Environment = Environment.Node
     ) { }
 
     static async createAuthenticatedClientForNode(
-        host: string,
         email: string,
-        password: string
+        password: string,
+        host: string = bugsplatAppHostUrl
     ): Promise<BugSplatApiClient> {
         const client = new BugSplatApiClient(host, Environment.Node);
         await client.login(email, password);
@@ -23,9 +24,9 @@ export class BugSplatApiClient implements ApiClient {
     }
 
     static async createAuthenticatedClientForWebBrowser(
-        host: string,
         email: string,
-        password: string
+        password: string,
+        host: string = bugsplatAppHostUrl
     ): Promise<BugSplatApiClient> {
         const client = new BugSplatApiClient(host, Environment.WebBrowser);
         await client.login(email, password);

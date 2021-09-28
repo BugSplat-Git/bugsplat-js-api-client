@@ -13,7 +13,7 @@ describe('CrashApiClient', () => {
     const stackKeyId = 799;
 
     beforeEach(async () => {
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
+        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
         client = new EventsApiClient(bugsplat);
     });
 

@@ -13,7 +13,7 @@ describe('CrashesApiClient', () => {
 
     beforeEach(async () => {
         const { host, email, password } = config;
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
+        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
         crashesClient = new CrashesApiClient(bugsplat);
         crashClient = new CrashApiClient(bugsplat);
         application = 'myConsoleCrasher';
