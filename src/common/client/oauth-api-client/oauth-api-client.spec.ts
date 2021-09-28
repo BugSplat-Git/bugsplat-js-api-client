@@ -99,7 +99,9 @@ describe('OAuthApiClient', () => {
             }));
         });
 
-        it('should call fetch with new init if init is not provided', () => {
+        it('should call fetch with new init if init is not provided', async () => {
+            await sut.fetch(route);
+
             const mostRecentCallArgs = (<any>sut)._fetch.calls.mostRecent().args;
             const headers = mostRecentCallArgs[1].headers;
             expect(headers).toEqual(jasmine.objectContaining({
