@@ -17,8 +17,8 @@
     "e2e:teamcity": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.e2e.json",
     "release": "npm run build && npm publish --access public",
     "build": "npm run build:cjs && npm run build:esm",
-    "build:cjs": "tsc -p tsconfig.cjs.json && tsconfig-replace-paths -p tsconfig.json -o ./dist/cjs",
-    "build:esm": "tsc -p tsconfig.esm.json && tsconfig-replace-paths -p tsconfig.json -o ./dist/esm",
+    "build:cjs": "tsc -p tsconfig.cjs.json && tsconfig-replace-paths -p tsconfig.json -o ./dist/cjs -s ./src",
+    "build:esm": "tsc -p tsconfig.esm.json && tsconfig-replace-paths -p tsconfig.json -o ./dist/esm -s ./src",
     "watch:cjs": "tsc -p tsconfig.cjs.json -w",
     "watch:esm": "tsc -p tsconfig.esm.json -w"
   },
