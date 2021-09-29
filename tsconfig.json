@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": ".",
     "baseUrl": ".",
     "target": "es5",
     "module": "commonjs",
@@ -18,13 +19,27 @@
     "removeComments": true,
     "strict": true,
     "paths": {
-      "@common": ["src/common/index"],
-      "@crash": ["src/crash/index"],
-      "@crashes": ["src/crashes/index"],
-      "@events": ["src/events/index"],
-      "@post": ["src/post/index"],
-      "@symbols": ["src/symbols/index"],
-      "@spec/*": ["spec/*"]
+      "@common": [
+        "src/common/index"
+      ],
+      "@crash": [
+        "src/crash/index"
+      ],
+      "@crashes": [
+        "src/crashes/index"
+      ],
+      "@events": [
+        "src/events/index"
+      ],
+      "@post": [
+        "src/post/index"
+      ],
+      "@symbols": [
+        "src/symbols/index"
+      ],
+      "@spec/*": [
+        "spec/*"
+      ]
     }
   }
 }
