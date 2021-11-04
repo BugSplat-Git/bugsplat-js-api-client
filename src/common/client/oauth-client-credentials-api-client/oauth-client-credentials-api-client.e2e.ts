@@ -16,7 +16,7 @@ describe('OAuthClientCredentialsClient', () => {
 
     describe('login', () => {
         it('should return 200 with access_token', async () => {
-            const client = new OAuthClientCredentialsClient(clientId, clientSecret, 'https://octomore.bugsplat.com');
+            const client = new OAuthClientCredentialsClient(clientId, clientSecret);
 
             const result = await client.login();
             const json = await result.json();
