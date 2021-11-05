@@ -33,7 +33,7 @@ The `host` value used to create a new instance of `BugSplatApiClient` is `https:
 The static factory function `createAuthenticatedClientForNode` can be used to return an authenticated instance of `BugSplatApiClient` in Node.js environments.
 
 ```ts
-const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(host, email, password);
+const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
 ```
 
 If you need to authenticate at a later time, you can create an instance of `BugSplatApiClient` and call `login` manually.
@@ -48,7 +48,7 @@ await bugsplat.login(email, password);
 The static factory function `createAuthenticatedClientForWebBrowser` can be used to return an authenticated instance of `BugSplatApiClient`.
 
 ```ts
-const bugsplat = await BugSplatApiClient.createAuthenticatedClientForBrowser(host, email, password);
+const bugsplat = await BugSplatApiClient.createAuthenticatedClientForBrowser(email, password, host);
 ```
 
 If you need to authenticate at a later time, you can create an instance of `BugSplatApiClient` and call `login` manually.
