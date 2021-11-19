@@ -30,6 +30,7 @@ jobs:
       - name: E2E
         run: npm run e2e
         env:
+          BUGSPLAT_HOST: ${{ secrets.BUGSPLAT_HOST }}
           BUGSPLAT_USER: ${{ secrets.BUGSPLAT_USER }}
           BUGSPLAT_PASSWORD: ${{ secrets.BUGSPLAT_PASSWORD }}
           BUGSPLAT_DATABASE: ${{ secrets.BUGSPLAT_DATABASE }}
