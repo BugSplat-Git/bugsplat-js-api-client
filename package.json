@@ -33,6 +33,15 @@
     "url": "https://github.com/BugSplat-Git/bugsplat-js-api-client/issues"
   },
   "homepage": "https://github.com/BugSplat-Git/bugsplat-js-api-client#readme",
+  "release": {
+    "plugins": [
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ]
+  },
   "dependencies": {
     "argument-contracts": "^1.2.3",
     "fetch-ponyfill": "^7.1.0",
@@ -43,6 +52,8 @@
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@types/jasmine": "^3.7.4",
     "@types/node": "^15.6.1",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
@@ -52,6 +63,7 @@
     "husky": "^7.0.4",
     "jasmine": "^3.7.0",
     "jasmine-reporters": "^2.4.0",
+    "semantic-release": "^18.0.0",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.11.0",
     "tsconfig-replace-paths": "^0.0.5",
