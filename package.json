@@ -8,6 +8,7 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "husky install",
     "pretest": "npm run lint:fix",
     "test": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
     "test:teamcity": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.spec.json",
@@ -40,12 +41,15 @@
     "rxjs": "^7.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "@types/jasmine": "^3.7.4",
     "@types/node": "^15.6.1",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
+    "husky": "^7.0.4",
     "jasmine": "^3.7.0",
     "jasmine-reporters": "^2.4.0",
     "ts-node": "^10.0.0",
