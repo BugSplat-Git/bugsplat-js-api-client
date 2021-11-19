@@ -1,6 +1,7 @@
 import { BugSplatApiClient, Environment } from '@common';
-import { config } from '@spec/config';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
+
+const fakeBugSplatHost = 'https://fake.bugsplat.com';
 
 describe('BugSplatApiClient', () => {
     const email = 'bobby@bugsplat.com';
@@ -44,7 +45,7 @@ describe('BugSplatApiClient', () => {
         });
 
         it('should call fetch with correct route', () => {
-            expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}${route}`, jasmine.anything());
+            expect((<any>client)._fetch).toHaveBeenCalledWith(`${fakeBugSplatHost}${route}`, jasmine.anything());
         });
 
         describe('when environment is Browser', () => {
@@ -94,7 +95,7 @@ describe('BugSplatApiClient', () => {
         beforeEach(async () => result = await client.login(email, password));
 
         it('should call fetch with correct url', () => {
-            expect((<any>client)._fetch).toHaveBeenCalledWith(`${config.host}/api/authenticatev3`, jasmine.anything());
+            expect((<any>client)._fetch).toHaveBeenCalledWith(`${fakeBugSplatHost}/api/authenticatev3`, jasmine.anything());
         });
     
         it('should append email, password and Login properties to formData', () => {
@@ -138,7 +139,7 @@ function createFakeBugSplatApiClient(
     responseBody,
     formData
 ): BugSplatApiClient {
-    const client = new BugSplatApiClient(config.host, environment);
+    const client = new BugSplatApiClient(fakeBugSplatHost, environment);
     (<any>client)._fetch = jasmine.createSpy();
     (<any>client)._fetch.and.returnValue(responseBody);
     (<any>client)._createFormData = () => formData;
