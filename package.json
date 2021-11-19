@@ -1,13 +1,14 @@
 {
   "name": "@bugsplat/js-api-client",
   "description": "JS client for consuming the BugSplat API",
-  "version": "1.1.0",
+  "version": "0.0.0-development",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "files": [
     "dist"
   ],
   "scripts": {
+    "prepare": "husky install",
     "pretest": "npm run lint:fix",
     "test": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
     "test:teamcity": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.spec.json",
@@ -20,11 +21,12 @@
     "build:cjs": "tsc -p tsconfig.cjs.json && tsconfig-replace-paths -p tsconfig.json -o ./dist/cjs -s ./src",
     "build:esm": "tsc -p tsconfig.esm.json && tsconfig-replace-paths -p tsconfig.json -o ./dist/esm -s ./src",
     "watch:cjs": "tsc -p tsconfig.cjs.json -w",
-    "watch:esm": "tsc -p tsconfig.esm.json -w"
+    "watch:esm": "tsc -p tsconfig.esm.json -w",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/BugSplat-Git/bugsplat-js-api-client.git"
+    "url": "https://github.com/BugSplat-Git/bugsplat-js-api-client.git"
   },
   "author": "@bobbyg603",
   "license": "MIT",
@@ -32,6 +34,18 @@
     "url": "https://github.com/BugSplat-Git/bugsplat-js-api-client/issues"
   },
   "homepage": "https://github.com/BugSplat-Git/bugsplat-js-api-client#readme",
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ]
+  },
   "dependencies": {
     "argument-contracts": "^1.2.3",
     "fetch-ponyfill": "^7.1.0",
@@ -40,14 +54,20 @@
     "rxjs": "^7.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@types/jasmine": "^3.7.4",
     "@types/node": "^15.6.1",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
+    "husky": "^7.0.4",
     "jasmine": "^3.7.0",
     "jasmine-reporters": "^2.4.0",
+    "semantic-release": "^18.0.0",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.11.0",
     "tsconfig-replace-paths": "^0.0.5",
