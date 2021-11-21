@@ -25,6 +25,17 @@ describe('OAuthClientCredentialsClient', () => {
             expect(json.access_token).toBeDefined();
             expect(json.token_type).toBeDefined();
         });
+
+        describe('error', () => {
+            it('should throw error for incorrect email and password', async () => {
+                const client = new OAuthClientCredentialsClient('BugSplat', 'rocks');
+                
+                await expectAsync(client.login()).toBeRejectedWithError(
+                    Error,
+                    /Could not authenticate, check credentials and try again/
+                );
+            });
+        });
     });
 
     describe('fetch', () => {

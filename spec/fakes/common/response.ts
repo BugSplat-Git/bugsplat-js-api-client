@@ -1,12 +1,13 @@
 export function createFakeResponseBody(
     status: number,
     json: any = {},
+    ok = true,
     headers: any = []
 ) {
     return {
-        status: status,
+        status,
+        ok,
         json: async() => (json),
-        ok: true,
         headers: { get: () => headers }
     };
 }

@@ -21,7 +21,7 @@ describe('BugSplatApiClient', () => {
         expectedStatus = 'success';
         expectedJson = { success: 'true' };
         fakeFormData = { append: appendSpy, toString: () => 'BugSplat rocks!' };
-        fakeSuccessReponseBody = createFakeResponseBody(expectedStatus, expectedJson, cookie);
+        fakeSuccessReponseBody = createFakeResponseBody(expectedStatus, expectedJson, true, cookie);
         client = createFakeBugSplatApiClient(
             Environment.Node,
             fakeSuccessReponseBody,
@@ -122,13 +122,12 @@ describe('BugSplatApiClient', () => {
 
         describe('error', () => {
             it('should throw if response status is 401', async () => {
-                try {
-                    (<any>client)._fetch.and.returnValue({ status: 401 });
-                    await client.login(email, password);
-                    fail('login was supposed to throw!');
-                } catch (error) {
-                    expect(error).toMatch(/Invalid email or password/);
-                }
+                (<any>client)._fetch.and.returnValue({ status: 401 });
+                
+                await expectAsync(client.login(email, password)).toBeRejectedWithError(
+                    Error,
+                    /Could not authenticate, check credentials and try again/
+                );
             });
         });
     });

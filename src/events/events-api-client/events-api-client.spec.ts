@@ -15,7 +15,7 @@ describe('CrashApiClient', () => {
     let result;
 
     beforeEach(() => {
-        const fakeResponse = createFakeResponseBody(200, fakeEventsApiResponse, []);
+        const fakeResponse = createFakeResponseBody(200, fakeEventsApiResponse);
         fakeEvents = createFakeEvents();
         fakeFormData = createFakeFormData();
         fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);

@@ -21,7 +21,7 @@ describe('CrashApiClient', () => {
 
         beforeEach(async () => {
             fakeCrashApiResponse = createFakeCrashApiResponse();
-            const fakeResponse = createFakeResponseBody(200, fakeCrashApiResponse, []);
+            const fakeResponse = createFakeResponseBody(200, fakeCrashApiResponse);
             fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
             client = new CrashApiClient(fakeBugSplatApiClient);
 
@@ -58,7 +58,7 @@ describe('CrashApiClient', () => {
 
             try {
                 const fakeReprocessErrorBody = { message };
-                const fakeResponse = createFakeResponseBody(400, fakeReprocessErrorBody, []);
+                const fakeResponse = createFakeResponseBody(400, fakeReprocessErrorBody, false);
                 const fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
                 const client = new CrashApiClient(fakeBugSplatApiClient);
 
@@ -96,7 +96,7 @@ describe('CrashApiClient', () => {
 
         beforeEach(async () => {
             fakeReprocessApiResponse = { success: true };
-            const fakeResponse = createFakeResponseBody(202, fakeReprocessApiResponse, []);
+            const fakeResponse = createFakeResponseBody(202, fakeReprocessApiResponse);
             fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
             client = new CrashApiClient(fakeBugSplatApiClient);
 
@@ -132,7 +132,7 @@ describe('CrashApiClient', () => {
 
             try {
                 const fakeReprocessErrorBody = { message };
-                const fakeResponse = createFakeResponseBody(422, fakeReprocessErrorBody, []);
+                const fakeResponse = createFakeResponseBody(422, fakeReprocessErrorBody, false);
                 const fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
                 const client = new CrashApiClient(fakeBugSplatApiClient);
 
