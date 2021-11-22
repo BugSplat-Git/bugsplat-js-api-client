@@ -67,7 +67,7 @@ export class BugSplatApiClient implements ApiClient {
         });
 
         if (response.status === 401) {
-            throw new Error('Invalid email or password');
+            throw new Error('Could not authenticate, check credentials and try again');
         }
 
         if (this._environment === Environment.Node) {

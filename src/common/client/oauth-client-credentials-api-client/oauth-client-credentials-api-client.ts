@@ -44,10 +44,15 @@ export class OAuthClientCredentialsClient implements ApiClient {
 
         const response = await this.fetch(url, <RequestInit><unknown>request);
         const responseJson = await response.json();
+        const status = response.status;
+
+        if (responseJson.error === 'invalid_client') {
+            throw new Error('Could not authenticate, check credentials and try again');
+        }
+
         this._accessToken = responseJson.access_token;
         this._tokenType = responseJson.token_type;
-        
-        const status = response.status;
+
         const json = async () => responseJson;
         return {
             status,

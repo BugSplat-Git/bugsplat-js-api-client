@@ -18,13 +18,13 @@ describe('BugSplatApiClient', () => {
             expect(json.user).toEqual(email);
         });
 
-        it('should throw error for incorrect email and password', async () => {
-            try {
-                await client.login(email, 'password');
-                fail('login was supposed to throw!');
-            } catch (error: any) {
-                expect(error.message).toMatch(/Invalid email or password/);
-            }
+        describe('error', () => {
+            it('should throw error for incorrect email and password', async () => {
+                await expectAsync(client.login(email, 'password')).toBeRejectedWithError(
+                    Error,
+                    /Could not authenticate, check credentials and try again/
+                );
+            });
         });
     });
 });

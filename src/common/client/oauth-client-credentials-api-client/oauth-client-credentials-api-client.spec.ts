@@ -68,6 +68,24 @@ describe('OAuthClientCredentialsClient', () => {
             expect(result.status).toEqual(fakeAuthorizeResponseBody.status);
             expect(json).toEqual(fakeAuthorizeResult);
         });
+
+        describe('error', () => {
+            it('should return useful error message when authenication fails', async () => {
+                const failureResponseBody = createFakeResponseBody(200, { error: 'invalid_client' });
+                sut = createFakeOAuthClientCredentialsClient(
+                    'blah',
+                    'blah',
+                    host,
+                    failureResponseBody,
+                    fakeFormData
+                );
+
+                await expectAsync(sut.login()).toBeRejectedWithError(
+                    Error,
+                    /Could not authenticate, check credentials and try again/
+                );
+            });
+        });
     });
 
     describe('fetch', () => {
