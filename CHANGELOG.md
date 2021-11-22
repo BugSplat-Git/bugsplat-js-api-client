@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.3...v1.1.4) (2021-11-22)
+
+
+### Bug Fixes
+
+* crashesApiRow id, stackKeyId should be type number ([#63](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/63)) ([3b98da9](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/3b98da9edd6e94802cf6f47d188b7b7192766965)), closes [#62](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/62)
+
 ## [1.1.3](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.2...v1.1.3) (2021-11-22)
 
 
