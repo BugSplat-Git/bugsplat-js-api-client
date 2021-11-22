@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.2...v1.1.3) (2021-11-22)
+
+
+### Bug Fixes
+
+* expose TableDataFormDataBuilder ([#61](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/61)) ([a72b4a9](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/a72b4a9f1352ed5b2ea6311f2fdf422a114fb67e)), closes [#60](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/60)
+
 ## [1.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.1...v1.1.2) (2021-11-22)
 
 
