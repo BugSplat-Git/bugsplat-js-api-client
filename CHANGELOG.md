@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.1...v1.1.2) (2021-11-22)
+
+
+### Bug Fixes
+
+* throw more useful error if OAuthClientCredentialsApiClient fails to authenticate ([#58](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/58)) ([6c0cd4c](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/6c0cd4c69a752ad6ef28c6c3ff6ce7dff273e2a1)), closes [#52](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/52)
+
 ## [1.1.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.0...v1.1.1) (2021-11-19)
 
 
