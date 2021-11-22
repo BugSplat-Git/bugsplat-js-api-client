@@ -1,6 +1,7 @@
 interface CrashData {
   id: string;
   stackKey: string;
+  stackId: string;
   stackKeyId: string;
   appName: string;
   appVersion: string;
@@ -31,9 +32,10 @@ export interface CrashesApiResponseRow extends CrashData {
 }
 
 export class CrashesApiRow {
-  public id: string;
+  public id: number;
   public stackKey: string;
-  public stackKeyId: string;
+  public stackId: number;
+  public stackKeyId: number;
   public appName: string;
   public appVersion: string;
   public appDescription: string;
@@ -54,9 +56,10 @@ export class CrashesApiRow {
   public exceptionMessage: string;
 
   constructor(rawApiRow: CrashesApiResponseRow) {
-    this.id = rawApiRow.id;
+    this.id = Number(rawApiRow.id);
     this.stackKey = rawApiRow.stackKey;
-    this.stackKeyId = rawApiRow.stackKeyId;
+    this.stackKeyId = Number(rawApiRow.stackKeyId);
+    this.stackId = Number(rawApiRow.stackId);
     this.appName = rawApiRow.appName;
     this.appVersion = rawApiRow.appVersion;
     this.appDescription = rawApiRow.appDescription;
