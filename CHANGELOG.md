@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.4...v1.1.5) (2021-11-27)
+
+
+### Bug Fixes
+
+* add groupByCount to CrashesApiRow ([#65](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/65)) ([9caa770](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/9caa77028987ab58e95b1e8205fcef63825f8eb7)), closes [#64](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/64)
+
 ## [1.1.4](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.3...v1.1.4) (2021-11-22)
 
 
