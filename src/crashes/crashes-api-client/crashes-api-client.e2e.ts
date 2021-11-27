@@ -40,6 +40,19 @@ describe('CrashesApiClient', () => {
             expect(row?.appName).toEqual(application);
             expect(row?.appVersion).toEqual(version);
         });
+
+        it('should return 200 and groupByCount for grouped crashes query', async () => {
+            const database = config.database;
+            const pageSize = 1;
+            const columnGroups = ['stackKey'];
+            
+            const result = await crashesClient.getCrashes({ database, pageSize, columnGroups });
+            
+            const row = result.rows[0];
+            expect(result.rows).toBeTruthy();
+            expect(result.rows.length).toEqual(pageSize);
+            expect(row?.groupByCount).toBeGreaterThanOrEqual(1);
+        });
     });
 
     describe('postNotes', () => {

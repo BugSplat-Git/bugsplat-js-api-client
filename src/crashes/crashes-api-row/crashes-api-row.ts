@@ -1,5 +1,6 @@
 interface CrashData {
   id: string;
+  groupByCount: number;
   stackKey: string;
   stackId: string;
   stackKeyId: string;
@@ -33,6 +34,7 @@ export interface CrashesApiResponseRow extends CrashData {
 
 export class CrashesApiRow {
   public id: number;
+  public groupByCount: number;
   public stackKey: string;
   public stackId: number;
   public stackKeyId: number;
@@ -57,6 +59,7 @@ export class CrashesApiRow {
 
   constructor(rawApiRow: CrashesApiResponseRow) {
     this.id = Number(rawApiRow.id);
+    this.groupByCount = Number(rawApiRow.groupByCount || 0);
     this.stackKey = rawApiRow.stackKey;
     this.stackKeyId = Number(rawApiRow.stackKeyId);
     this.stackId = Number(rawApiRow.stackId);
