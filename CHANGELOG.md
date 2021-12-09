@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.5...v1.1.6) (2021-12-09)
+
+
+### Bug Fixes
+
+* add sortOrder to table-data-request ([#67](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/67)) ([80e2bde](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/80e2bde40cbc47168c5aea16ba77277c7722f192)), closes [#64](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/64)
+
 ## [1.1.5](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.4...v1.1.5) (2021-11-27)
 
 
