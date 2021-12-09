@@ -1,8 +1,8 @@
 import { config } from '@spec/config';
-import { BugSplatApiClient } from '@common';
+import { ApiDataFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
 import { CrashApiClient } from '@crash';
 import { CrashesApiClient } from '@crashes';
-import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
+import { postNativeCrash, postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
 
 describe('CrashesApiClient', () => {
     let crashClient: CrashApiClient;
@@ -30,9 +30,9 @@ describe('CrashesApiClient', () => {
         it('should return 200 and array of crashes', async () => {
             const database = config.database;
             const pageSize = 1;
-            
+
             const result = await crashesClient.getCrashes({ database, pageSize });
-            
+
             const row = result.rows.find(row => Number(row.id) === id);
             expect(result.rows).toBeTruthy();
             expect(result.rows.length).toEqual(pageSize);
@@ -45,13 +45,37 @@ describe('CrashesApiClient', () => {
             const database = config.database;
             const pageSize = 1;
             const columnGroups = ['stackKey'];
-            
+
             const result = await crashesClient.getCrashes({ database, pageSize, columnGroups });
-            
+
             const row = result.rows[0];
             expect(result.rows).toBeTruthy();
             expect(result.rows.length).toEqual(pageSize);
             expect(row?.groupByCount).toBeGreaterThanOrEqual(1);
+        });
+
+        it('should return 200 with crashes sorted by sortColumn and sortOrder', async () => {
+            const database = config.database;
+            const pageSize = 2;
+            const sortColumn = 'id';
+            const sortOrder = 'asc';
+            const newestCrashId = await postNativeCrash(
+                config.database,
+                application,
+                version
+            );
+            const filterGroups = [ApiDataFilterGroup.fromColumnValues([`${id}`, `${newestCrashId}`], 'id', FilterOperator.or)];
+
+            const result = await crashesClient.getCrashes({
+                database,
+                filterGroups,
+                pageSize,
+                sortColumn,
+                sortOrder
+            });
+
+            const row = result.rows[0];
+            expect(row.id).toEqual(id);
         });
     });
 
@@ -59,7 +83,7 @@ describe('CrashesApiClient', () => {
         it('should return 200', async () => {
             const database = config.database;
             const notes = 'BugSplat rocks!';
-            
+
             await crashesClient.postNotes(database, id, notes);
             const result = await crashClient.getCrashById(database, id);
 

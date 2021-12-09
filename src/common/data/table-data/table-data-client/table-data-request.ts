@@ -1,4 +1,4 @@
-import { ApiDataFilterGroup, OrderFilter } from '@common';
+import { ApiDataFilterGroup, ColumnSortOrder } from '@common';
 
 export interface TableDataRequest {
   database?: string;
@@ -7,5 +7,5 @@ export interface TableDataRequest {
   page?: number;
   pageSize?: number;
   sortColumn?: string;
-  sortOrder?: OrderFilter;
+  sortOrder?: ColumnSortOrder;
 }
