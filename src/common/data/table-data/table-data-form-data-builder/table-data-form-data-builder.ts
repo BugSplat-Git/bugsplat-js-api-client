@@ -1,6 +1,7 @@
 
-import { ApiDataFilterGroup, OrderFilter } from '@common';
+import { ApiDataFilterGroup } from '@common';
 import FormData from 'form-data';
+import { ColumnSortOrder } from './column-sort-order';
 
 export class TableDataFormDataBuilder {
 
@@ -63,17 +64,9 @@ export class TableDataFormDataBuilder {
     return this;
   }
 
-  withSortOrder(sortOrder: OrderFilter | undefined): TableDataFormDataBuilder {
+  withSortOrder(sortOrder: ColumnSortOrder | undefined): TableDataFormDataBuilder {
     if (sortOrder) {
-      let translatedSortOrder;
-      if (sortOrder === OrderFilter.none) {
-        return this;
-      } else if (sortOrder === OrderFilter.ascending) {
-        translatedSortOrder = 'asc';
-      } else if (sortOrder === OrderFilter.descending) {
-        translatedSortOrder = 'desc';
-      }
-      this._formParts.sortorder = translatedSortOrder;
+      this._formParts.sortorder = sortOrder;
     }
     return this;
   }

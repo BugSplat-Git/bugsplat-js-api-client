@@ -1,4 +1,4 @@
-import { ApiDataFilter, ApiDataFilterGroup, OrderFilter } from '@common';
+import { ApiDataFilter, ApiDataFilterGroup } from '@common';
 import { TableDataFormDataBuilder } from './table-data-form-data-builder';
 
 describe('TableDataFormDataBuilder', () => {
@@ -121,18 +121,17 @@ describe('TableDataFormDataBuilder', () => {
 
   describe('withSortOrder', () => {
     it('should add sortOrder', () => {
-      const sortOrder = OrderFilter.ascending;
-      const expectedSortOrder = 'asc';
+      const sortOrder = 'asc';
 
       const result = <FakeFormData><unknown>new TableDataFormDataBuilder(formDataFactory)
         .withSortOrder(sortOrder)
         .build();
 
-      expect(result.get('sortorder')).toEqual(expectedSortOrder);
+      expect(result.get('sortorder')).toEqual(sortOrder);
     });
 
     it('should not add sortorder if sortOrder is none', () => {
-      const sortOrder = OrderFilter.none;
+      const sortOrder = '';
 
       const result = <FakeFormData><unknown>new TableDataFormDataBuilder(formDataFactory)
         .withSortOrder(sortOrder)

@@ -20,6 +20,14 @@ export async function postNativeCrashAndSymbols(
         files
     );
 
+    return postNativeCrash(database, application, version);
+}
+
+export async function postNativeCrash(
+    database: string,
+    application: string,
+    version: string
+): Promise<number> {
     const crashFile = createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
     const crashPostClient = new CrashPostClient(database);
     const postCrashResult = await crashPostClient.postCrash(
