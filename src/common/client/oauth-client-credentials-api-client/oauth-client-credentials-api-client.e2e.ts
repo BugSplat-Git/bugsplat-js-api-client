@@ -16,7 +16,7 @@ describe('OAuthClientCredentialsClient', () => {
 
     describe('login', () => {
         it('should return 200 with access_token', async () => {
-            const client = new OAuthClientCredentialsClient(clientId, clientSecret);
+            const client = new OAuthClientCredentialsClient(clientId, clientSecret, host);
 
             const result = await client.login();
             const json = await result.json();
@@ -28,7 +28,7 @@ describe('OAuthClientCredentialsClient', () => {
 
         describe('error', () => {
             it('should throw error for incorrect email and password', async () => {
-                const client = new OAuthClientCredentialsClient('BugSplat', 'rocks');
+                const client = new OAuthClientCredentialsClient('BugSplat', 'rocks', host);
                 
                 await expectAsync(client.login()).toBeRejectedWithError(
                     Error,
@@ -56,7 +56,7 @@ describe('OAuthClientCredentialsClient', () => {
         });
 
         it('should return 200 for endpoint that requires authentication', async () => {
-            const oauthClient = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret);
+            const oauthClient = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
             const crashApiClient = new CrashApiClient(oauthClient);
 
             const result = await crashApiClient.getCrashById(database, id);

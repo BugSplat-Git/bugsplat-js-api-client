@@ -64,7 +64,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         return this._createFormData();
     }
 
-    fetch(route: string, init?: RequestInit): Promise<BugSplatResponse> {
+    async fetch(route: string, init?: RequestInit): Promise<BugSplatResponse> {
         const url = new URL(route, this._host);
         init = init ?? {};
         
