@@ -1,11 +1,11 @@
 import { BugSplatApiClient, UploadableFile } from '@common';
 import { config } from '@spec/config';
-import { SymbolsApiClient } from '@symbols';
+import { VersionsApiClient } from '@versions';
 import fs from 'fs';
 import path from 'path';
 
-describe('SymbolsApiClient', () => {
-    let client: SymbolsApiClient;
+describe('VersionsApiClient', () => {
+    let client: VersionsApiClient;
     const application = 'bugsplat-js-api-client';
     const version = '1.0.0';
 
@@ -15,7 +15,7 @@ describe('SymbolsApiClient', () => {
             config.password,
             config.host
         );
-        client = new SymbolsApiClient(bugsplat);
+        client = new VersionsApiClient(bugsplat);
     });
 
     describe('delete', () => {

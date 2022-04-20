@@ -1,9 +1,9 @@
 import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
 
-export class SymbolsApiClient {
+export class VersionsApiClient {
 
-    private readonly route = '/api/symbols';
+    private readonly route = '/api/versions';
 
     private _s3ApiClient: S3ApiClient;
     private _timer = timer;
@@ -17,7 +17,7 @@ export class SymbolsApiClient {
         application: string,
         version: string
     ): Promise<BugSplatResponse> {
-        const route = `${this.route}?dbName=${database}&appName=${application}&appVersion=${version}`;
+        const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}`;
         const init = {
             method: 'DELETE',
             cache: 'no-cache',
@@ -66,14 +66,14 @@ export class SymbolsApiClient {
     }
 
     private async getPresignedUrl(
-        dbName: string,
+        database: string,
         appName: string,
         appVersion: string,
         size: number,
         symFileName: string
     ): Promise<string> {
         const formData = this._client.createFormData();
-        formData.append('dbName', dbName);
+        formData.append('database', database);
         formData.append('appName', appName);
         formData.append('appVersion', appVersion);
         formData.append('size', size.toString());

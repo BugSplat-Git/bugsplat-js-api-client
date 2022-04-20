@@ -1,12 +1,12 @@
 import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
-import { SymbolsApiClient } from '@symbols';
+import { VersionsApiClient } from '@versions';
 import path from 'path';
 import { of } from 'rxjs';
 import * as S3ApiClientModule from '../../common/client/s3-api-client/s3-api-client';
 
-describe('SymbolsApiClient', () => {
+describe('VersionsApiClient', () => {
     const database = 'fred';
     const application = 'my-js-crasher';
     const version = '1.0.0';
@@ -16,7 +16,7 @@ describe('SymbolsApiClient', () => {
     let fakeSuccessResponse;
     let fakeS3ApiClient;
 
-    let symbolsApiClient: SymbolsApiClient;
+    let versionsApiClient: VersionsApiClient;
 
     beforeEach(() => {
         fakeFormData = createFakeFormData();
@@ -28,13 +28,13 @@ describe('SymbolsApiClient', () => {
         spyOn(S3ApiClientModule, 'S3ApiClient').and.returnValue(fakeS3ApiClient);
 
 
-        symbolsApiClient = new SymbolsApiClient(fakeBugSplatApiClient);
+        versionsApiClient = new VersionsApiClient(fakeBugSplatApiClient);
     });
     describe('deleteSymbols', () => {
         let result;
 
         beforeEach(async () => {
-            result = await symbolsApiClient.deleteSymbols(
+            result = await versionsApiClient.deleteSymbols(
                 database,
                 application,
                 version
@@ -43,7 +43,7 @@ describe('SymbolsApiClient', () => {
 
         it('should call fetch with route containing database, application and version', () => {
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                `/api/symbols?dbName=${database}&appName=${application}&appVersion=${version}`,
+                `/api/versions?database=${database}&appName=${application}&appVersion=${version}`,
                 jasmine.anything()
             );
         });
@@ -67,7 +67,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErrorResponse = createFakeResponseBody(400);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-                await expectAsync(symbolsApiClient.deleteSymbols(
+                await expectAsync(versionsApiClient.deleteSymbols(
                     database,
                     application,
                     version
@@ -79,7 +79,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErroResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErroResponse);
 
-                await expectAsync(symbolsApiClient.deleteSymbols(
+                await expectAsync(versionsApiClient.deleteSymbols(
                     database,
                     application,
                     version
@@ -100,9 +100,9 @@ describe('SymbolsApiClient', () => {
             }];
             timer = jasmine.createSpy();
             timer.and.returnValue(of(0));
-            (<any>symbolsApiClient)._timer = timer;
+            (<any>versionsApiClient)._timer = timer;
 
-            result = await symbolsApiClient.postSymbols(
+            result = await versionsApiClient.postSymbols(
                 database,
                 application,
                 version,
@@ -111,7 +111,7 @@ describe('SymbolsApiClient', () => {
         });
 
         it('should append dbName, appName, appVersion, size and symFileName to FormData', () => {
-            expect(fakeFormData.append).toHaveBeenCalledWith('dbName', database);
+            expect(fakeFormData.append).toHaveBeenCalledWith('database', database);
             expect(fakeFormData.append).toHaveBeenCalledWith('appName', application);
             expect(fakeFormData.append).toHaveBeenCalledWith('appVersion', version);
             expect(fakeFormData.append).toHaveBeenCalledWith('size', files[0].size.toString());
@@ -120,7 +120,7 @@ describe('SymbolsApiClient', () => {
 
         it('should call fetch with correct route', () => {
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                '/api/symbols',
+                '/api/versions',
                 jasmine.anything()
             );
         });
@@ -141,7 +141,7 @@ describe('SymbolsApiClient', () => {
         });
 
         it('should sleep between requests', () => {
-            expect((<any>symbolsApiClient)._timer).toHaveBeenCalledWith(1000);
+            expect((<any>versionsApiClient)._timer).toHaveBeenCalledWith(1000);
         });
 
         it('should return response', () => {
@@ -155,7 +155,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErrorResponse = createFakeResponseBody(400);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-                await expectAsync(symbolsApiClient.postSymbols(
+                await expectAsync(versionsApiClient.postSymbols(
                     database,
                     application,
                     version,
@@ -168,7 +168,7 @@ describe('SymbolsApiClient', () => {
                 const fakeErrorResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
-                await expectAsync(symbolsApiClient.postSymbols(
+                await expectAsync(versionsApiClient.postSymbols(
                     database,
                     application,
                     version,
