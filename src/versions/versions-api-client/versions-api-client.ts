@@ -1,15 +1,66 @@
-import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient } from '@common';
+import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
+import { VersionsApiRow } from '../versions-api-row/versions-api-row';
 
-export class SymbolsApiClient {
+export class VersionsApiClient {
 
-    private readonly route = '/api/symbols';
+    private readonly route = '/api/versions';
 
     private _s3ApiClient: S3ApiClient;
+    private _tableDataClient: TableDataClient;
     private _timer = timer;
 
     constructor(private _client: ApiClient) {
         this._s3ApiClient = new S3ApiClient();
+        this._tableDataClient = new TableDataClient(this._client, this.route);
+    }
+
+    async getVersions(request: TableDataRequest): Promise<TableDataResponse<VersionsApiRow>> {
+        const response = await this._tableDataClient.getData(request);
+        const json = await response.json();
+        const pageData = json.pageData;
+        const rows = json.rows.map(row => new VersionsApiRow(row));
+
+        return {
+            rows,
+            pageData
+        };
+    }
+
+    async putFullDumps(
+        database: string,
+        application: string,
+        version: string,
+        fullDumps: boolean
+    ): Promise<BugSplatResponse> {
+        const fullDumpsFlag = fullDumps ? '1' : '0';
+        const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}&fullDumps=${fullDumpsFlag}`;
+        const init = {
+            method: 'PUT',
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow'
+        };
+
+        return this._client.fetch(route, <RequestInit>init);
+    }
+    
+    async putRetired(
+        database: string,
+        application: string,
+        version: string,
+        retired: boolean
+    ): Promise<BugSplatResponse> {
+        const retiredFlag = retired ? '1' : '0';
+        const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}&retired=${retiredFlag}`;
+        const init = {
+            method: 'PUT',
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow'
+        };
+
+        return this._client.fetch(route, <RequestInit>init);
     }
 
     async deleteSymbols(
@@ -17,7 +68,7 @@ export class SymbolsApiClient {
         application: string,
         version: string
     ): Promise<BugSplatResponse> {
-        const route = `${this.route}?dbName=${database}&appName=${application}&appVersion=${version}`;
+        const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}`;
         const init = {
             method: 'DELETE',
             cache: 'no-cache',
@@ -66,14 +117,14 @@ export class SymbolsApiClient {
     }
 
     private async getPresignedUrl(
-        dbName: string,
+        database: string,
         appName: string,
         appVersion: string,
         size: number,
         symFileName: string
     ): Promise<string> {
         const formData = this._client.createFormData();
-        formData.append('dbName', dbName);
+        formData.append('database', database);
         formData.append('appName', appName);
         formData.append('appVersion', appVersion);
         formData.append('size', size.toString());

@@ -33,8 +33,8 @@
       "@post": [
         "src/post/index"
       ],
-      "@symbols": [
-        "src/symbols/index"
+      "@versions": [
+        "src/versions/index"
       ],
       "@spec/*": [
         "spec/*"

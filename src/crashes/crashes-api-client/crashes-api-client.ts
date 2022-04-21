@@ -10,7 +10,7 @@ export class CrashesApiClient {
     }
 
     async getCrashes(request: TableDataRequest): Promise<TableDataResponse<CrashesApiRow>> {
-        const response = await this._tableDataClient.getData(request);
+        const response = await this._tableDataClient.postGetData(request);
         const json = await response.json();
         const pageData = json.pageData;
         const rows = json.rows.map(row => new CrashesApiRow(row));

@@ -31,8 +31,8 @@ describe('CrashesApiClient', () => {
         pageData = { coffee: 'black rifle' };
         rows = [{ id, Comments, IpAddress }];
         tableDataClientResponse = createFakeResponseBody(200, { pageData, rows });
-        tableDataClient = jasmine.createSpyObj('TableDataClient', ['getData']);
-        tableDataClient.getData.and.resolveTo(tableDataClientResponse);
+        tableDataClient = jasmine.createSpyObj('TableDataClient', ['postGetData']);
+        tableDataClient.postGetData.and.resolveTo(tableDataClientResponse);
         spyOn(TableDataClientModule, 'TableDataClient').and.returnValue(tableDataClient);
 
         sut = new CrashesApiClient(apiClient);
@@ -47,8 +47,8 @@ describe('CrashesApiClient', () => {
             result = await sut.getCrashes(request);
         });
 
-        it('should call getData with request', () => {
-            expect(tableDataClient.getData).toHaveBeenCalledWith(request);
+        it('should call postGetData with request', () => {
+            expect(tableDataClient.postGetData).toHaveBeenCalledWith(request);
         });
 
         it('should return value with Comments and IpAddress values mapped to lower-case', () => {

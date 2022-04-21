@@ -63,7 +63,7 @@ describe('TableDataClient', () => {
       pageSize = 9001;
       sortColumn = 'sorty';
       sortOrder = 'mcOrder';
-      const response = await service.getData({
+      const response = await service.postGetData({
         database,
         columnGroups,
         filterGroups,
@@ -130,7 +130,7 @@ describe('TableDataClient', () => {
     it('should return empty array if api returns null', async () => {
       bugSplatApiClient.fetch.and.resolveTo({ json: () => null });
 
-      const response = await service.getData({
+      const response = await service.postGetData({
         filterGroups,
         page,
         pageSize,

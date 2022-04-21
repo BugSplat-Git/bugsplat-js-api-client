@@ -1,6 +1,6 @@
 import { BugSplatApiClient } from '@common';
 import { CrashPostClient, CrashType } from '@post';
-import { SymbolsApiClient } from '@symbols';
+import { VersionsApiClient } from '@versions';
 import { createUploadableFile } from '../create-bugsplat-file';
 
 export async function postNativeCrashAndSymbols(
@@ -12,7 +12,7 @@ export async function postNativeCrashAndSymbols(
     const exeFile = createUploadableFile('./spec/files/native/myConsoleCrasher.exe');
     const pdbFile = createUploadableFile('./spec/files/native/myConsoleCrasher.pdb');
     const files = [exeFile, pdbFile];
-    const symbolsApiClient = new SymbolsApiClient(authenticatedClient);
+    const symbolsApiClient = new VersionsApiClient(authenticatedClient);
     await symbolsApiClient.postSymbols(
         database,
         application,
