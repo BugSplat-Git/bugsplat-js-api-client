@@ -7,7 +7,7 @@ export class TableDataFormDataBuilder {
 
   constructor(
     private _formDataFactory: () => FormData,
-    private _formParts: Record<string, string | number> = {},
+    private _formParts: Record<string, string> = {},
   ) { }
 
   withColumnGroups(groups: Array<string> | undefined): TableDataFormDataBuilder {
@@ -17,7 +17,7 @@ export class TableDataFormDataBuilder {
         this._formParts[`group${i}`] = group;
         groupsCount++;
       });
-      this._formParts['groupscount'] = groupsCount;
+      this._formParts['groupscount'] = `${groupsCount}`;
     }
 
     return this;
@@ -31,29 +31,29 @@ export class TableDataFormDataBuilder {
           group.filters.forEach((filter, i) => {
             const firstFilter = i === 0;
             const lastFilter = i === group.filters.length - 1;
-            this._formParts[`filtergroupopen${filtersCount}`] = firstFilter ? 1 : 0;
+            this._formParts[`filtergroupopen${filtersCount}`] = firstFilter ? '1' : '0';
             this._formParts[`filteroperator${filtersCount}`] = firstFilter ? group.groupOperator?.value : group.filterOperator?.value;
             this._formParts[`filterdatafield${filtersCount}`] = filter.filterDataField;
             this._formParts[`filtercondition${filtersCount}`] = filter.filterCondition;
             this._formParts[`filtervalue${filtersCount}`] = filter.filterValue;
-            this._formParts[`filtergroupclose${filtersCount}`] = lastFilter ? 1 : 0;
+            this._formParts[`filtergroupclose${filtersCount}`] = lastFilter ? '1' : '0';
             filtersCount++;
           });
         }
       });
-      this._formParts['filterscount'] = filtersCount;
+      this._formParts['filterscount'] = `${filtersCount}`;
     }
 
     return this;
   }
 
   withPage(page = 0): TableDataFormDataBuilder {
-    this._formParts.pagenum = page;
+    this._formParts.pagenum = `${page}`;
     return this;
   }
 
   withPageSize(pageSize = 10): TableDataFormDataBuilder {
-    this._formParts.pagesize = pageSize;
+    this._formParts.pagesize = `${pageSize}`;
     return this;
   }
 
@@ -90,6 +90,10 @@ export class TableDataFormDataBuilder {
       this._formParts.versions = versions.join(',');
     }
     return this;
+  }
+
+  entries(): Record<string, string> {
+    return this._formParts;
   }
 
   build(): FormData {

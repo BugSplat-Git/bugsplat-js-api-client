@@ -5,6 +5,8 @@ import { VersionsApiClient } from '@versions';
 import path from 'path';
 import { of } from 'rxjs';
 import * as S3ApiClientModule from '../../common/client/s3-api-client/s3-api-client';
+import * as TableDataClientModule from '../../common/data/table-data/table-data-client/table-data-client';
+import { VersionsApiRow } from '../versions-api-row/versions-api-row';
 
 describe('VersionsApiClient', () => {
     const database = 'fred';
@@ -15,6 +17,9 @@ describe('VersionsApiClient', () => {
     let fakeBugSplatApiClient;
     let fakeSuccessResponse;
     let fakeS3ApiClient;
+    let rows;
+    let tableDataClient;
+    let tableDataClientResponse;
 
     let versionsApiClient: VersionsApiClient;
 
@@ -27,8 +32,104 @@ describe('VersionsApiClient', () => {
         fakeS3ApiClient.uploadFileToPresignedUrl.and.resolveTo(fakeSuccessResponse);
         spyOn(S3ApiClientModule, 'S3ApiClient').and.returnValue(fakeS3ApiClient);
 
+        rows = [
+            {
+                symbolId: '163434',
+                appName: 'myConsoleCrasher',
+                version: '2022.4.20.0',
+                size: '14.6255',
+                lastUpdate: '2022-04-20T14:20:14Z',
+                lastReport: '2022-04-20T14:20:14Z',
+                firstReport: '2022-04-20T02:06:31Z',
+                reportsPerDay: null,
+                fullDumps: '0',
+                rejectedCount: '0',
+                retired: '0'
+            },
+        ];
+        tableDataClientResponse = createFakeResponseBody(200, { rows });
+        tableDataClient = jasmine.createSpyObj('TableDataClient', ['getData']);
+        tableDataClient.getData.and.resolveTo(tableDataClientResponse);
+        spyOn(TableDataClientModule, 'TableDataClient').and.returnValue(tableDataClient);
 
         versionsApiClient = new VersionsApiClient(fakeBugSplatApiClient);
+    });
+
+    describe('getVersions', () => {
+        let result;
+
+        beforeEach(async () => result = await versionsApiClient.getVersions({ database }));
+
+        it('should call getData with request', () => {
+            expect(tableDataClient.getData).toHaveBeenCalledWith(
+                jasmine.objectContaining({
+                    database
+                })
+            );
+        });
+
+        it('should return result mapped to VersionsApiRows', () => {
+            expect(result.rows).toEqual(
+                jasmine.arrayContaining([
+                    new VersionsApiRow(rows[0])
+                ])
+            );
+        });
+    });
+
+    describe('putFullDumps', () => {
+        const fullDumps = true;
+        let result;
+
+        beforeEach(async () => result = await versionsApiClient.putFullDumps(database, application, version, fullDumps));
+
+        it('should call fetch with route containing database, application, version, and fullDumps', () => {
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                `/api/versions?database=${database}&appName=${application}&appVersion=${version}&fullDumps=${fullDumps ? 1 : 0}`,
+                jasmine.anything()
+            );
+        });
+
+        it('should call fetch with init containing method PUT', () => {
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                jasmine.anything(),
+                jasmine.objectContaining({
+                    method: 'PUT'
+                })
+            );
+        });
+
+        it('should return result', () => {
+            expect(result).toEqual(fakeSuccessResponse);
+        });
+    });
+
+
+    describe('putRetired', () => {
+        const retired = false;
+        let result;
+
+        beforeEach(async () => result = await versionsApiClient.putRetired(database, application, version, retired));
+
+        it('should call fetch with route containing database, application, version, and fullDumps', () => {
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                `/api/versions?database=${database}&appName=${application}&appVersion=${version}&retired=${retired ? 1 : 0}`,
+                jasmine.anything()
+            );
+        });
+
+        it('should call fetch with init containing method PUT', () => {
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                jasmine.anything(),
+                jasmine.objectContaining({
+                    method: 'PUT'
+                })
+            );
+        });
+
+        it('should return result', () => {
+            expect(result).toEqual(fakeSuccessResponse);
+        });
     });
     describe('deleteSymbols', () => {
         let result;
