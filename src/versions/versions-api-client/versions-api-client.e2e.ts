@@ -45,17 +45,15 @@ describe('VersionsApiClient', () => {
     });
 
     describe('putFullDumps', () => {
-        it('should return invalid permissions because account is not licensed', async () => {
+        it('should return 403 because account is not licensed', async () => {
             const result = await client.putFullDumps(
                 database,
                 application,
                 version,
                 true
             );
-            const json = await result.json();
 
             expect(result.status).toEqual(403);
-            expect(json.message).toEqual('Invalid permissions');
         });
     });
 
