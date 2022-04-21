@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.6...v2.0.0) (2022-04-21)
+
+
+### Features
+
+* replace Symbols API Client with Versions API Client ([#76](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/76)) ([cd0fe3b](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/cd0fe3b18ae9e117b1fcc165e40a1c6c39d1a817)), closes [#75](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/75)
+
+
+### BREAKING CHANGES
+
+* we've merged the Symbols and Versions APIs to a single Versions API and thus have removed the Symbols API client.
+
 ## [1.1.6](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.5...v1.1.6) (2021-12-09)
 
 
