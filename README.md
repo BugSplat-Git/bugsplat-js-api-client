@@ -1,13 +1,20 @@
-[![BugSplat](https://s3.amazonaws.com/bugsplat-public/npm/header.png)](https://www.bugsplat.com)
+[![bugsplat-github-banner-basic-outline](https://user-images.githubusercontent.com/20464226/149019306-3186103c-5315-4dad-a499-4fd1df408475.png)](https://bugsplat.com)
+<br/>
+# <div align="center">BugSplat</div> 
+### **<div align="center">Crash and error reporting built for busy developers.</div>**
+<div align="center">
+    <a href="https://twitter.com/BugSplatCo">
+        <img alt="Follow @bugsplatco on Twitter" src="https://img.shields.io/twitter/follow/bugsplatco?label=Follow%20BugSplat&style=social">
+    </a>
+    <a href="https://discord.gg/K4KjjRV5ve">
+        <img alt="Join BugSplat on Discord" src="https://img.shields.io/discord/664965194799251487?label=Join%20Discord&logo=Discord&style=social">
+    </a>
+</div>
 
-# Introduction
+## 👋 Introduction
 [@bugsplat/js-api-client](https://www.npmjs.com/package/@bugsplat/js-api-client) is a set of JavaScript client libraries for consuming the BugSplat API. This package is compatible in both browser and node environments as it provides ESM and CommonJS builds for each environment respectively. Additionally this package is implemented in TypeScript and the distributed builds include definition files and source maps.
 
-# Overview
-
-Before using this package you must [register](https://app.bugsplat.com/v2/sign-up) as a new BugSplat user.
-
-## Install
+## 🏗 Installation
 
 Install [@bugsplat/js-api-client](https://www.npmjs.com/package/@bugsplat/js-api-client) via npm 
 
@@ -15,15 +22,13 @@ Install [@bugsplat/js-api-client](https://www.npmjs.com/package/@bugsplat/js-api
 npm i @bugsplat/js-api-client
 ```
 
-## Import
+## ⚙️ Configuration
 
 Import `BugSplatApiClient` and `Environment` from `@bugsplat\js-api-client`
 
 ```ts
 import { BugSplatApiClient, Environment } from '@bugsplat/js-api-client';
 ```
-
-## Authenticate
 
 Create an authenticated `BugSplatApiClient` following the steps below. Authentication is slightly different depending on if you are use `@bugsplat/js-api-client` in a Node.js or Web Browser environment. The method used to authenticate also depends on if you already have access to the user's email and password, or if you have to prompt for it at a later time.
 
@@ -58,7 +63,7 @@ const bugsplat = new BugSplatApiClient(host, Environment.WebBrowser);
 await bugsplat.login(email, password);
 ```
 
-## Usage
+## ⌨️ Usage
 
 Create an instance of `CrashApiClient` or any of the API clients and pass a reference to the `BugSplatApiClient` instance
 
@@ -103,6 +108,6 @@ for (const stackFrame of crash.thread.stackFrames) {
 // ...
 ```
 
-# Contributing
+## 🧑‍💻 Contributing
 
-BugSplat ❤️s open source! If you feel that this package can be improved, please open an [Issue](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues). If you have an awesome new feature you'd like to implement, we'd love to merge your [Pull Request](https://github.com/BugSplat-Git/bugsplat-js-api-client/pulls). You can also reach out to us via an email to support@bugsplat.com or the in-app chat on bugsplat.com.
+BugSplat ❤️s open source! If you feel that this package can be improved, please open an [Issue](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues). If you have an awesome new feature you'd like to implement, we'd love to merge your [Pull Request](https://github.com/BugSplat-Git/bugsplat-js-api-client/pulls). You can also send us an [email](mailto:support@bugsplat.com), join us on [Discord](https://discord.gg/K4KjjRV5ve), or message us via the in-app chat on [bugsplat.com](https://bugsplat.com).
