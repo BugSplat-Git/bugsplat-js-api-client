@@ -217,6 +217,27 @@ describe('VersionsApiClient', () => {
             expect(fakeFormData.append).toHaveBeenCalledWith('appVersion', version);
             expect(fakeFormData.append).toHaveBeenCalledWith('size', files[0].size.toString());
             expect(fakeFormData.append).toHaveBeenCalledWith('symFileName', path.basename(files[0].name));
+            expect(fakeFormData.append).not.toHaveBeenCalledWith('lastModifiedDate', jasmine.anything());
+            expect(fakeFormData.append).not.toHaveBeenCalledWith('dbgId', jasmine.anything());
+        });
+
+        it('should append dbgId and lastModifiedDate if provided', async () => {
+            files = [{
+                name: '📄.sym',
+                size: 1337,
+                debugId: 'abc123',
+                lastModifiedDate: new Date()
+            }];
+
+            await versionsApiClient.postSymbols(
+                database,
+                application,
+                version,
+                files
+            );
+
+            expect(fakeFormData.append).toHaveBeenCalledWith('lastModified', files[0].lastModifiedDate.toISOString());
+            expect(fakeFormData.append).toHaveBeenCalledWith('dbgId', files[0].debugId);
         });
 
         it('should call fetch with correct route', () => {
