@@ -99,12 +99,16 @@ export class VersionsApiClient {
             .map(async (file) => {
                 const name = file.name;
                 const size = file.size;
+                const lastModifiedDate = file.lastModifiedDate;
+                const debugId = file.debugId;
                 const presignedUrl = await this.getPresignedUrl(
                     database,
                     application,
                     version,
                     size,
-                    name
+                    name,
+                    lastModifiedDate,
+                    debugId
                 );
     
                 const response = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
@@ -121,7 +125,9 @@ export class VersionsApiClient {
         appName: string,
         appVersion: string,
         size: number,
-        symFileName: string
+        symFileName: string,
+        lastModifiedDate?: Date,
+        debugId?: string
     ): Promise<string> {
         const formData = this._client.createFormData();
         formData.append('database', database);
@@ -129,6 +135,14 @@ export class VersionsApiClient {
         formData.append('appVersion', appVersion);
         formData.append('size', size.toString());
         formData.append('symFileName', symFileName);
+
+        if (lastModifiedDate && debugId) {
+            formData.append('SendPdbsVersion', 'bsv1');
+            formData.append('moduleName', symFileName);
+            formData.append('lastModified', lastModifiedDate.toISOString());
+            formData.append('dbgId', debugId);
+        }
+
         const init = {
             method: 'POST',
             body: formData,
