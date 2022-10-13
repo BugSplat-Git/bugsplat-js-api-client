@@ -1,9 +1,8 @@
-import { config } from '@spec/config';
 import { ApiDataFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
 import { CrashApiClient } from '@crash';
 import { CrashesApiClient } from '@crashes';
+import { config } from '@spec/config';
 import { postNativeCrash, postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
-import { firstValueFrom, timer } from 'rxjs';
 
 describe('CrashesApiClient', () => {
     let crashClient: CrashApiClient;
@@ -60,7 +59,6 @@ describe('CrashesApiClient', () => {
             const pageSize = 2;
             const sortColumn = 'id';
             const sortOrder = 'asc';
-            await firstValueFrom(timer(2000)); // Prevent rate-limiting
             const newestCrashId = await postNativeCrash(
                 config.database,
                 application,

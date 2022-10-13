@@ -1,6 +1,7 @@
 import { BugSplatApiClient } from '@common';
 import { CrashPostClient, CrashType } from '@post';
 import { VersionsApiClient } from '@versions';
+import { firstValueFrom, timer } from 'rxjs';
 import { createUploadableFile } from '../create-bugsplat-file';
 
 export async function postNativeCrashAndSymbols(
@@ -30,6 +31,7 @@ export async function postNativeCrash(
 ): Promise<number> {
     const crashFile = createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
     const crashPostClient = new CrashPostClient(database);
+    await firstValueFrom(timer(2000)); // Prevent rate-limiting
     const postCrashResult = await crashPostClient.postCrash(
         application,
         version,
