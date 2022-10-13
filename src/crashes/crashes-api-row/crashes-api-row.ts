@@ -1,9 +1,6 @@
 interface CrashData {
-  id: string;
   groupByCount: number;
   stackKey: string;
-  stackId: string;
-  stackKeyId: string;
   appName: string;
   appVersion: string;
   appDescription: string;
@@ -22,17 +19,23 @@ interface CrashData {
   exceptionMessage: string;
 }
 
-export interface CrashDataWithMappedProperties extends CrashData {
+interface CrashDataWithMappedProperties extends CrashData {
+  id: number;
+  stackId: number;
+  stackKeyId: number;
   comments: string;
   ipAddress: string;
 }
 
 export interface CrashesApiResponseRow extends CrashData {
+  id: string;
+  stackId: string;
+  stackKeyId: string;
   Comments: string;
   IpAddress: string;
 }
 
-export class CrashesApiRow {
+export class CrashesApiRow implements CrashDataWithMappedProperties {
   public id: number;
   public groupByCount: number;
   public stackKey: string;
