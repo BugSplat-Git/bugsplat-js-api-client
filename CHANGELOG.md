@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.0.0...v2.1.0) (2022-10-13)
+
+
+### Features
+
+* add summary client ([#82](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/82)) ([ff1a9b3](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/ff1a9b3a94828450d0d309703afdc3e870f8befc))
+
 # [2.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v1.1.6...v2.0.0) (2022-04-21)
 
 
