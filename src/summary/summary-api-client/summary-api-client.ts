@@ -1,7 +1,7 @@
 import { ApiClient, TableDataResponse } from '@common';
 import { SummaryApiResponseRow, SummaryApiRow } from '../summary-api-row/summary-api-row';
-import { SummaryTableDataClient } from './summary-table-data-client';
-import { SummaryTableDataRequest } from './summary-table-data-request';
+import { SummaryTableDataClient } from '../summary-table-data/summary-table-data-client';
+import { SummaryTableDataRequest } from '../summary-table-data/summary-table-data-request';
 
 export class SummaryApiClient {
 

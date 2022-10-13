@@ -1,7 +1,7 @@
 import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
-import * as SummaryTableDataClientModule from '../../summary/summary-api-client/summary-table-data-client';
+import * as SummaryTableDataClientModule from '../summary-table-data/summary-table-data-client';
 import { SummaryApiClient } from './summary-api-client';
 
 describe('SummaryApiClient', () => {
