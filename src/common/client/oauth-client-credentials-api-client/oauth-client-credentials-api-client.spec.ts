@@ -33,7 +33,7 @@ describe('OAuthClientCredentialsClient', () => {
         );
         (<any>sut)._fetch.and.returnValues(
             Promise.resolve(fakeAuthorizeResponseBody),
-            Promise.resolve(fakeFetchResponseBody),
+            Promise.resolve(fakeFetchResponseBody)
         );
     });
 
