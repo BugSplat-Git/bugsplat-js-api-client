@@ -74,6 +74,12 @@ export class OAuthClientCredentialsClient implements ApiClient {
 
         init.headers['Authorization'] = `${this._tokenType} ${this._accessToken}`;
         
-        return this._fetch(url.href, init);
+        const response = await this._fetch(url.href, init);
+        
+        if (response.status === 401) {
+            throw new Error('Could not authenticate, check credentials and try again');
+        }
+
+        return response;
     }  
 }
