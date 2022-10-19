@@ -118,6 +118,8 @@ describe('OAuthClientCredentialsClient', () => {
         });
 
         it('should call fetch with new init if init is not provided', async () => {
+            (<any>sut)._fetch.and.returnValue(Promise.resolve(fakeAuthorizeResponseBody));
+
             await sut.fetch(route);
 
             const mostRecentCallArgs = (<any>sut)._fetch.calls.mostRecent().args;
@@ -129,6 +131,17 @@ describe('OAuthClientCredentialsClient', () => {
 
         it('should return result', () => {
             expect(result).toEqual(fakeFetchResponseBody);
+        });
+
+        describe('error', () => {
+            it('should throw error with useful message if fetch returns 401', async () => {
+                (<any>sut)._fetch.and.resolveTo(createFakeResponseBody(401));
+
+                await expectAsync(sut.fetch(route)).toBeRejectedWithError(
+                    Error,
+                    /Could not authenticate/
+                );
+            });
         });
     });
 });
