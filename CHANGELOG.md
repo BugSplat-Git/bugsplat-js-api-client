@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.0...v2.1.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* better error for invalid client id or client secret ([#84](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/84)) ([16b349a](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/16b349a44bbc651da4084e2306b801f4ac23f33a))
+
 # [2.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.0.0...v2.1.0) (2022-10-13)
 
 
