@@ -10,22 +10,22 @@ export interface VersionsApiResponseRow {
   size: string;
   reportsPerDay: string | null;
   rejectedCount: string;
-  retired: '0' | '1';
-  fullDumps: '0' | '1';
+  retired: 0 | 1;
+  fullDumps: 0 | 1;
 }
 
 export class VersionsApiRow {
-  public symbolId: number;
-  public appName: string;
-  public version: string;
-  public lastUpdate: string;
-  public firstReport: string;
-  public lastReport: string;
-  public size: number;
-  public reportsPerDay: number;
-  public rejectedCount: number;
-  public retired: 0 | 1;
-  public fullDumps: 0 | 1;
+  symbolId: number;
+  appName: string;
+  version: string;
+  lastUpdate: string;
+  firstReport: string;
+  lastReport: string;
+  size: number;
+  reportsPerDay: number;
+  rejectedCount: number;
+  retired: 0 | 1;
+  fullDumps: 0 | 1;
 
   constructor(rawApiRow: VersionsApiResponseRow) {
     ac.assertType(rawApiRow, Object, 'rawApiRow');
@@ -40,8 +40,6 @@ export class VersionsApiRow {
     const safeAppName = rawApiRow.appName ?? '';
     const safeVersion = rawApiRow.version ?? '';
     const safeReportsPerDay = rawApiRow.reportsPerDay ?? 0;
-    const safeRetired = rawApiRow.retired === '1' ? 1 : 0;
-    const safeFullDumps = rawApiRow.fullDumps === '1' ? 1 : 0;
 
     this.symbolId = symbolId;
     this.appName = safeAppName;
@@ -52,8 +50,8 @@ export class VersionsApiRow {
     this.size = Number(rawApiRow.size);
     this.reportsPerDay = Number(safeReportsPerDay);
     this.rejectedCount = Number(rawApiRow.rejectedCount);
-    this.retired = safeRetired;
-    this.fullDumps = safeFullDumps;
+    this.retired = rawApiRow.retired;
+    this.fullDumps = rawApiRow.fullDumps;
 
     Object.freeze(this);
   }
