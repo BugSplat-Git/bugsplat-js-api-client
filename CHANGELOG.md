@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.1...v2.1.2) (2022-11-10)
+
+
+### Bug Fixes
+
+* set retired and fullDumps correctly ([#86](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/86)) ([632e027](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/632e0271aabed7b7c818e1c107f997f968c7884a))
+
 ## [2.1.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.0...v2.1.1) (2022-10-19)
 
 
