@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.2...v2.1.3) (2022-11-15)
+
+
+### Bug Fixes
+
+* better messages for 4xx errors ([#87](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/87)) ([115486e](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/115486e59353be23bab3a3c204597863302edcd3))
+
 ## [2.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.1...v2.1.2) (2022-11-10)
 
 
