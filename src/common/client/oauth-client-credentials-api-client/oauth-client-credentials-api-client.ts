@@ -1,13 +1,10 @@
 import { ApiClient, bugsplatAppHostUrl, BugSplatResponse } from '@common';
-import fetchPonyfill from 'fetch-ponyfill';
-import FormData from 'form-data';
-
 export class OAuthClientCredentialsClient implements ApiClient {
 
     private _accessToken = '';
     private _tokenType = '';
     private _createFormData = () => new FormData();
-    private _fetch = fetchPonyfill().fetch;
+    private _fetch = globalThis.fetch;
 
     constructor(
         private _clientId: string,

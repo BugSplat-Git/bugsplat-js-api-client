@@ -1,5 +1,3 @@
-import type FormData from 'form-data';
-
 export interface ApiClient {
     createFormData(): FormData;
     fetch(route: string, init?: RequestInit): Promise<BugSplatResponse>;

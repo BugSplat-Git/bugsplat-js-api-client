@@ -16,11 +16,13 @@
 
 ## 🏗 Installation
 
-Install [@bugsplat/js-api-client](https://www.npmjs.com/package/@bugsplat/js-api-client) via npm 
+Install [@bugsplat/js-api-client](https://www.npmjs.com/package/@bugsplat/js-api-client) via npm. This package currently requires Node.js 18 or later.
 
 ```sh
 npm i @bugsplat/js-api-client
 ```
+
+If you need to use a version of Node.js that's older than 18, you can install `@bugsplat/js-api-client@2.1.3`.
 
 ## ⚙️ Configuration
 

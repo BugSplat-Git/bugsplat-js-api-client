@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "prepare": "husky install",
     "pretest": "npm run lint:fix",
@@ -48,9 +51,6 @@
   },
   "dependencies": {
     "argument-contracts": "^1.2.3",
-    "fetch-ponyfill": "^7.1.0",
-    "form-data": "^4.0.0",
-    "node-fetch": "^2.6.1",
     "rxjs": "^7.1.0"
   },
   "devDependencies": {

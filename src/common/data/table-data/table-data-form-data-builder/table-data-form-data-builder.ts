@@ -1,6 +1,5 @@
 
 import { ApiDataFilterGroup } from '@common';
-import FormData from 'form-data';
 import { ColumnSortOrder } from './column-sort-order';
 
 export class TableDataFormDataBuilder {
