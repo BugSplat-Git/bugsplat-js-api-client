@@ -16,7 +16,7 @@ export class S3ApiClient {
         });
 
         if (response.status !== 200) {
-            throw new Error(`Error uploading to presignedUrl ${presignedUrl}`);
+            throw new Error(`Error uploading to presigned URL ${presignedUrl}`);
         }
 
         return response;

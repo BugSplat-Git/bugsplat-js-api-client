@@ -252,7 +252,19 @@ describe('VersionsApiClient', () => {
         });
 
         describe('error', () => {
-            it('should throw if response status is not 200', async () => {
+            it('should throw if error with invalid credentials message if status is 403', async () => {
+                const fakeErrorResponse = createFakeResponseBody(403);
+                fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
+
+                await expectAsync(versionsApiClient.postSymbols(
+                    database,
+                    application,
+                    version,
+                    files
+                )).toBeRejectedWithError('Error getting presigned URL, invalid credentials');
+            });
+            
+            it('should throw if response status is not 200, or 403', async () => {
                 const fakeErrorResponse = createFakeResponseBody(400);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
@@ -261,7 +273,7 @@ describe('VersionsApiClient', () => {
                     application,
                     version,
                     files
-                )).toBeRejectedWithError(`Error getting presignedUrl for ${files[0].name}`);
+                )).toBeRejectedWithError(`Error getting presigned URL for ${files[0].name}`);
             });
 
             it('should throw if response json Status is \'Failed\'', async () => {

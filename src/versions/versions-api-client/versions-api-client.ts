@@ -138,8 +138,12 @@ export class VersionsApiClient {
         };
 
         const response = await this._client.fetch(this.route, <RequestInit><unknown>init);
+        if (response.status === 403) {
+            throw new Error('Error getting presigned URL, invalid credentials');
+        }
+
         if (response.status !== 200) {
-            throw new Error(`Error getting presignedUrl for ${symFileName}`);
+            throw new Error(`Error getting presigned URL for ${symFileName}`);
         }
 
         const json = await response.json();

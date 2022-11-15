@@ -61,7 +61,7 @@ describe('S3ApiClient', () => {
                 const file = { name, size } as any;
                 (s3ApiClient as any)._fetch.and.resolveTo({ status: 500 });
 
-                await expectAsync(s3ApiClient.uploadFileToPresignedUrl(url, file)).toBeRejectedWithError(`Error uploading to presignedUrl ${url}`);
+                await expectAsync(s3ApiClient.uploadFileToPresignedUrl(url, file)).toBeRejectedWithError(`Error uploading to presigned URL ${url}`);
             });
         });
     });
