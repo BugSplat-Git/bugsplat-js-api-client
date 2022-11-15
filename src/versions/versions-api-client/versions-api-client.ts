@@ -138,6 +138,10 @@ export class VersionsApiClient {
         };
 
         const response = await this._client.fetch(this.route, <RequestInit><unknown>init);
+        if (response.status === 429) {
+            throw new Error('Error getting presigned URL, too many requests');
+        }
+
         if (response.status === 403) {
             throw new Error('Error getting presigned URL, invalid credentials');
         }
