@@ -58,7 +58,7 @@ export class CrashPostClient {
             + `&crashPostSize=${size}`;
         const response = await this._processorApiClient.fetch(route);
         if (response.status === 429) {
-            throw new Error("Failed to get crash upload URL, too many requests")
+            throw new Error('Failed to get crash upload URL, too many requests');
         }
 
         if (response.status !== 200) {
