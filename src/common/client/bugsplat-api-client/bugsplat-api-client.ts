@@ -1,10 +1,8 @@
 import { ApiClient, bugsplatAppHostUrl, BugSplatResponse, Environment } from '@common';
-import fetchPonyfill from 'fetch-ponyfill';
-import FormData from 'form-data';
 
 export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
-    private _fetch = fetchPonyfill().fetch;
+    private _fetch = globalThis.fetch;
     private _headers = {};
 
     constructor(

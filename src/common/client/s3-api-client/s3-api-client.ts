@@ -1,9 +1,8 @@
 import { UploadableFile } from '@common';
-import fetchPonyfill from 'fetch-ponyfill';
 
 export class S3ApiClient {
 
-    private _fetch = fetchPonyfill().fetch;
+    private _fetch = globalThis.fetch;
 
     async uploadFileToPresignedUrl(presignedUrl: string, file: UploadableFile): Promise<Response> {
         const response = await this._fetch(presignedUrl, {
