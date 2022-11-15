@@ -10,8 +10,8 @@ export interface VersionsApiResponseRow {
   size: string;
   reportsPerDay: string | null;
   rejectedCount: string;
-  retired: 0 | 1;
-  fullDumps: 0 | 1;
+  retired: '0' | '1';
+  fullDumps: '0' | '1';
 }
 
 export class VersionsApiRow {
@@ -24,8 +24,8 @@ export class VersionsApiRow {
   size: number;
   reportsPerDay: number;
   rejectedCount: number;
-  retired: 0 | 1;
-  fullDumps: 0 | 1;
+  retired: boolean;
+  fullDumps: boolean;
 
   constructor(rawApiRow: VersionsApiResponseRow) {
     ac.assertType(rawApiRow, Object, 'rawApiRow');
@@ -50,8 +50,8 @@ export class VersionsApiRow {
     this.size = Number(rawApiRow.size);
     this.reportsPerDay = Number(safeReportsPerDay);
     this.rejectedCount = Number(rawApiRow.rejectedCount);
-    this.retired = rawApiRow.retired;
-    this.fullDumps = rawApiRow.fullDumps;
+    this.retired = Boolean(Number(rawApiRow.retired));
+    this.fullDumps = Boolean(Number(rawApiRow.fullDumps));
 
     Object.freeze(this);
   }
