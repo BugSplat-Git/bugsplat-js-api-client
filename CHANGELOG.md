@@ -1,3 +1,13 @@
+# [3.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.3...v3.0.0) (2022-11-15)
+
+
+* feat!: require node 18 (#88) ([01b9907](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/01b9907efa31368d24d071eed4ff242b12667f13)), closes [#88](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/88)
+
+
+### BREAKING CHANGES
+
+* requires Node.js 18 or later
+
 ## [2.1.3](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.2...v2.1.3) (2022-11-15)
 
 
