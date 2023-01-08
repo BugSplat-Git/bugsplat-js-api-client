@@ -1,5 +1,7 @@
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody, FakeResponseBody } from '@spec/fakes/common/response';
+import { BugSplatResponse } from 'dist/esm';
+import { OAuthLoginResponse } from 'dist/esm/common/client/oauth-client-credentials-api-client/oauth-login-response';
 import { OAuthClientCredentialsClient } from './oauth-client-credentials-api-client';
 
 describe('OAuthClientCredentialsClient', () => {
@@ -7,7 +9,7 @@ describe('OAuthClientCredentialsClient', () => {
     let clientSecret: string;
     let fakeAuthorizeResponseBody: FakeResponseBody<AuthorizeResult>;
     let fakeAuthorizeResult: AuthorizeResult;
-    let fakeFetchResponseBody;
+    let fakeFetchResponseBody: FakeResponseBody<unknown>;
     let fakeFetchResult;
     let fakeFormData;
     let host;
@@ -38,7 +40,7 @@ describe('OAuthClientCredentialsClient', () => {
     });
 
     describe('login', () => {
-        let result;
+        let result: BugSplatResponse<OAuthLoginResponse>;
 
         beforeEach(async () => result = await sut.login());
 
@@ -91,7 +93,7 @@ describe('OAuthClientCredentialsClient', () => {
     describe('fetch', () => {
         let route;
         let headers;
-        let result;
+        let result: BugSplatResponse<unknown>;
 
         beforeEach(async () => {
             route = '/what/will/we/do/with/a/drunken/sailor';
@@ -129,8 +131,10 @@ describe('OAuthClientCredentialsClient', () => {
             }));
         });
 
-        it('should return result', () => {
-            expect(result).toEqual(fakeFetchResponseBody);
+        it('should return result', async () => {
+            const expectedJson = await fakeFetchResponseBody.json();
+            const resultJson = await result.json();
+            expect(resultJson).toEqual(jasmine.objectContaining(expectedJson as Record<string, unknown>));
         });
 
         describe('error', () => {

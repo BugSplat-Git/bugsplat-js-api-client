@@ -1,4 +1,6 @@
-import { ApiClient, bugsplatAppHostUrl } from '@common';
+import { ApiClient, bugsplatAppHostUrl, BugSplatResponse } from '@common';
+import { OAuthLoginResponse } from './oauth-login-response';
+
 export class OAuthClientCredentialsClient implements ApiClient {
 
     private _accessToken = '';
@@ -26,7 +28,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         return client;
     }
 
-    async login(): Promise<Response> {
+    async login(): Promise<BugSplatResponse<OAuthLoginResponse>> {
         const url = `${this._host}/oauth2/authorize`;
         const method = 'POST';
         const body = this.createFormData();
@@ -39,24 +41,25 @@ export class OAuthClientCredentialsClient implements ApiClient {
             body
         } as RequestInit;
 
-        const response = await this.fetch(url, request);
-        const responseJson = await response.clone().json();
+        const response = await this.fetch<LoginResponse>(url, request);
+        const responseJson = await response.json();
 
-        if (responseJson.error === 'invalid_client') {
+        if ((responseJson as ErrorResponse).error === 'invalid_client') {
             throw new Error('Could not authenticate, check credentials and try again');
         }
 
-        this._accessToken = responseJson.access_token;
-        this._tokenType = responseJson.token_type;
+        const loginResponse = responseJson as OAuthLoginResponse;
+        this._accessToken = loginResponse.access_token;
+        this._tokenType = loginResponse.token_type;
 
-        return response;
+        return response as BugSplatResponse<OAuthLoginResponse>;
     }
     
     createFormData(): FormData {
         return this._createFormData();
     }
 
-    async fetch(route: string, init?: RequestInit): Promise<Response> {
+    async fetch<T>(route: string, init?: RequestInit): Promise<BugSplatResponse<T>> {
         const url = new URL(route, this._host);
         init = init ?? {};
         
@@ -67,11 +70,19 @@ export class OAuthClientCredentialsClient implements ApiClient {
         init.headers['Authorization'] = `${this._tokenType} ${this._accessToken}`;
         
         const response = await this._fetch(url.href, init);
+        const status = response.status;
         
-        if (response.status === 401) {
+        if (status === 401) {
             throw new Error('Could not authenticate, check credentials and try again');
         }
 
-        return response;
+        return {
+            status,
+            json: async () => response.clone().json(),
+            text: async () => response.clone().text()
+        };
     }  
 }
+
+type ErrorResponse = { error: string };
+type LoginResponse = ErrorResponse | OAuthLoginResponse;

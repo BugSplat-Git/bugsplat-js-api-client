@@ -1,4 +1,5 @@
-import { ApiClient, bugsplatAppHostUrl, Environment } from '@common';
+import { ApiClient, bugsplatAppHostUrl, BugSplatResponse, Environment } from '@common';
+import { BugSplatLoginResponse } from './bugsplat-login-response';
 
 export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
@@ -34,7 +35,7 @@ export class BugSplatApiClient implements ApiClient {
         return this._createFormData();
     }
 
-    async fetch(route: string, init: RequestInit = {}): Promise<Response> {
+    async fetch<T>(route: string, init: RequestInit = {}): Promise<BugSplatResponse<T>> {
         if (!init.headers) {
             init.headers = {};
         }
@@ -48,10 +49,17 @@ export class BugSplatApiClient implements ApiClient {
         }
 
         const url = new URL(route, this._host);
-        return this._fetch(url.href, init);
+        const response = await this._fetch(url.href, init);
+        const status = response.status;
+
+        return {
+            status,
+            json: async () => response.clone().json(),
+            text: async () => response.clone().text()
+        };
     }
 
-    async login(email: string, password: string): Promise<Response> {
+    async login(email: string, password: string): Promise<BugSplatResponse<BugSplatLoginResponse>> {
         const url = new URL('/api/authenticatev3', this._host);
         const formData = this._createFormData();
         formData.append('email', email);

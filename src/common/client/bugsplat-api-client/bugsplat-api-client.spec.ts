@@ -85,8 +85,10 @@ describe('BugSplatApiClient', () => {
             });
         });
 
-        it('should return result', () => {
-            expect(result).toEqual(fakeSuccessResponseBody);
+        it('should return result', async () => {
+            const expectedJson = await fakeSuccessResponseBody.json();
+            const resultJson = await result.json();
+            expect(resultJson).toEqual(jasmine.objectContaining(expectedJson as Record<string, unknown>));
         });
     });
 

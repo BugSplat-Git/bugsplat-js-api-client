@@ -55,10 +55,13 @@ export class TableDataClient {
     const pageData = responseData ? responseData[0]?.PageData : {};
 
     const status = response.status;
-    const json = async () => ({ rows, pageData } as TableDataResponse<T, U>);
+    const payload = { rows, pageData } as TableDataResponse<T, U>;
+    const json = async () => payload;
+    const text = async () => JSON.stringify(payload);
     return {
       status,
-      json
+      json,
+      text
     };
   }
 }

@@ -6,4 +6,5 @@ export interface ApiClient {
 export interface BugSplatResponse<T = unknown> {
     status: number;
     json: () => Promise<T>;
+    text: () => Promise<string>;
 }

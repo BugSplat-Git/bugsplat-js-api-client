@@ -35,6 +35,10 @@ export class FakeResponseBody<T> {
         return this._json;
     }
 
+    async text(): Promise<string> {
+        return JSON.stringify(this._json);
+    }
+
     clone(): FakeResponseBody<T> {
         return new FakeResponseBody<T>(
             this.status,
