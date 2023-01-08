@@ -1,5 +1,6 @@
 import { ApiClient, BugSplatResponse, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
 import { CrashesApiRow } from '@crashes';
+import { CrashesApiResponseRow } from 'dist/esm/crashes/crashes-api-row/crashes-api-row';
 
 export class CrashesApiClient {
 
@@ -10,7 +11,7 @@ export class CrashesApiClient {
     }
 
     async getCrashes(request: TableDataRequest): Promise<TableDataResponse<CrashesApiRow>> {
-        const response = await this._tableDataClient.postGetData(request);
+        const response = await this._tableDataClient.postGetData<CrashesApiResponseRow>(request);
         const json = await response.json();
         const pageData = json.pageData;
         const rows = json.rows.map(row => new CrashesApiRow(row));
@@ -32,14 +33,14 @@ export class CrashesApiClient {
         formData.append('id', `${id}`);
         formData.append('Comments', notes);
 
-        const init = {
+        const request = {
             method: 'POST',
             body: formData,
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow'
-        };
+        } as RequestInit;
 
-        return this._client.fetch('/allcrash?data', <RequestInit><unknown>init);
+        return this._client.fetch('/allcrash?data', request);
     }
 }

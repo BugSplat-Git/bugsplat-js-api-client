@@ -1,4 +1,6 @@
-import { ApiClient, BugSplatResponse, TableDataFormDataBuilder } from '@common';
+import { ApiClient, BugSplatResponse, TableDataFormDataBuilder, TableDataResponse } from '@common';
+import { RawResponse } from 'src/common/data/table-data/table-data-client/table-data-client';
+import { SummaryApiResponseRow } from '../summary-api-row/summary-api-row';
 import { SummaryTableDataRequest } from './summary-table-data-request';
 
 export class SummaryTableDataClient {
@@ -6,7 +8,7 @@ export class SummaryTableDataClient {
   constructor(private _apiClient: ApiClient, private _url: string) { }
 
   // We use POST to get data in most cases because it supports longer queries
-  async postGetData(request: SummaryTableDataRequest): Promise<BugSplatResponse> {
+  async postGetData(request: SummaryTableDataRequest): Promise<BugSplatResponse<TableDataResponse<SummaryApiResponseRow>>> {
     const factory = () => this._apiClient.createFormData();
     const formData = new TableDataFormDataBuilder(factory)
       .withDatabase(request.database)
@@ -19,18 +21,18 @@ export class SummaryTableDataClient {
       .withSortColumn(request.sortColumn)
       .withSortOrder(request.sortOrder)
       .build();
-    const init = {
+    const requestInit = {
       method: 'POST',
       body: formData,
       cache: 'no-cache',
       credentials: 'include',
       redirect: 'follow'
-    };
-    return this.makeRequest(this._url, <RequestInit><unknown>init);
+    } as RequestInit;
+    return this.makeRequest(this._url, requestInit);
   }
 
-  private async makeRequest(url: string, init: RequestInit): Promise<BugSplatResponse> {
-    const response = await this._apiClient.fetch(url, init);
+  private async makeRequest(url: string, init: RequestInit): Promise<BugSplatResponse<TableDataResponse<SummaryApiResponseRow>>> {
+    const response = await this._apiClient.fetch<RawResponse<TableDataResponse<SummaryApiResponseRow>>>(url, init);
     const responseData = await response.json();
     const rows = responseData ? responseData[0]?.Rows : [];
     const pageData = responseData ? responseData[0]?.PageData : {};

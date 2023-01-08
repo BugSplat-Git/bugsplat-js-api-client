@@ -1,4 +1,4 @@
-export interface TableDataResponse<T> {
+export interface TableDataResponse<T, U = unknown> {
   rows: Array<T>;
-  pageData?: Record<string, unknown>;
+  pageData?: Record<string, U>;
 }

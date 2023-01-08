@@ -57,12 +57,13 @@ export class BugSplatApiClient implements ApiClient {
         formData.append('email', email);
         formData.append('password', password);
         formData.append('Login', 'Login');
-        const response = await this._fetch(url.href, <RequestInit><unknown>{
+        const request = {
             method: 'POST',
             body: formData,
             cache: 'no-cache',
             redirect: 'follow'
-        });
+        } as RequestInit;
+        const response = await this._fetch(url.href, request);
 
         if (response.status === 401) {
             throw new Error('Could not authenticate, check credentials and try again');

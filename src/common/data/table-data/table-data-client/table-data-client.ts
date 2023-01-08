@@ -1,4 +1,4 @@
-import { ApiClient, TableDataRequest, BugSplatResponse } from '@common';
+import { ApiClient, TableDataRequest, BugSplatResponse, TableDataResponse } from '@common';
 import { TableDataFormDataBuilder } from '../table-data-form-data-builder/table-data-form-data-builder';
 
 export class TableDataClient {
@@ -6,7 +6,7 @@ export class TableDataClient {
   constructor(private _apiClient: ApiClient, private _url: string) { }
 
   // We use POST to get data in most cases because it supports longer queries
-  async postGetData(request: TableDataRequest): Promise<BugSplatResponse> {
+  async postGetData<T, U = unknown>(request: TableDataRequest): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
     const factory = () => this._apiClient.createFormData();
     const formData = new TableDataFormDataBuilder(factory)
       .withDatabase(request.database)
@@ -17,17 +17,17 @@ export class TableDataClient {
       .withSortColumn(request.sortColumn)
       .withSortOrder(request.sortOrder)
       .build();
-    const init = {
+    const requestInit = {
       method: 'POST',
       body: formData,
       cache: 'no-cache',
       credentials: 'include',
       redirect: 'follow'
-    };
-    return this.makeRequest(this._url, <RequestInit><unknown>init);
+    } as RequestInit;
+    return this.makeRequest<T, U>(this._url, requestInit);
   }
 
-  async getData(request: TableDataRequest): Promise<BugSplatResponse> {
+  async getData<T, U = unknown>(request: TableDataRequest): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
     const factory = () => this._apiClient.createFormData();
     const formData = new TableDataFormDataBuilder(factory)
       .withDatabase(request.database)
@@ -38,24 +38,24 @@ export class TableDataClient {
       .withSortColumn(request.sortColumn)
       .withSortOrder(request.sortOrder)
       .entries();
-    const init = {
+    const requestInit = {
       method: 'GET',
       cache: 'no-cache',
       credentials: 'include',
       redirect: 'follow'
-    };
+    } as RequestInit;
     const queryParams = new URLSearchParams(formData).toString();
-    return this.makeRequest(`${this._url}?${queryParams}`, <RequestInit><unknown>init);
+    return this.makeRequest<T, U>(`${this._url}?${queryParams}`, requestInit);
   }
 
-  private async makeRequest(url: string, init: RequestInit): Promise<BugSplatResponse> {
-    const response = await this._apiClient.fetch(url, init);
+  private async makeRequest<T, U = unknown>(url: string, init: RequestInit): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
+    const response = await this._apiClient.fetch<RawResponse<TableDataResponse<T,U>>>(url, init);
     const responseData = await response.json();
     const rows = responseData ? responseData[0]?.Rows : [];
     const pageData = responseData ? responseData[0]?.PageData : {};
-    
+
     const status = response.status;
-    const json = async () => ({ rows, pageData });
+    const json = async () => ({ rows, pageData } as TableDataResponse<T, U>);
     return {
       status,
       json
@@ -63,5 +63,9 @@ export class TableDataClient {
   }
 }
 
-
+// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as
+// export type RawResponse<T, U = unknown> = Array<{ Rows: Array<T>, PageData: U }>;
+export type RawResponse<T> = Array<{
+  [Property in keyof T as Capitalize<string & Property>]: T[Property]
+}>
 

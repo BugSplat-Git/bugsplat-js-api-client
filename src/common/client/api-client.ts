@@ -1,9 +1,9 @@
 export interface ApiClient {
     createFormData(): FormData;
-    fetch(route: string, init?: RequestInit): Promise<BugSplatResponse>;
+    fetch<T>(route: string, init?: RequestInit): Promise<BugSplatResponse<T>>;
 }
 
-export interface BugSplatResponse {
+export interface BugSplatResponse<T = unknown> {
     status: number;
-    json: () => Promise<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+    json: () => Promise<T>;
 }

@@ -37,9 +37,9 @@ export class OAuthClientCredentialsClient implements ApiClient {
         const request = {
             method,
             body
-        };
+        } as RequestInit;
 
-        const response = await this.fetch(url, <RequestInit><unknown>request);
+        const response = await this.fetch(url, request);
         const responseJson = await response.clone().json();
 
         if (responseJson.error === 'invalid_client') {

@@ -1,6 +1,7 @@
 import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
-import { VersionsApiRow } from '../versions-api-row/versions-api-row';
+import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
+import { PutRetiredResponse } from './put-retired-response';
 
 export class VersionsApiClient {
 
@@ -16,7 +17,7 @@ export class VersionsApiClient {
     }
 
     async getVersions(request: TableDataRequest): Promise<TableDataResponse<VersionsApiRow>> {
-        const response = await this._tableDataClient.getData(request);
+        const response = await this._tableDataClient.getData<VersionsApiResponseRow>(request);
         const json = await response.json();
         const pageData = json.pageData;
         const rows = json.rows.map(row => new VersionsApiRow(row));
@@ -35,14 +36,14 @@ export class VersionsApiClient {
     ): Promise<BugSplatResponse> {
         const fullDumpsFlag = fullDumps ? '1' : '0';
         const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}&fullDumps=${fullDumpsFlag}`;
-        const init = {
+        const request = {
             method: 'PUT',
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow'
-        };
+        } as RequestInit;
 
-        return this._client.fetch(route, <RequestInit>init);
+        return this._client.fetch(route, request);
     }
     
     async putRetired(
@@ -50,17 +51,17 @@ export class VersionsApiClient {
         application: string,
         version: string,
         retired: boolean
-    ): Promise<BugSplatResponse> {
+    ): Promise<BugSplatResponse<PutRetiredResponse>> {
         const retiredFlag = retired ? '1' : '0';
         const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}&retired=${retiredFlag}`;
-        const init = {
+        const request = {
             method: 'PUT',
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow'
-        };
+        } as RequestInit;
 
-        return this._client.fetch(route, <RequestInit>init);
+        return this._client.fetch(route, request);
     }
 
     async deleteSymbols(
@@ -69,19 +70,19 @@ export class VersionsApiClient {
         version: string
     ): Promise<BugSplatResponse> {
         const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}`;
-        const init = {
+        const request = {
             method: 'DELETE',
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow'
-        };
+        } as RequestInit;
 
-        const response = await this._client.fetch(route, <RequestInit>init);
+        const response = await this._client.fetch(route, request);
         if (response.status !== 200) {
             throw new Error(`Error deleting symbols for ${database}-${application}-${version} status ${response.status}`);
         }
 
-        const json = await response.json();
+        const json = await response.json() as Response;
         if (json.Status === 'Failed') {
             throw new Error(json.Error);
         }
@@ -129,15 +130,15 @@ export class VersionsApiClient {
         formData.append('appVersion', appVersion);
         formData.append('size', size.toString());
         formData.append('symFileName', symFileName);
-        const init = {
+        const request = {
             method: 'POST',
             body: formData,
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow'
-        };
+        } as RequestInit;
 
-        const response = await this._client.fetch(this.route, <RequestInit><unknown>init);
+        const response = await this._client.fetch(this.route, request);
         if (response.status === 429) {
             throw new Error('Error getting presigned URL, too many requests');
         }
@@ -150,11 +151,13 @@ export class VersionsApiClient {
             throw new Error(`Error getting presigned URL for ${symFileName}`);
         }
 
-        const json = await response.json();
+        const json = await response.json() as Response & { url?: string };
         if (json.Status === 'Failed') {
             throw new Error(json.Error);
         }
 
-        return json.url;
+        return json.url as string;
     }
 }
+
+type Response = { Status: string, Error?: string };
