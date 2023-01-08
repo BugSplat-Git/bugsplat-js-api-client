@@ -64,7 +64,6 @@ export class TableDataClient {
 }
 
 // https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as
-// export type RawResponse<T, U = unknown> = Array<{ Rows: Array<T>, PageData: U }>;
 export type RawResponse<T> = Array<{
   [Property in keyof T as Capitalize<string & Property>]: T[Property]
 }>
