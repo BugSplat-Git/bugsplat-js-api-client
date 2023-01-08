@@ -1,4 +1,4 @@
-import { ApiClient, bugsplatAppHostUrl, BugSplatResponse } from '@common';
+import { ApiClient, bugsplatAppHostUrl } from '@common';
 export class OAuthClientCredentialsClient implements ApiClient {
 
     private _accessToken = '';
@@ -26,7 +26,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         return client;
     }
 
-    async login(): Promise<BugSplatResponse> {
+    async login(): Promise<Response> {
         const url = `${this._host}/oauth2/authorize`;
         const method = 'POST';
         const body = this.createFormData();
@@ -40,8 +40,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         };
 
         const response = await this.fetch(url, <RequestInit><unknown>request);
-        const responseJson = await response.json();
-        const status = response.status;
+        const responseJson = await response.clone().json();
 
         if (responseJson.error === 'invalid_client') {
             throw new Error('Could not authenticate, check credentials and try again');
@@ -50,18 +49,14 @@ export class OAuthClientCredentialsClient implements ApiClient {
         this._accessToken = responseJson.access_token;
         this._tokenType = responseJson.token_type;
 
-        const json = async () => responseJson;
-        return {
-            status,
-            json
-        };
+        return response;
     }
     
     createFormData(): FormData {
         return this._createFormData();
     }
 
-    async fetch(route: string, init?: RequestInit): Promise<BugSplatResponse> {
+    async fetch(route: string, init?: RequestInit): Promise<Response> {
         const url = new URL(route, this._host);
         init = init ?? {};
         

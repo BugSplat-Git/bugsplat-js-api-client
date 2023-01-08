@@ -1,12 +1,12 @@
 import { createFakeFormData } from '@spec/fakes/common/form-data';
-import { createFakeResponseBody } from '@spec/fakes/common/response';
+import { createFakeResponseBody, FakeResponseBody } from '@spec/fakes/common/response';
 import { OAuthClientCredentialsClient } from './oauth-client-credentials-api-client';
 
 describe('OAuthClientCredentialsClient', () => {
-    let clientId;
-    let clientSecret;
-    let fakeAuthorizeResponseBody;
-    let fakeAuthorizeResult;
+    let clientId: string;
+    let clientSecret: string;
+    let fakeAuthorizeResponseBody: FakeResponseBody<AuthorizeResult>;
+    let fakeAuthorizeResult: AuthorizeResult;
     let fakeFetchResponseBody;
     let fakeFetchResult;
     let fakeFormData;
@@ -70,7 +70,7 @@ describe('OAuthClientCredentialsClient', () => {
         });
 
         describe('error', () => {
-            it('should return useful error message when authenication fails', async () => {
+            it('should return useful error message when authentication fails', async () => {
                 const failureResponseBody = createFakeResponseBody(200, { error: 'invalid_client' });
                 sut = createFakeOAuthClientCredentialsClient(
                     'blah',
@@ -158,4 +158,9 @@ function createFakeOAuthClientCredentialsClient(
     (<any>client)._fetch.and.returnValue(responseBody);
     (<any>client)._createFormData = () => formData;
     return client;
+}
+
+interface AuthorizeResult {
+    access_token: string;
+    token_type: string;
 }
