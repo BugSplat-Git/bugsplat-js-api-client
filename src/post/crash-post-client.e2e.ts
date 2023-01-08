@@ -20,7 +20,7 @@ describe('CrashPostClient', () => {
                 crashFile,
                 md5
             );
-            const json = await result.json() as { crashId: number };
+            const json = await result.json();
 
             expect(result.status).toEqual(200);
             expect(json.crashId).toBeGreaterThan(0);

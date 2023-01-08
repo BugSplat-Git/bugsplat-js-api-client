@@ -39,7 +39,7 @@ export async function postNativeCrash(
         crashFile,
         'ebe24c1cd1a0912904658fa4fad2b539'
     );
-    const json = await postCrashResult.json() as { crashId: number };
+    const json = await postCrashResult.json();
 
     return json.crashId;
 }
