@@ -1,6 +1,6 @@
 import { ApiClient, BugSplatResponse, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
 import { CrashesApiRow } from '@crashes';
-import { CrashesApiResponseRow } from 'dist/esm/crashes/crashes-api-row/crashes-api-row';
+import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
 
 export class CrashesApiClient {
 

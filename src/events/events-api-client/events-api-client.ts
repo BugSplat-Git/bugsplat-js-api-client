@@ -1,7 +1,6 @@
 import { ApiClient } from '@common';
-import { convertEventsToEventStreamEvents, Event } from '@events';
+import { convertEventsToEventStreamEvents, Event, EventResponseObject } from '@events';
 import ac from 'argument-contracts';
-import { EventResponseObject } from 'dist/esm';
 
 export enum EventType {
     Comment = 'Comment',
