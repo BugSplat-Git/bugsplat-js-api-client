@@ -14,17 +14,18 @@ describe('BugSplatApiClient', () => {
     let expectedStatus;
     let expectedJson;
     let fakeFormData;
-    let fakeSuccessReponseBody;
+    let fakeSuccessResponseBody;
 
     beforeEach(() => {
+        const headers = new Map([['set-cookie', cookie]]);
         appendSpy = jasmine.createSpy();
         expectedStatus = 'success';
         expectedJson = { success: 'true' };
         fakeFormData = { append: appendSpy, toString: () => 'BugSplat rocks!' };
-        fakeSuccessReponseBody = createFakeResponseBody(expectedStatus, expectedJson, true, cookie);
+        fakeSuccessResponseBody = createFakeResponseBody(expectedStatus, expectedJson, true, headers);
         client = createFakeBugSplatApiClient(
             Environment.Node,
-            fakeSuccessReponseBody,
+            fakeSuccessResponseBody,
             fakeFormData
         );
     });
@@ -52,7 +53,7 @@ describe('BugSplatApiClient', () => {
             it('should call fetch with include credentials in request init', async () => {
                 client = createFakeBugSplatApiClient(
                     Environment.WebBrowser,
-                    fakeSuccessReponseBody,
+                    fakeSuccessResponseBody,
                     fakeFormData
                 );
 
@@ -84,8 +85,10 @@ describe('BugSplatApiClient', () => {
             });
         });
 
-        it('should return result', () => {
-            expect(result).toEqual(fakeSuccessReponseBody);
+        it('should return result', async () => {
+            const expectedJson = await fakeSuccessResponseBody.json();
+            const resultJson = await result.json();
+            expect(resultJson).toEqual(jasmine.objectContaining(expectedJson as Record<string, unknown>));
         });
     });
 
@@ -117,7 +120,7 @@ describe('BugSplatApiClient', () => {
         });
 
         it('should return result', () => {
-            expect(result).toEqual(fakeSuccessReponseBody);
+            expect(result).toEqual(fakeSuccessResponseBody);
         });
 
         describe('error', () => {

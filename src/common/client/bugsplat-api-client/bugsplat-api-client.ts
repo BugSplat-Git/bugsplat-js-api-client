@@ -1,4 +1,5 @@
 import { ApiClient, bugsplatAppHostUrl, BugSplatResponse, Environment } from '@common';
+import { BugSplatLoginResponse } from './bugsplat-login-response';
 
 export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
@@ -34,7 +35,7 @@ export class BugSplatApiClient implements ApiClient {
         return this._createFormData();
     }
 
-    async fetch(route: string, init: RequestInit = {}): Promise<BugSplatResponse> {
+    async fetch<T>(route: string, init: RequestInit = {}): Promise<BugSplatResponse<T>> {
         if (!init.headers) {
             init.headers = {};
         }
@@ -48,21 +49,29 @@ export class BugSplatApiClient implements ApiClient {
         }
 
         const url = new URL(route, this._host);
-        return this._fetch(url.href, init);
+        const response = await this._fetch(url.href, init);
+        const status = response.status;
+
+        return {
+            status,
+            json: async () => response.clone().json(),
+            text: async () => response.clone().text()
+        };
     }
 
-    async login(email: string, password: string): Promise<BugSplatResponse> {
+    async login(email: string, password: string): Promise<BugSplatResponse<BugSplatLoginResponse>> {
         const url = new URL('/api/authenticatev3', this._host);
         const formData = this._createFormData();
         formData.append('email', email);
         formData.append('password', password);
         formData.append('Login', 'Login');
-        const response = await this._fetch(url.href, <RequestInit><unknown>{
+        const request = {
             method: 'POST',
             body: formData,
             cache: 'no-cache',
             redirect: 'follow'
-        });
+        } as RequestInit;
+        const response = await this._fetch(url.href, request);
 
         if (response.status === 401) {
             throw new Error('Could not authenticate, check credentials and try again');

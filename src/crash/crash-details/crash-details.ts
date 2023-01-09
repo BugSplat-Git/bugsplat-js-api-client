@@ -19,7 +19,7 @@ export enum DefectTrackerType {
   Assembla = 'Assembla'
 }
 
-interface CrashDetailsConstructorOptions {
+export interface CrashDetailsConstructorOptions {
   processed: ProcessingStatus;
 
   additionalFiles?: Array<string>;

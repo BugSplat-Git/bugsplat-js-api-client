@@ -1,6 +1,7 @@
 import { ApiClient } from '@common';
 import { CrashDetails } from '@crash';
 import ac from 'argument-contracts';
+import { CrashDetailsConstructorOptions } from '../crash-details/crash-details';
 
 export class CrashApiClient {
 
@@ -22,19 +23,19 @@ export class CrashApiClient {
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow'
-        };
+        } as RequestInit;
 
-        const response = await this._client.fetch('/api/crash/data', <RequestInit><unknown>init);
+        const response = await this._client.fetch<GetCrashByIdResponse>('/api/crash/data', init);
         const json = await response.json();
 
         if (response.status !== 200) {
-            throw new Error(json.message);
+            throw new Error((json as Error).message);
         }
 
-        return new CrashDetails(json);
+        return new CrashDetails(json as CrashDetailsConstructorOptions);
     }
 
-    async reprocessCrash(database: string, crashId: number, force = false): Promise<{ success: boolean }> {
+    async reprocessCrash(database: string, crashId: number, force = false): Promise<SuccessResponse> {
         ac.assertNonWhiteSpaceString(database, 'database');
         ac.assertBoolean(force, 'force');
         if (crashId <= 0) {
@@ -51,15 +52,20 @@ export class CrashApiClient {
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow'
-        };
+        } as RequestInit;
 
-        const response = await this._client.fetch('/api/crash/reprocess', <RequestInit><unknown>init);
+        const response = await this._client.fetch<ReprocessCrashResponse>('/api/crash/reprocess', init);
         const json = await response.json();
 
         if (response.status !== 202) {
-            throw new Error(json.message);
+            throw new Error((json as ErrorResponse).message);
         }
         
-        return json;
+        return json as SuccessResponse;
     }
 }
+
+type SuccessResponse = { success: boolean };
+type ErrorResponse = { message: string };
+type GetCrashByIdResponse = CrashDetailsConstructorOptions | ErrorResponse;
+type ReprocessCrashResponse = SuccessResponse | ErrorResponse;

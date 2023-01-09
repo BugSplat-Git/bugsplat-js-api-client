@@ -1,5 +1,5 @@
 import { ApiClient } from '@common';
-import { convertEventsToEventStreamEvents, Event } from '@events';
+import { convertEventsToEventStreamEvents, Event, EventResponseObject } from '@events';
 import ac from 'argument-contracts';
 
 export enum EventType {
@@ -34,12 +34,15 @@ export class EventsApiClient {
 
     private async getEvents(route: string): Promise<Array<Event>> {
         const response = await this._client.fetch(route);
-        const json = await response.json();
+        const json = await response.json() as SuccessResponse | ErrorResponse;
 
         if (response.status !== 200) {
-            throw new Error(json.message);
+            throw new Error((json as ErrorResponse).message);
         }
 
-        return convertEventsToEventStreamEvents(json.events);
+        return convertEventsToEventStreamEvents((json as SuccessResponse).events);
     }
 }
+
+type SuccessResponse = { events: Array<EventResponseObject> };
+type ErrorResponse = { message: string };

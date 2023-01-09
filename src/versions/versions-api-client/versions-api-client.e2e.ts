@@ -60,7 +60,7 @@ describe('VersionsApiClient', () => {
     describe('putRetired', () => {
         it('should return 200 for put with valid database, application, and version', async () => {
             const retired = true;
-            
+
             const result = await client.putRetired(
                 database,
                 application,

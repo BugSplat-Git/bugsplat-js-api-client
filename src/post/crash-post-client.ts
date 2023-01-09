@@ -1,5 +1,6 @@
-import { BugSplatApiClient, UploadableFile, BugSplatResponse, Environment, S3ApiClient } from '@common';
+import { BugSplatApiClient, BugSplatResponse, Environment, S3ApiClient, UploadableFile } from '@common';
 import { CrashType } from '@post';
+import { PostCrashResponse } from './post-crash-response';
 
 export class CrashPostClient {
 
@@ -24,7 +25,7 @@ export class CrashPostClient {
         type: CrashType,
         file: UploadableFile,
         md5 = ''
-    ): Promise<BugSplatResponse> {
+    ): Promise<BugSplatResponse<PostCrashResponse>> {
         const uploadUrl = await this.getCrashUploadUrl(
             this._database,
             application,
@@ -56,7 +57,7 @@ export class CrashPostClient {
             + `&appName=${application}`
             + `&appVersion=${version}`
             + `&crashPostSize=${size}`;
-        const response = await this._processorApiClient.fetch(route);
+        const response = await this._processorApiClient.fetch<{ url: string}>(route);
         if (response.status === 429) {
             throw new Error('Failed to get crash upload URL, too many requests');
         }
@@ -77,7 +78,7 @@ export class CrashPostClient {
         crashType: CrashType,
         md5: string,
         processor?: string,
-    ): Promise<BugSplatResponse> {
+    ): Promise<BugSplatResponse<PostCrashResponse>> {
         const route = '/api/commitS3CrashUpload';
         const formData = this._processorApiClient.createFormData();
         formData.append('database', database);
@@ -91,13 +92,13 @@ export class CrashPostClient {
             formData.append('processor', processor);
         }
 
-        const init = {
+        const request = {
             method: 'POST',
             body: formData,
             cache: 'no-cache',
             redirect: 'follow'
-          };
+        } as RequestInit;
         
-        return this._processorApiClient.fetch(route, <RequestInit><unknown>init);
+        return this._processorApiClient.fetch(route, request);
     }
 }
