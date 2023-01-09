@@ -1,3 +1,13 @@
+# [4.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v3.0.0...v4.0.0) (2023-01-09)
+
+
+* feat!: allow body reuse (#92) ([498f448](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/498f448988c03a8b5249309ec330c92d257f382a)), closes [#92](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/92)
+
+
+### BREAKING CHANGES
+
+* api client now returns Response instead of BugSplatResponse to allow cloning. BugSplatResponse `json` no longer returns type `any`.
+
 # [3.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v2.1.3...v3.0.0) (2022-11-15)
 
 
