@@ -39,20 +39,21 @@ describe('OAuthClientCredentialsClient', () => {
     });
 
     describe('fetch', () => {
-        let application;
-        let version;
-        let id;
+        let application: string;
+        let version: string;
+        let id: number;
 
         beforeEach(async () => {
             const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
             application = 'myConsoleCrasher';
             version = `${Math.random() * 1000000}`;
-            id = await postNativeCrashAndSymbols(
+            const result = await postNativeCrashAndSymbols(
                 bugsplatApiClient,
                 config.database,
                 application,
                 version
             );
+            id = result.crashId;
         });
 
         it('should return 200 for endpoint that requires authentication', async () => {

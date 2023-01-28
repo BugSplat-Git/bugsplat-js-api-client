@@ -135,7 +135,8 @@ export class VersionsApiClient {
             body: formData,
             cache: 'no-cache',
             credentials: 'include',
-            redirect: 'follow'
+            redirect: 'follow',
+            duplex: 'half'
         } as RequestInit;
 
         const response = await this._client.fetch(this.route, request);

@@ -38,7 +38,8 @@ export class OAuthClientCredentialsClient implements ApiClient {
         body.append('scope', 'restricted');
         const request = {
             method,
-            body
+            body,
+            duplex: 'half'
         } as RequestInit;
 
         const response = await this.fetch<LoginResponse>(url, request);

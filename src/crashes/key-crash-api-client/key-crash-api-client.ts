@@ -1,17 +1,19 @@
-import { ApiClient, BugSplatResponse, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
+import { ApiClient, BugSplatResponse, TableDataClient, TableDataResponse } from '@common';
 import { CrashesApiRow } from '@crashes';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
+import { KeyCrashTableDataRequest } from './key-crash-table-data-request';
 
-export class CrashesApiClient {
+export class KeyCrashApiClient {
 
     private _tableDataClient: TableDataClient;
 
     constructor(private _client: ApiClient) {
-        this._tableDataClient = new TableDataClient(this._client, '/allcrash?data');
+        this._tableDataClient = new TableDataClient(this._client, '/keycrash?data&crashTimeSpan');
     }
 
-    async getCrashes(request: TableDataRequest): Promise<TableDataResponse<CrashesApiRow>> {
-        const response = await this._tableDataClient.postGetData<CrashesApiResponseRow>(request);
+    async getCrashes(request: KeyCrashTableDataRequest): Promise<TableDataResponse<CrashesApiRow>> {
+        const formParts = { stackKeyId: `${request.stackKeyId}` };
+        const response = await this._tableDataClient.postGetData<CrashesApiResponseRow>(request, formParts);
         const json = await response.json();
         const pageData = json.pageData;
         const rows = json.rows.map(row => new CrashesApiRow(row));
@@ -24,14 +26,13 @@ export class CrashesApiClient {
 
     postNotes(
         database: string,
-        id: number,
+        stackKeyId: number,
         notes: string
     ): Promise<BugSplatResponse> {
         const formData = this._client.createFormData();
-        formData.append('update', 'true');
         formData.append('database', database);
-        formData.append('id', `${id}`);
-        formData.append('Comments', notes);
+        formData.append('stackKeyId', stackKeyId.toString());
+        formData.append('stackKeyComment', notes);
 
         const request = {
             method: 'POST',
@@ -42,6 +43,6 @@ export class CrashesApiClient {
             duplex: 'half'
         } as RequestInit;
 
-        return this._client.fetch('/allcrash?data', request);
+        return this._client.fetch('/api/stackKeyComment.php', request);
     }
 }

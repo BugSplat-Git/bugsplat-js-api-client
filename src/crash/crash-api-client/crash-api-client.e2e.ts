@@ -5,21 +5,22 @@ import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash'
 
 describe('CrashApiClient', () => {
     let crashClient: CrashApiClient;
-    let application;
-    let version;
-    let id;
+    let application: string;
+    let version: string;
+    let id: number;
 
     beforeEach(async () => {
         const { host, email, password } = config;
         const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
         application = 'myConsoleCrasher';
         version = `${Math.random() * 1000000}`;
-        id = await postNativeCrashAndSymbols(
+        const result = await postNativeCrashAndSymbols(
             bugsplatApiClient,
             config.database,
             application,
             version
         );
+        id = result.crashId;
         
         crashClient = new CrashApiClient(bugsplatApiClient);
     });
