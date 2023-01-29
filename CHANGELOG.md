@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.0.0...v4.1.0) (2023-01-29)
+
+
+### Features
+
+* add key crash client ([#93](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/93)) ([3768787](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/376878776631496b2e84ce3cc076334835bcf569))
+
 # [4.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v3.0.0...v4.0.0) (2023-01-09)
 
 
