@@ -89,9 +89,10 @@ describe('KeyCrashApiClient', () => {
             const database = config.database;
             const notes = 'BugSplat rocks!';
 
-            await keyCrashClient.postNotes(database, stackKeyId, notes);
+            const postNotesResult = await keyCrashClient.postNotes(database, stackKeyId, notes);
             const result = await crashClient.getCrashById(database, id);
 
+            expect(postNotesResult.status).toEqual(200);
             expect(result.stackKeyComment).toEqual(notes);
         });
     });
