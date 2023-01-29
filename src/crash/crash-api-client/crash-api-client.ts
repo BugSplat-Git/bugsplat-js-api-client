@@ -22,7 +22,8 @@ export class CrashApiClient {
             body: formData,
             cache: 'no-cache',
             credentials: 'include',
-            redirect: 'follow'
+            redirect: 'follow',
+            duplex: 'half'
         } as RequestInit;
 
         const response = await this._client.fetch<GetCrashByIdResponse>('/api/crash/data', init);
@@ -51,7 +52,8 @@ export class CrashApiClient {
             body: formData,
             cache: 'no-cache',
             credentials: 'include',
-            redirect: 'follow'
+            redirect: 'follow',
+            duplex: 'half'
         } as RequestInit;
 
         const response = await this._client.fetch<ReprocessCrashResponse>('/api/crash/reprocess', init);

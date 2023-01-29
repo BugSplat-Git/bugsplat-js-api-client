@@ -44,6 +44,7 @@ export interface CrashDetailsConstructorOptions {
   platform?: string;
   previousCrashId?: number;
   processor?: string;
+  stackKeyComment?: string;
   stackKeyId?: number;
   stackKeyDefectLabel?: string;
   stackKeyDefectUrl?: string;
@@ -87,6 +88,7 @@ export class CrashDetails {
   platform?: string;
   previousCrashId?: number;
   processor?: string;
+  stackKeyComment?: string;
   stackKeyId?: number;
   stackKeyDefectId?: number;
   stackKeyDefectLabel?: string;
@@ -156,6 +158,10 @@ export class CrashDetails {
       options.processor,
       'options.processor'
     );
+    const safeStackKeyComment = defaultToEmptyString(
+      options.stackKeyComment,
+      'options.stackKeyComment'
+    );
     const safeStackKeyDefectLabel = defaultToEmptyString(
       options.stackKeyDefectLabel,
       'options.stackKeyDefectLabel'
@@ -192,6 +198,7 @@ export class CrashDetails {
     this.previousCrashId = options.previousCrashId;
     this.processed = options.processed;
     this.processor = safeProcessor;
+    this.stackKeyComment = safeStackKeyComment;
     this.stackKeyId = options.stackKeyId;
     this.stackKeyDefectLabel = safeStackKeyDefectLabel;
     this.stackKeyDefectUrl = safeStackKeyDefectUrl;

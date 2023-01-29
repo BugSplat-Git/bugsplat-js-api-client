@@ -96,7 +96,8 @@ export class CrashPostClient {
             method: 'POST',
             body: formData,
             cache: 'no-cache',
-            redirect: 'follow'
+            redirect: 'follow',
+            duplex: 'half'
         } as RequestInit;
         
         return this._processorApiClient.fetch(route, request);

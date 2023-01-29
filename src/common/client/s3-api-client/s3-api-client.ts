@@ -11,8 +11,9 @@ export class S3ApiClient {
                 'content-type': 'application/octet-stream',
                 'content-length': `${file.size}`
             },
-            body: file.file as BodyInit
-        });
+            body: file.file as BodyInit,
+            duplex: 'half'
+        } as RequestInit);
 
         if (response.status !== 200) {
             throw new Error(`Error uploading to presigned URL ${presignedUrl}`);

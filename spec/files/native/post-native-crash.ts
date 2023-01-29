@@ -4,12 +4,17 @@ import { VersionsApiClient } from '@versions';
 import { firstValueFrom, timer } from 'rxjs';
 import { createUploadableFile } from '../create-bugsplat-file';
 
+export interface CrashInfo {
+    crashId: number;
+    stackKeyId: number;
+}
+
 export async function postNativeCrashAndSymbols(
     authenticatedClient: BugSplatApiClient,
     database: string,
     application: string,
     version: string
-): Promise<number> {
+): Promise<CrashInfo> {
     const exeFile = createUploadableFile('./spec/files/native/myConsoleCrasher.exe');
     const pdbFile = createUploadableFile('./spec/files/native/myConsoleCrasher.pdb');
     const files = [exeFile, pdbFile];
@@ -28,7 +33,7 @@ export async function postNativeCrash(
     database: string,
     application: string,
     version: string
-): Promise<number> {
+): Promise<CrashInfo> {
     const crashFile = createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
     const crashPostClient = new CrashPostClient(database);
     await firstValueFrom(timer(2000)); // Prevent rate-limiting
@@ -39,7 +44,5 @@ export async function postNativeCrash(
         crashFile,
         'ebe24c1cd1a0912904658fa4fad2b539'
     );
-    const json = await postCrashResult.json();
-
-    return json.crashId;
+    return postCrashResult.json() as Promise<CrashInfo>;
 }

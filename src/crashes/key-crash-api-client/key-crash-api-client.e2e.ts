@@ -1,30 +1,33 @@
 import { ApiDataFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
 import { CrashApiClient } from '@crash';
-import { CrashesApiClient } from '@crashes';
+import { KeyCrashApiClient } from '@crashes';
 import { config } from '@spec/config';
-import { postNativeCrash, postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
+import { CrashInfo, postNativeCrash, postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
+import { firstValueFrom, timer } from 'rxjs';
 
-describe('CrashesApiClient', () => {
+describe('KeyCrashApiClient', () => {
     let crashClient: CrashApiClient;
-    let crashesClient: CrashesApiClient;
-    let application: string;
-    let version: string;
-    let id: number;
+    let keyCrashClient: KeyCrashApiClient;
+    let application;
+    let version;
+    let id;
+    let stackKeyId;
 
     beforeEach(async () => {
         const { host, email, password } = config;
         const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
-        crashesClient = new CrashesApiClient(bugsplat);
+        keyCrashClient = new KeyCrashApiClient(bugsplat);
         crashClient = new CrashApiClient(bugsplat);
         application = 'myConsoleCrasher';
         version = `${Math.random() * 1000000}`;
-        const result = await postNativeCrashAndSymbols(
+        const result = await postNativeCrashAndWaitForCrashToProcess(
             bugsplat,
-            config.database,
+            crashClient,
             application,
             version
         );
         id = result.crashId;
+        stackKeyId = result.stackKeyId;
     });
 
     describe('getCrashes', () => {
@@ -32,7 +35,7 @@ describe('CrashesApiClient', () => {
             const database = config.database;
             const pageSize = 1;
 
-            const result = await crashesClient.getCrashes({ database, pageSize });
+            const result = await keyCrashClient.getCrashes({ database, stackKeyId, pageSize });
 
             const row = result.rows.find(row => Number(row.id) === id);
             expect(result.rows).toBeTruthy();
@@ -47,7 +50,7 @@ describe('CrashesApiClient', () => {
             const pageSize = 1;
             const columnGroups = ['stackKey'];
 
-            const result = await crashesClient.getCrashes({ database, pageSize, columnGroups });
+            const result = await keyCrashClient.getCrashes({ database, stackKeyId, pageSize, columnGroups });
 
             const row = result.rows[0];
             expect(result.rows).toBeTruthy();
@@ -67,8 +70,9 @@ describe('CrashesApiClient', () => {
             );
             const filterGroups = [ApiDataFilterGroup.fromColumnValues([`${id}`, `${newestCrashId}`], 'id', FilterOperator.or)];
 
-            const result = await crashesClient.getCrashes({
+            const result = await keyCrashClient.getCrashes({
                 database,
+                stackKeyId,
                 filterGroups,
                 pageSize,
                 sortColumn,
@@ -85,10 +89,49 @@ describe('CrashesApiClient', () => {
             const database = config.database;
             const notes = 'BugSplat rocks!';
 
-            await crashesClient.postNotes(database, id, notes);
+            const postNotesResult = await keyCrashClient.postNotes(database, stackKeyId, notes);
             const result = await crashClient.getCrashById(database, id);
 
-            expect(result.comments).toEqual(notes);
+            expect(postNotesResult.status).toEqual(200);
+            expect(result.stackKeyComment).toEqual(notes);
         });
     });
 });
+
+async function postNativeCrashAndWaitForCrashToProcess(
+    bugsplat: BugSplatApiClient,
+    crashClient: CrashApiClient,
+    application: string,
+    version: string
+): Promise<CrashInfo> {
+    const result = await postNativeCrashAndSymbols(
+        bugsplat,
+        config.database,
+        application,
+        version
+    );
+
+    const crashId = result.crashId;
+    let stackKeyId = result.stackKeyId;
+
+    if (stackKeyId > 0) {
+        return {
+            crashId,
+            stackKeyId
+        };
+    }
+
+    for (let i = 0; i < 60; i++) {
+        const crash = await crashClient.getCrashById(config.database, crashId);
+        stackKeyId = crash.stackKeyId as number;
+        if (stackKeyId > 0) {
+            break;
+        }
+        await firstValueFrom(timer(3000));
+    }
+
+    return {
+        crashId,
+        stackKeyId
+    };
+}

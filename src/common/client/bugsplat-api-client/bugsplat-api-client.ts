@@ -69,7 +69,9 @@ export class BugSplatApiClient implements ApiClient {
             method: 'POST',
             body: formData,
             cache: 'no-cache',
-            redirect: 'follow'
+            redirect: 'follow',
+            credentials: 'include',
+            duplex: 'half'
         } as RequestInit;
         const response = await this._fetch(url.href, request);
 

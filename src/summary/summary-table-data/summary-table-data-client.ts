@@ -26,7 +26,8 @@ export class SummaryTableDataClient {
       body: formData,
       cache: 'no-cache',
       credentials: 'include',
-      redirect: 'follow'
+      redirect: 'follow',
+      duplex: 'half'
     } as RequestInit;
     return this.makeRequest(this._url, requestInit);
   }

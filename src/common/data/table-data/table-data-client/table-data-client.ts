@@ -6,9 +6,9 @@ export class TableDataClient {
   constructor(private _apiClient: ApiClient, private _url: string) { }
 
   // We use POST to get data in most cases because it supports longer queries
-  async postGetData<T, U = (Record<string, unknown> | undefined)>(request: TableDataRequest): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
+  async postGetData<T, U = (Record<string, unknown> | undefined)>(request: TableDataRequest, formParts: Record<string, string> = {}): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
     const factory = () => this._apiClient.createFormData();
-    const formData = new TableDataFormDataBuilder(factory)
+    const formData = new TableDataFormDataBuilder(factory, formParts)
       .withDatabase(request.database)
       .withFilterGroups(request.filterGroups)
       .withColumnGroups(request.columnGroups)
@@ -22,7 +22,8 @@ export class TableDataClient {
       body: formData,
       cache: 'no-cache',
       credentials: 'include',
-      redirect: 'follow'
+      redirect: 'follow',
+      duplex: 'half'
     } as RequestInit;
     return this.makeRequest<T, U>(this._url, requestInit);
   }
