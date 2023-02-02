@@ -1,5 +1,5 @@
 import { ApiClient, BugSplatResponse, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
-import { CrashesApiRow } from '@crashes';
+import { CrashesApiRow, CrashesPageData } from '@crashes';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
 
 export class CrashesApiClient {
@@ -10,8 +10,8 @@ export class CrashesApiClient {
         this._tableDataClient = new TableDataClient(this._client, '/allcrash?data');
     }
 
-    async getCrashes(request: TableDataRequest): Promise<TableDataResponse<CrashesApiRow>> {
-        const response = await this._tableDataClient.postGetData<CrashesApiResponseRow>(request);
+    async getCrashes(request: TableDataRequest): Promise<TableDataResponse<CrashesApiRow, CrashesPageData>> {
+        const response = await this._tableDataClient.postGetData<CrashesApiResponseRow, CrashesPageData>(request);
         const json = await response.json();
         const pageData = json.pageData;
         const rows = json.rows.map(row => new CrashesApiRow(row));
