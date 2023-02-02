@@ -1,3 +1,10 @@
+# [4.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.1.0...v4.2.0) (2023-02-02)
+
+
+### Features
+
+* add page data for crash and key crash ([#94](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/94)) ([c818fd1](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/c818fd10c108ceee9c7ec4fbea2c569dc1e3e0f5))
+
 # [4.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.0.0...v4.1.0) (2023-01-29)
 
 
