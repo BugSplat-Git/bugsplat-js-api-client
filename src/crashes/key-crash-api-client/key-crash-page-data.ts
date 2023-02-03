@@ -11,6 +11,8 @@ export interface KeyCrashPageData {
     defectTracker: boolean;
     defectTrackerType: DefectTrackerType;
     stackKeyDefectId: number;
+    stackKeyDefectUrl: string;
+    stackKeyDefectLabel: string;
     stackKeyComments: string;
     firstCrashTime: Date;
     lastCrashTime: Date;
