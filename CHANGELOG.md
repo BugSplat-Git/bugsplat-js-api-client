@@ -1,3 +1,10 @@
+# [4.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.2.0...v4.3.0) (2023-02-03)
+
+
+### Features
+
+* update KeyCrashPageData ([#95](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/95)) ([986832d](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/986832dfb1b9072207d1a367290868dbe33bb7c4))
+
 # [4.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.1.0...v4.2.0) (2023-02-02)
 
 
