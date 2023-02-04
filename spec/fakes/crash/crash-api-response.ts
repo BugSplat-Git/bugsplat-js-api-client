@@ -1,15 +1,16 @@
 import { GroupableThreadCollection, ProcessingStatus } from '@crash';
 import { EventType } from '@events';
 import { createFakeEvents } from '@spec/fakes/events/events';
+import { CrashDetailsRawResponse } from 'src/crash/crash-details/crash-details';
 
 export const createFakeCrashApiResponse = () => ({
-    processed: ProcessingStatus.Complete,
+    processed: ProcessingStatus.Complete as number,
     additionalFiles: ['1.txt', '2.png'],
     appKey: 'ardvark',
     appName: 'boregard',
     appVersion: '1.2.3.4',
     comments: 'blah blah blah',
-    crashTime: '01:00 PM GMT',
+    crashTime: '2023-02-04T17:58:15+0000Z',
     defectLabel: 'weee!',
     defectUrl: 'http://newayz.net',
     description: 'haa!',
@@ -25,9 +26,10 @@ export const createFakeCrashApiResponse = () => ({
     platform: 'NES',
     previousCrashId: 998,
     processor: 'Pentium 4',
+    stackKeyComment: 'hello world!',
     stackKeyId: 117,
     stackKeyDefectLabel: 'idk',
     stackKeyDefectUrl: 'http://toppong.com',
     thread: new GroupableThreadCollection({ stackFrames: [], stackKeyId: 117 }),
     user: 'Fred'
-});
+} as CrashDetailsRawResponse);

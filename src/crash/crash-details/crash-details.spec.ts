@@ -1,31 +1,20 @@
-import { CrashDetails, ProcessingStatus } from '@crash';
-import { EventStreamActionType } from '@events';
+import { AdditionalInfo, ProcessingStatus } from '@crash';
 import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
 import ac from 'argument-contracts';
+import { createEvents } from '../../events/events-api-client/event';
 import * as ThreadCollectionModule from '../thread-collection/thread-collection';
+import { createCrashDetails } from './crash-details';
 
-describe('Crash Details', () => {
+describe('createCrashDetails', () => {
   it('should set all properties', () => {
-    const options = createFakeCrashApiResponse();
+    const options: any = createFakeCrashApiResponse();
 
-    const result = new CrashDetails(options);
+    const result = createCrashDetails(options);
 
-    Object.keys(options).forEach(key => {
-      if (key !== 'events') {
-        expect(options[key]).toEqual(result[key]);
-      } else {
-        expect(result.events).toEqual(jasmine.arrayContaining([
-          jasmine.objectContaining({
-            action: EventStreamActionType.comment,
-            createdDate: new Date(options.events[0].timestamp),
-            subject: {
-              initials: options.events[0].username.substring(0, 2),
-              email: options.events[0].username,
-            },
-            message: options.events[0].message,
-          })
-        ]));
-      }
+    expect(result).toEqual({
+      ...options,
+      events: createEvents(options.events),
+      additionalInfo: jasmine.any(AdditionalInfo),
     });
   });
 
@@ -56,7 +45,7 @@ describe('Crash Details', () => {
       thread: (<any>{ stackFrames: [], stackKeyId: 0 })
     };
 
-    const result = new CrashDetails(<any>options);
+    const result = createCrashDetails(<any>options);
 
     expect(result.comments).toEqual('');
     expect(result.description).toEqual('');

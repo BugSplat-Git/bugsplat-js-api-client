@@ -1,8 +1,9 @@
-import { CrashApiClient, CrashDetails } from '@crash';
+import { CrashApiClient } from '@crash';
 import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
 import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
+import { createCrashDetails } from '../crash-details/crash-details';
 
 describe('CrashApiClient', () => {
     const database = 'fred';
@@ -49,7 +50,7 @@ describe('CrashApiClient', () => {
 
         it('should return response json', () => {
             expect(result).toEqual(
-                jasmine.objectContaining(new CrashDetails(fakeCrashApiResponse))
+                jasmine.objectContaining(createCrashDetails(fakeCrashApiResponse))
             );
         });
 

@@ -1,7 +1,7 @@
 import { ApiClient } from '@common';
 import { CrashDetails } from '@crash';
 import ac from 'argument-contracts';
-import { CrashDetailsConstructorOptions } from '../crash-details/crash-details';
+import { CrashDetailsRawResponse, createCrashDetails } from '../crash-details/crash-details';
 
 export class CrashApiClient {
 
@@ -33,7 +33,7 @@ export class CrashApiClient {
             throw new Error((json as Error).message);
         }
 
-        return new CrashDetails(json as CrashDetailsConstructorOptions);
+        return createCrashDetails(json as CrashDetailsRawResponse);
     }
 
     async reprocessCrash(database: string, crashId: number, force = false): Promise<SuccessResponse> {
@@ -42,7 +42,7 @@ export class CrashApiClient {
         if (crashId <= 0) {
             throw new Error(`Expected id to be a positive non-zero number. Value received: "${crashId}"`);
         }
-        
+
         const formData = this._client.createFormData();
         formData.append('database', database);
         formData.append('id', crashId.toString());
@@ -62,12 +62,12 @@ export class CrashApiClient {
         if (response.status !== 202) {
             throw new Error((json as ErrorResponse).message);
         }
-        
+
         return json as SuccessResponse;
     }
 }
 
 type SuccessResponse = { success: boolean };
 type ErrorResponse = { message: string };
-type GetCrashByIdResponse = CrashDetailsConstructorOptions | ErrorResponse;
+type GetCrashByIdResponse = CrashDetailsRawResponse | ErrorResponse;
 type ReprocessCrashResponse = SuccessResponse | ErrorResponse;

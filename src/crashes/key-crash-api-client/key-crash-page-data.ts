@@ -1,5 +1,6 @@
 import { Event } from '@events';
-import { DefectTrackerType } from 'src/crash/crash-details/crash-details';
+import { DefectTrackerType } from '../../crash/crash-details/crash-details';
+import { createEvents, EventResponseObject } from '../../events/events-api-client/event';
 
 export interface KeyCrashPageData {
     stackKeyId: number;
@@ -14,7 +15,17 @@ export interface KeyCrashPageData {
     stackKeyDefectUrl: string;
     stackKeyDefectLabel: string;
     stackKeyComments: string;
-    firstCrashTime: Date;
-    lastCrashTime: Date;
+    firstCrashTime: string;
+    lastCrashTime: string;
     events: Array<Event>;
 }
+
+export function createKeyCrashPageData(pageData: KeyCrashPageDataRawResponse): KeyCrashPageData {
+    const events = createEvents(pageData.events);
+    return {
+        ...pageData,
+        events
+    };
+}
+
+export type KeyCrashPageDataRawResponse = Omit<KeyCrashPageData, 'events'> & { events: Array<EventResponseObject> };
