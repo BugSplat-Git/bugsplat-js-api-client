@@ -1,5 +1,6 @@
 export interface EventResponseObject {
   id: string;
+  uId: string;
   type: string;
   timestamp: string;
   firstName?: string;
@@ -8,8 +9,9 @@ export interface EventResponseObject {
   message: string;
 }
 
-export interface Event extends Omit<EventResponseObject, 'type' | 'id'> {
+export interface Event extends Omit<EventResponseObject, 'type' | 'id' | 'uId'> {
   id: number;
+  uId: number;
   type: EventType;
 }
 
@@ -24,10 +26,12 @@ export enum EventType {
 export function createEvents(events: Array<EventResponseObject>): Array<Event> {
   return events.map(event => {
     const id = Number(event.id);
+    const uId = Number(event.uId);
     const type = event.type as EventType;
     return {
       ...event,
       id,
+      uId,
       type
     };
   });
