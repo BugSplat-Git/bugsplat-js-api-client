@@ -1,7 +1,7 @@
 import { ApiClient, BugSplatResponse, TableDataClient, TableDataResponse } from '@common';
 import { CrashesApiRow } from '@crashes';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
-import { KeyCrashPageData } from './key-crash-page-data';
+import { createKeyCrashPageData, KeyCrashPageData, KeyCrashPageDataRawResponse } from './key-crash-page-data';
 import { KeyCrashTableDataRequest } from './key-crash-table-data-request';
 
 export class KeyCrashApiClient {
@@ -14,9 +14,9 @@ export class KeyCrashApiClient {
 
     async getCrashes(request: KeyCrashTableDataRequest): Promise<TableDataResponse<CrashesApiRow, KeyCrashPageData>> {
         const formParts = { stackKeyId: `${request.stackKeyId}` };
-        const response = await this._tableDataClient.postGetData<CrashesApiResponseRow, KeyCrashPageData>(request, formParts);
-        const json = await response.json();
-        const pageData = json.pageData;
+        const response = await this._tableDataClient.postGetData<CrashesApiResponseRow, KeyCrashPageDataRawResponse>(request, formParts);
+        const json = await response.json() as Required<TableDataResponse<CrashesApiResponseRow, KeyCrashPageDataRawResponse>>;
+        const pageData = createKeyCrashPageData(json.pageData);
         const rows = json.rows.map(row => new CrashesApiRow(row));
 
         return {
@@ -47,3 +47,4 @@ export class KeyCrashApiClient {
         return this._client.fetch('/api/stackKeyComment.php', request);
     }
 }
+

@@ -1,20 +1,17 @@
 import { BugSplatApiClient } from '@common';
+import { CrashApiClient } from '@crash';
 import { CrashPostClient, CrashType } from '@post';
 import { VersionsApiClient } from '@versions';
 import { firstValueFrom, timer } from 'rxjs';
+import { PostCrashResponse } from 'src/post/post-crash-response';
 import { createUploadableFile } from '../create-bugsplat-file';
-
-export interface CrashInfo {
-    crashId: number;
-    stackKeyId: number;
-}
 
 export async function postNativeCrashAndSymbols(
     authenticatedClient: BugSplatApiClient,
     database: string,
     application: string,
     version: string
-): Promise<CrashInfo> {
+): Promise<PostCrashResponse> {
     const exeFile = createUploadableFile('./spec/files/native/myConsoleCrasher.exe');
     const pdbFile = createUploadableFile('./spec/files/native/myConsoleCrasher.pdb');
     const files = [exeFile, pdbFile];
@@ -33,7 +30,7 @@ export async function postNativeCrash(
     database: string,
     application: string,
     version: string
-): Promise<CrashInfo> {
+): Promise<PostCrashResponse> {
     const crashFile = createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
     const crashPostClient = new CrashPostClient(database);
     await firstValueFrom(timer(2000)); // Prevent rate-limiting
@@ -44,5 +41,44 @@ export async function postNativeCrash(
         crashFile,
         'ebe24c1cd1a0912904658fa4fad2b539'
     );
-    return postCrashResult.json() as Promise<CrashInfo>;
+    return postCrashResult.json();
+}
+
+export async function postNativeCrashAndWaitForCrashToProcess(
+    bugsplat: BugSplatApiClient,
+    crashClient: CrashApiClient,
+    database: string,
+    application: string,
+    version: string
+): Promise<PostCrashResponse> {
+    const result = await postNativeCrashAndSymbols(
+        bugsplat,
+        database,
+        application,
+        version
+    );
+
+    const crashId = result.crashId;
+    let stackKeyId = result.stackKeyId;
+
+    if (stackKeyId > 0) {
+        return {
+            crashId,
+            stackKeyId
+        };
+    }
+
+    for (let i = 0; i < 60; i++) {
+        const crash = await crashClient.getCrashById(database, crashId);
+        stackKeyId = crash.stackKeyId as number;
+        if (stackKeyId > 0) {
+            break;
+        }
+        await firstValueFrom(timer(3000));
+    }
+
+    return {
+        crashId,
+        stackKeyId
+    };
 }

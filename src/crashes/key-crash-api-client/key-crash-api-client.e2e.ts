@@ -2,10 +2,10 @@ import { ApiDataFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
 import { CrashApiClient } from '@crash';
 import { KeyCrashApiClient } from '@crashes';
 import { config } from '@spec/config';
-import { CrashInfo, postNativeCrash, postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
-import { firstValueFrom, timer } from 'rxjs';
+import { postNativeCrash, postNativeCrashAndWaitForCrashToProcess } from '@spec/files/native/post-native-crash';
 
 describe('KeyCrashApiClient', () => {
+    const { database, host, email, password } = config;
     let crashClient: CrashApiClient;
     let keyCrashClient: KeyCrashApiClient;
     let application;
@@ -14,7 +14,6 @@ describe('KeyCrashApiClient', () => {
     let stackKeyId;
 
     beforeEach(async () => {
-        const { host, email, password } = config;
         const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
         keyCrashClient = new KeyCrashApiClient(bugsplat);
         crashClient = new CrashApiClient(bugsplat);
@@ -23,6 +22,7 @@ describe('KeyCrashApiClient', () => {
         const result = await postNativeCrashAndWaitForCrashToProcess(
             bugsplat,
             crashClient,
+            database,
             application,
             version
         );
@@ -32,7 +32,6 @@ describe('KeyCrashApiClient', () => {
 
     describe('getCrashes', () => {
         it('should return 200 and array of crashes', async () => {
-            const database = config.database;
             const pageSize = 1;
 
             const result = await keyCrashClient.getCrashes({ database, stackKeyId, pageSize });
@@ -46,7 +45,6 @@ describe('KeyCrashApiClient', () => {
         });
 
         it('should return 200 and groupByCount for grouped crashes query', async () => {
-            const database = config.database;
             const pageSize = 1;
             const columnGroups = ['stackKey'];
 
@@ -59,7 +57,6 @@ describe('KeyCrashApiClient', () => {
         });
 
         it('should return 200 with crashes sorted by sortColumn and sortOrder', async () => {
-            const database = config.database;
             const pageSize = 2;
             const sortColumn = 'id';
             const sortOrder = 'asc';
@@ -86,7 +83,6 @@ describe('KeyCrashApiClient', () => {
 
     describe('postNotes', () => {
         it('should return 200', async () => {
-            const database = config.database;
             const notes = 'BugSplat rocks!';
 
             const postNotesResult = await keyCrashClient.postNotes(database, stackKeyId, notes);
@@ -97,41 +93,3 @@ describe('KeyCrashApiClient', () => {
         });
     });
 });
-
-async function postNativeCrashAndWaitForCrashToProcess(
-    bugsplat: BugSplatApiClient,
-    crashClient: CrashApiClient,
-    application: string,
-    version: string
-): Promise<CrashInfo> {
-    const result = await postNativeCrashAndSymbols(
-        bugsplat,
-        config.database,
-        application,
-        version
-    );
-
-    const crashId = result.crashId;
-    let stackKeyId = result.stackKeyId;
-
-    if (stackKeyId > 0) {
-        return {
-            crashId,
-            stackKeyId
-        };
-    }
-
-    for (let i = 0; i < 60; i++) {
-        const crash = await crashClient.getCrashById(config.database, crashId);
-        stackKeyId = crash.stackKeyId as number;
-        if (stackKeyId > 0) {
-            break;
-        }
-        await firstValueFrom(timer(3000));
-    }
-
-    return {
-        crashId,
-        stackKeyId
-    };
-}

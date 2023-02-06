@@ -1,7 +1,10 @@
 import { KeyCrashApiClient } from '@crashes';
+import { EventType } from '@events';
 import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
+import { createFakeEvents } from '@spec/fakes/events/events';
+import { createEvents } from 'src/events/events-api-client/event';
 import * as TableDataClientModule from '../../common/data/table-data/table-data-client/table-data-client';
 
 describe('KeyCrashApiClient', () => {
@@ -28,7 +31,7 @@ describe('KeyCrashApiClient', () => {
         database = '☕️';
         Comments = 'it\'s over 9000!';
         IpAddress = '🏡';
-        pageData = { coffee: 'black rifle' };
+        pageData = { events: createFakeEvents([EventType.Comment]) };
         rows = [{ id: stackKeyId, Comments, IpAddress }];
         tableDataClientResponse = createFakeResponseBody(200, { pageData, rows });
         tableDataClient = jasmine.createSpyObj('TableDataClient', ['postGetData']);
@@ -52,7 +55,10 @@ describe('KeyCrashApiClient', () => {
         });
 
         it('should return value with Comments and IpAddress values mapped to lower-case', () => {
-            expect(result.pageData).toEqual(pageData);
+            expect(result.pageData).toEqual({
+                ...pageData,
+                events: createEvents(pageData.events)
+            });
             expect(result.rows[0].id).toEqual(stackKeyId);
             expect(result.rows[0].comments).toEqual(Comments);
             expect(result.rows[0].ipAddress).toEqual(IpAddress);
