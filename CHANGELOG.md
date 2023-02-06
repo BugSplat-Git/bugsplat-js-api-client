@@ -1,3 +1,13 @@
+# [5.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.3.0...v5.0.0) (2023-02-06)
+
+
+* feat!: remove EventStream (#97) ([136aad9](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/136aad9a93af3b2716f2a9ca990b00ee001e2b61)), closes [#97](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/97) [#29](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/29) [#96](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/96)
+
+
+### BREAKING CHANGES
+
+* removes EventStream
+
 # [4.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.2.0...v4.3.0) (2023-02-03)
 
 
