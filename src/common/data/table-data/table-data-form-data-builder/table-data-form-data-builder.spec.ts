@@ -1,4 +1,4 @@
-import { ApiDataFilter, ApiDataFilterGroup } from '@common';
+import { QueryFilter, QueryFilterGroup } from '@common';
 import { TableDataFormDataBuilder } from './table-data-form-data-builder';
 
 describe('TableDataFormDataBuilder', () => {
@@ -26,28 +26,28 @@ describe('TableDataFormDataBuilder', () => {
     let filter2;
 
     beforeEach(() => {
-      filter0 = new ApiDataFilter(
+      filter0 = new QueryFilter(
         'The filteriest of the filtered filters',
-        'THE MOST IMPORTANT VALUE IN THE UNIVERSE',
+        'EQUAL',
         'The columniest columnar evarrrrrrr',
       );
 
-      filter1 = new ApiDataFilter(
+      filter1 = new QueryFilter(
         'You\'re FILTERED',
-        'this value is also amazing. It is the best value. Everyone says it.',
+        'EQUAL',
         'filter tower'
       );
 
-      filter2 = new ApiDataFilter(
+      filter2 = new QueryFilter(
         'You shall be FILTERED',
-        'this value is amazing. It is the best value. Everyone says it.',
+        'EQUAL',
         'I like greek style columns'
       );
     });
 
-    it('should build formData with filtergroup, filterValues, filterConditions, filterOperators and filterDataFields', () => {
-      const filterGroup0 = ApiDataFilterGroup.fromApiTableFilter(filter0);
-      const filterGroup1 = new ApiDataFilterGroup([filter1, filter2]);
+    it('should build formData with filterGroup, filterValues, filterConditions, filterOperators and filterDataFields', () => {
+      const filterGroup0 = QueryFilterGroup.fromApiTableFilter(filter0);
+      const filterGroup1 = new QueryFilterGroup([filter1, filter2]);
       const result = <FakeFormData><unknown>new TableDataFormDataBuilder(formDataFactory)
         .withFilterGroups([filterGroup0, filterGroup1])
         .build();

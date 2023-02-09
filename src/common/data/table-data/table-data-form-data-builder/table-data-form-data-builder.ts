@@ -1,5 +1,5 @@
 
-import { ApiDataFilterGroup } from '@common';
+import { QueryFilterGroup } from '@common';
 import { ColumnSortOrder } from './column-sort-order';
 
 export class TableDataFormDataBuilder {
@@ -22,7 +22,7 @@ export class TableDataFormDataBuilder {
     return this;
   }
 
-  withFilterGroups(groups: Array<ApiDataFilterGroup> | undefined): TableDataFormDataBuilder {
+  withFilterGroups(groups: Array<QueryFilterGroup> | undefined): TableDataFormDataBuilder {
     if (groups) {
       let filtersCount = 0;
       groups.forEach((group) => {
