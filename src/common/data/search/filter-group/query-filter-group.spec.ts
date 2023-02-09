@@ -1,11 +1,11 @@
-import { ApiDataFilter, ApiDataFilterGroup, FilterOperator } from '@common';
+import { QueryFilter, QueryFilterGroup, FilterOperator } from '@common';
 
-describe('ApiDataFilterGroup', () => {
-  describe('fromApiDataFilter', () => {
+describe('QueryFilterGroup', () => {
+  describe('fromQueryFilter', () => {
     it('should return filter group containing filter, filter operator and group operator', () => {
-      const filter = new ApiDataFilter('value', 'condition', 'field');
+      const filter = new QueryFilter('value', 'EQUAL', 'field');
 
-      const result = ApiDataFilterGroup.fromApiTableFilter(filter);
+      const result = QueryFilterGroup.fromApiTableFilter(filter);
 
       expect(result.groupOperator).toEqual(FilterOperator.and);
       expect(result.filterOperator).toEqual(FilterOperator.and);
@@ -18,7 +18,7 @@ describe('ApiDataFilterGroup', () => {
       const column = 'Camp Granada';
       const values = ['hello', 'muddah', 'hello', 'fadduh'];
 
-      const result = ApiDataFilterGroup.fromColumnValues(values, column, FilterOperator.or);
+      const result = QueryFilterGroup.fromColumnValues(values, column, FilterOperator.or);
 
       expect(result.groupOperator).toEqual(FilterOperator.and);
       expect(result.filterOperator).toEqual(FilterOperator.or);
@@ -35,7 +35,7 @@ describe('ApiDataFilterGroup', () => {
       const startDate = new Date();
       const endDate = new Date();
 
-      const result = ApiDataFilterGroup.fromTimeFrame('crashTime', startDate, endDate);
+      const result = QueryFilterGroup.fromTimeFrame('crashTime', startDate, endDate);
 
       expect(result.filters.length).toEqual(2);
       expect(result.filterOperator).toEqual(FilterOperator.and);
@@ -49,7 +49,7 @@ describe('ApiDataFilterGroup', () => {
     });
 
     it('should return empty filter group if startDate and endDate are falsy', () => {
-      const result = ApiDataFilterGroup.fromTimeFrame('crashTime');
+      const result = QueryFilterGroup.fromTimeFrame('crashTime');
 
       expect(result.filters.length).toEqual(0);
     });

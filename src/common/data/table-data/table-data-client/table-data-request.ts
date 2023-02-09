@@ -1,8 +1,8 @@
-import { ApiDataFilterGroup, ColumnSortOrder } from '@common';
+import { QueryFilterGroup, ColumnSortOrder } from '@common';
 
 export interface TableDataRequest {
   database?: string;
-  filterGroups?: Array<ApiDataFilterGroup>;
+  filterGroups?: Array<QueryFilterGroup>;
   columnGroups?: Array<string>;
   page?: number;
   pageSize?: number;

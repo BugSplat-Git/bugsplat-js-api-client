@@ -1,4 +1,5 @@
-export * from './filter-condition/filter-condition';
-export { ApiDataFilterGroup } from './filter-group/api-data-filter-group';
+export { QueryFilterCondition } from './filter-condition/filter-condition';
+export { QueryFilterGroup } from './filter-group/query-filter-group';
 export { FilterOperator } from './filter-operator/filter-operator';
-export { ApiDataFilter } from './filter/api-data-filter';
+export { QueryFilter } from './filter/query-filter';
+

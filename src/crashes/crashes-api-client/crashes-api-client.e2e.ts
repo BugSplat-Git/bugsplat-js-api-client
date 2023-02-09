@@ -1,4 +1,4 @@
-import { ApiDataFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
+import { QueryFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
 import { CrashApiClient } from '@crash';
 import { CrashesApiClient } from '@crashes';
 import { config } from '@spec/config';
@@ -65,7 +65,7 @@ describe('CrashesApiClient', () => {
                 application,
                 version
             );
-            const filterGroups = [ApiDataFilterGroup.fromColumnValues([`${id}`, `${newestCrashId}`], 'id', FilterOperator.or)];
+            const filterGroups = [QueryFilterGroup.fromColumnValues([`${id}`, `${newestCrashId}`], 'id', FilterOperator.or)];
 
             const result = await crashesClient.getCrashes({
                 database,
