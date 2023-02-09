@@ -1,3 +1,13 @@
+# [6.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v5.0.0...v6.0.0) (2023-02-09)
+
+
+* feat!: rename ApiDataFilter to QueryFilter (#98) ([993bf70](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/993bf70b4a089580c6b61160a4f139715784510e)), closes [#98](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/98)
+
+
+### BREAKING CHANGES
+
+* rename of public type
+
 # [5.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v4.3.0...v5.0.0) (2023-02-06)
 
 
