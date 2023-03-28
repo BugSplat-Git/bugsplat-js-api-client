@@ -29,7 +29,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
     }
 
     async login(): Promise<BugSplatResponse<OAuthLoginResponse>> {
-        const url = `${this._host}/oauth2/authorize`;
+        const route = '/oauth2/authorize';
         const method = 'POST';
         const body = this.createFormData();
         body.append('grant_type', 'client_credentials');
@@ -42,7 +42,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
             duplex: 'half'
         } as RequestInit;
 
-        const response = await this.fetch<LoginResponse>(url, request);
+        const response = await this.fetch<LoginResponse>(route, request);
         const responseJson = await response.json();
 
         if ((responseJson as ErrorResponse).error === 'invalid_client') {
