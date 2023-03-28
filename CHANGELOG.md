@@ -1,3 +1,10 @@
+## [6.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v6.0.0...v6.0.1) (2023-03-28)
+
+
+### Bug Fixes
+
+* should call oauth login with correct route ([#100](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/100)) ([4195f83](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/4195f833d396582f5657db555bb33467f8cecbad)), closes [#99](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/99)
+
 # [6.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v5.0.0...v6.0.0) (2023-02-09)
 
 
