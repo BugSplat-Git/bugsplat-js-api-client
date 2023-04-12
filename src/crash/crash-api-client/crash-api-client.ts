@@ -47,7 +47,7 @@ export class CrashApiClient {
         formData.append('database', database);
         formData.append('id', crashId.toString());
         formData.append('force', force.toString());
-        if( processor.length > 0 ) {
+        if (processor) {
             formData.append('processor', processor);
         }
         const init = {
