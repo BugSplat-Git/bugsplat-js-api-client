@@ -1,8 +1,8 @@
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody, FakeResponseBody } from '@spec/fakes/common/response';
-import { BugSplatResponse } from 'dist/esm';
-import { OAuthLoginResponse } from 'dist/esm/common/client/oauth-client-credentials-api-client/oauth-login-response';
 import { OAuthClientCredentialsClient } from './oauth-client-credentials-api-client';
+import { BugSplatResponse } from '@common';
+import { OAuthLoginResponse } from './oauth-login-response';
 
 describe('OAuthClientCredentialsClient', () => {
     let clientId: string;
