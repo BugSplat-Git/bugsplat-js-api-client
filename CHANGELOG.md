@@ -1,3 +1,10 @@
+# [6.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v6.0.1...v6.1.0) (2023-04-12)
+
+
+### Features
+
+* add processor field to crash upload ([#101](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/101)) ([251b44e](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/251b44ec92b7f9a1c6fea8b15b5095081eda126e))
+
 ## [6.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v6.0.0...v6.0.1) (2023-03-28)
 
 
