@@ -36,7 +36,7 @@ export class CrashApiClient {
         return createCrashDetails(json as CrashDetailsRawResponse);
     }
 
-    async reprocessCrash(database: string, crashId: number, force = false, processor = ""): Promise<SuccessResponse> {
+    async reprocessCrash(database: string, crashId: number, force = false, processor = ''): Promise<SuccessResponse> {
         ac.assertNonWhiteSpaceString(database, 'database');
         ac.assertBoolean(force, 'force');
         if (crashId <= 0) {

@@ -94,6 +94,7 @@ describe('CrashApiClient', () => {
         let fakeReprocessApiResponse;
         let fakeBugSplatApiClient;
         let result;
+        const processor = 'Oban-127.0.0.1';
 
         beforeEach(async () => {
             fakeReprocessApiResponse = { success: true };
@@ -108,10 +109,17 @@ describe('CrashApiClient', () => {
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/reprocess', jasmine.anything());
         });
 
+        it('should call form data append with processor if provided', async () => {
+            await client.reprocessCrash(database, id, true, processor);
+
+            expect(fakeFormData.append).toHaveBeenCalledWith('processor', processor);
+        });
+
         it('should call fetch with formData containing database, id and force', () => {
             expect(fakeFormData.append).toHaveBeenCalledWith('database', database);
             expect(fakeFormData.append).toHaveBeenCalledWith('id', id.toString());
             expect(fakeFormData.append).toHaveBeenCalledWith('force', 'true');
+            expect(fakeFormData.append).not.toHaveBeenCalledWith('processor', processor);
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
                 jasmine.any(String),
                 jasmine.objectContaining({
