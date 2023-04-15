@@ -27,6 +27,7 @@ export interface CrashDetails {
   appKey: string;
   appName: string;
   appVersion: string;
+  autoGrouped: boolean;
   comments: string;
   crashTime: string;
   defectTrackerType: DefectTrackerType;
@@ -63,7 +64,6 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   ac.assertNumber(<number>options.stackKeyId, 'options.stackKeyId');
   ac.assertBoolean(<boolean>options.missingSymbols, 'options.missingSymbols');
 
-  // TODO BG, the API should really guarantee reasonable defaults for these values
   const appName = defaultToEmptyString(options.appName, 'options.appName');
   const appVersion = defaultToEmptyString(options.appVersion, 'options.appVersion');
   const appKey = defaultToEmptyString(options.appKey, 'options.appKey');
