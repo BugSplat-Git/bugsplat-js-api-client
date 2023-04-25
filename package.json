@@ -54,7 +54,7 @@
     "rxjs": "^7.1.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
+    "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^15.0.0",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1",
@@ -67,7 +67,7 @@
     "husky": "^7.0.4",
     "jasmine": "^3.7.0",
     "jasmine-reporters": "^2.4.0",
-    "semantic-release": "^19.0.2",
+    "semantic-release": "^21.0.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
     "tsconfig-replace-paths": "^0.0.5",
