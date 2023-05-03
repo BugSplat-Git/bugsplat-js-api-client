@@ -4,10 +4,6 @@ import { createEvents, EventResponseObject } from '../../events/events-api-clien
 
 export interface KeyCrashPageData {
     stackKeyId: number;
-    isSubBucket: boolean;
-    isSubKeyedStack: boolean;
-    primaryStackKeyId: number;
-    subKeyDepth: number;
     stackKey: string;
     defectTracker: boolean;
     defectTrackerType: DefectTrackerType;
