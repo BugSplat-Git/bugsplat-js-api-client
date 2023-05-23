@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.0.0...v7.0.1) (2023-05-23)
+
+
+### Bug Fixes
+
+* parse crashTypeId as number ([#106](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/106)) ([91515b0](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/91515b004a210fd4f51ba4a84485ef57e7a4dce7))
+
 # [7.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v6.1.0...v7.0.0) (2023-05-23)
 
 
