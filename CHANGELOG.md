@@ -1,3 +1,16 @@
+# [7.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v6.1.0...v7.0.0) (2023-05-23)
+
+
+### Bug Fixes
+
+* add crashTypeId to CrashesApiRow ([#105](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/105)) ([97861c2](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/97861c2d448fe7cb8f7cf5881c296cde09c393ba))
+* remove deprecated key crash properties ([#104](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/104)) ([4d63c8a](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/4d63c8af49e275cbe64eb7276b51f0684bcbb77d))
+
+
+### BREAKING CHANGES
+
+* isSubBucket, isSubKeyedStack, and subKeyDepth have been removed from KeyCrashPageData
+
 # [6.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v6.0.1...v6.1.0) (2023-04-12)
 
 
