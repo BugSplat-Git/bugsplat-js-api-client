@@ -3,6 +3,7 @@ interface CrashData {
   stackKey: string;
   appName: string;
   appVersion: string;
+  crashTypeId: CrashTypeId;
   appDescription: string;
   userDescription: string;
   user: string;
@@ -35,30 +36,58 @@ export interface CrashesApiResponseRow extends CrashData {
   IpAddress: string;
 }
 
+export enum CrashTypeId {
+  unknown = 0,
+  windowsNative = 1,
+  java = 4,
+  crashpad = 6,
+  dotnet = 8,
+  unity = 12,
+  macOS = 13,
+  javascript = 14,
+  unityNative = 15,
+  unrealLinuxServer = 16,
+  unreal = 17,
+  dotnetStandard = 18,
+  angular = 19,
+  node = 20,
+  xml = 21,
+  electron = 22,
+  python = 23,
+  unityDotNetStandard = 24,
+  asan = 25,
+  iOS = 26,
+  xbox = 27,
+  ps4 = 28,
+  ps5 = 29,
+  playStationRecap = 30,
+}
+
 export class CrashesApiRow implements CrashDataWithMappedProperties {
-  public id: number;
-  public groupByCount: number;
-  public stackKey: string;
-  public stackId: number;
-  public stackKeyId: number;
-  public appName: string;
-  public appVersion: string;
-  public appDescription: string;
-  public userDescription: string;
-  public user: string;
-  public email: string;
-  public ipAddress: string;
-  public crashTime: string;
-  public defectId: string;
-  public defectUrl: string;
-  public defectLabel: string;
-  public skDefectId: string;
-  public skDefectUrl: string;
-  public skDefectLabel: string;
-  public comments: string;
-  public skComments: string;
-  public exceptionCode: string;
-  public exceptionMessage: string;
+  id: number;
+  groupByCount: number;
+  stackKey: string;
+  stackId: number;
+  stackKeyId: number;
+  appName: string;
+  appVersion: string;
+  crashTypeId: CrashTypeId;
+  appDescription: string;
+  userDescription: string;
+  user: string;
+  email: string;
+  ipAddress: string;
+  crashTime: string;
+  defectId: string;
+  defectUrl: string;
+  defectLabel: string;
+  skDefectId: string;
+  skDefectUrl: string;
+  skDefectLabel: string;
+  comments: string;
+  skComments: string;
+  exceptionCode: string;
+  exceptionMessage: string;
 
   constructor(rawApiRow: CrashesApiResponseRow) {
     this.id = Number(rawApiRow.id);
@@ -68,6 +97,7 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
     this.stackId = Number(rawApiRow.stackId);
     this.appName = rawApiRow.appName;
     this.appVersion = rawApiRow.appVersion;
+    this.crashTypeId = rawApiRow.crashTypeId;
     this.appDescription = rawApiRow.appDescription;
     this.userDescription = rawApiRow.userDescription;
     this.user = rawApiRow.user;
