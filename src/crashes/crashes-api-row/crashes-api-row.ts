@@ -91,13 +91,13 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
 
   constructor(rawApiRow: CrashesApiResponseRow) {
     this.id = Number(rawApiRow.id);
-    this.groupByCount = Number(rawApiRow.groupByCount || 0);
+    this.groupByCount = Number(rawApiRow.groupByCount) || 0;
     this.stackKey = rawApiRow.stackKey;
     this.stackKeyId = Number(rawApiRow.stackKeyId);
     this.stackId = Number(rawApiRow.stackId);
     this.appName = rawApiRow.appName;
     this.appVersion = rawApiRow.appVersion;
-    this.crashTypeId = rawApiRow.crashTypeId;
+    this.crashTypeId = Number(rawApiRow.crashTypeId) || 0;
     this.appDescription = rawApiRow.appDescription;
     this.userDescription = rawApiRow.userDescription;
     this.user = rawApiRow.user;
