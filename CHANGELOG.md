@@ -1,3 +1,10 @@
+# [7.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.0.1...v7.1.0) (2023-06-09)
+
+
+### Features
+
+* add batch reprocess support ([#107](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/107)) ([14f9359](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/14f935925d061eaa22cf6b7573be1981e920d17a))
+
 ## [7.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.0.0...v7.0.1) (2023-05-23)
 
 
