@@ -37,15 +37,22 @@ export class CrashApiClient {
     }
 
     async reprocessCrash(database: string, crashId: number, force = false, processor = ''): Promise<SuccessResponse> {
+        return this.reprocessCrashes(database, [crashId], force, processor);
+    }
+
+    async reprocessCrashes(database: string, crashIds: Array<number>, force = false, processor = ''): Promise<SuccessResponse> {
         ac.assertNonWhiteSpaceString(database, 'database');
         ac.assertBoolean(force, 'force');
-        if (crashId <= 0) {
-            throw new Error(`Expected id to be a positive non-zero number. Value received: "${crashId}"`);
+
+        for (const crashId of crashIds) {
+            if (crashId <= 0) {
+                throw new Error(`Expected ids to be positive non-zero numbers. Value received: "${crashId}"`);
+            }
         }
 
         const formData = this._client.createFormData();
         formData.append('database', database);
-        formData.append('id', crashId.toString());
+        formData.append('id', crashIds.join(','));
         formData.append('force', force.toString());
         if (processor) {
             formData.append('processor', processor);

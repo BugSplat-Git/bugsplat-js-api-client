@@ -166,7 +166,7 @@ describe('CrashApiClient', () => {
                 await client.reprocessCrash(database, 0);
                 fail('reprocessCrash was supposed to throw!');
             } catch (error: any) {
-                expect(error.message).toMatch(/to be a positive non-zero number/);
+                expect(error.message).toMatch(/to be positive non-zero numbers/);
             }
         });
     });
