@@ -77,6 +77,38 @@ describe('VersionsApiClient', () => {
         });
     });
 
+    describe('deleteVersions', () => {
+        it('should call delete with route containing database and appVersions', async () => {
+            const appVersions = [
+                { application: 'myConsoleCrasher', version: '2022.4.20.0' },
+                { application: 'myConsoleCrasher', version: '2022.4.20.1' }
+            ];
+            await versionsApiClient.deleteVersions(database, appVersions);
+
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                `/api/versions?database=${database}&appVersions=${appVersions[0].application},${appVersions[0].version},${appVersions[1].application},${appVersions[1].version}`,
+                jasmine.anything()
+            );
+        });
+
+        describe('error', () => {
+            it('should throw if response is not 200', async () => {
+                const fakeErrorResponse = createFakeResponseBody(400);
+                fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
+
+                await expectAsync(versionsApiClient.deleteVersions(database, [])).toBeRejectedWithError(`Error deleting symbols for ${database}- status 400`);
+            });
+
+            it('should throw if response json Status is \'Failed\'', async () => {
+                const message = '🤮';
+                const fakeErrorResponse = createFakeResponseBody(200, { Status: 'Failed', Error: message });
+                fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
+
+                await expectAsync(versionsApiClient.deleteVersions(database, [])).toBeRejectedWithError(message);
+            });
+        });
+    });
+
     describe('putFullDumps', () => {
         const fullDumps = true;
         let result;

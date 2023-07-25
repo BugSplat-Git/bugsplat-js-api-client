@@ -28,6 +28,29 @@ export class VersionsApiClient {
         };
     }
 
+    async deleteVersions(database: string, appVersions: Array<{ application: string, version: string }>): Promise<BugSplatResponse> {
+        const appVersionsParam = appVersions.reduce((prev, curr) => [...prev, curr.application, curr.version], [] as Array<string>).join(',');
+        const route = `${this.route}?database=${database}&appVersions=${appVersionsParam}`;
+        const request = {
+            method: 'DELETE',
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow'
+        } as RequestInit;
+
+        const response = await this._client.fetch(route, request);
+        if (response.status !== 200) {
+            throw new Error(`Error deleting symbols for ${database}-${appVersionsParam} status ${response.status}`);
+        }
+
+        const json = await response.json() as Response;
+        if (json.Status === 'Failed') {
+            throw new Error(json.Error);
+        }
+
+        return response;
+    }
+
     async putFullDumps(
         database: string,
         application: string,

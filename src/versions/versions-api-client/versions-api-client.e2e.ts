@@ -44,6 +44,17 @@ describe('VersionsApiClient', () => {
         });
     });
 
+    describe('deleteVersions', () => {
+        it('should return 200 for delete with valid database, application and version', async () => {
+            const response = await client.deleteVersions(
+                database,
+                [{ application, version }]
+            );
+
+            expect(response.status).toEqual(200);
+        });
+    });
+
     describe('putFullDumps', () => {
         it('should return 403 because account is not licensed', async () => {
             const result = await client.putFullDumps(
