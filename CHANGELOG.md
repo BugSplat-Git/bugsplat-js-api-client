@@ -1,3 +1,10 @@
+# [7.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.1.0...v7.2.0) (2023-07-25)
+
+
+### Features
+
+* delete versions ([#109](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/109)) ([ece4208](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/ece4208a0745e011bf4226c80d53bf353b5b2a64))
+
 # [7.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.0.1...v7.1.0) (2023-06-09)
 
 
