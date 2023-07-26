@@ -72,6 +72,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         
         const response = await this._fetch(url.href, init);
         const status = response.status;
+        const body = response.body;
         
         if (status === 401) {
             throw new Error('Could not authenticate, check credentials and try again');
@@ -79,6 +80,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
 
         return {
             status,
+            body,
             json: async () => response.clone().json(),
             text: async () => response.clone().text()
         };

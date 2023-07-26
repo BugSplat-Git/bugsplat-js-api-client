@@ -5,6 +5,7 @@ export interface ApiClient {
 
 export interface BugSplatResponse<T = unknown> {
     status: number;
+    body: ReadableStream<Uint8Array> | null;
     json: () => Promise<T>;
     text: () => Promise<string>;
 }

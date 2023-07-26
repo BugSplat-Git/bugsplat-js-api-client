@@ -51,9 +51,11 @@ export class BugSplatApiClient implements ApiClient {
         const url = new URL(route, this._host);
         const response = await this._fetch(url.href, init);
         const status = response.status;
+        const body = response.body;
 
         return {
             status,
+            body,
             json: async () => response.clone().json(),
             text: async () => response.clone().text()
         };
