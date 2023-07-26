@@ -1,3 +1,10 @@
+# [7.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.2.0...v7.3.0) (2023-07-26)
+
+
+### Features
+
+* expose body for file downloads ([#110](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/110)) ([57b079b](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/57b079b07118070ebb6497f4a715787882fe06fa))
+
 # [7.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.1.0...v7.2.0) (2023-07-25)
 
 
