@@ -38,12 +38,14 @@ export class SummaryTableDataClient {
     const rows = responseData ? responseData[0]?.Rows : [];
     const pageData = responseData ? responseData[0]?.PageData : {};
     
+    const body = response.body;
     const status = response.status;
     const payload = { rows, pageData };
     const json = async () => payload;
     const text = async () => JSON.stringify(payload);
     return {
       status,
+      body,
       json,
       text
     };
