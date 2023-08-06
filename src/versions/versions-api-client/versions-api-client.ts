@@ -2,6 +2,7 @@ import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient, TableDataClie
 import { lastValueFrom, timer } from 'rxjs';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
+import { SymbolFile } from './symbol-file';
 
 export class VersionsApiClient {
 
@@ -117,18 +118,15 @@ export class VersionsApiClient {
         database: string,
         application: string,
         version: string,
-        files: Array<UploadableFile> 
+        files: Array<SymbolFile> 
     ): Promise<Array<BugSplatResponse>> {
         const promises = files
             .map(async (file) => {
-                const name = file.name;
-                const size = file.size;
                 const presignedUrl = await this.getPresignedUrl(
                     database,
                     application,
                     version,
-                    size,
-                    name
+                    file
                 );
     
                 const response = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
@@ -144,15 +142,22 @@ export class VersionsApiClient {
         database: string,
         appName: string,
         appVersion: string,
-        size: number,
-        symFileName: string
+        file: SymbolFile
     ): Promise<string> {
         const formData = this._client.createFormData();
         formData.append('database', database);
         formData.append('appName', appName);
         formData.append('appVersion', appVersion);
-        formData.append('size', size.toString());
-        formData.append('symFileName', symFileName);
+        formData.append('size', file.size.toString());
+        formData.append('symFileName', file.name);
+
+        if (file.dbgId && file.lastModified && file.moduleName) {
+            formData.append('moduleName', file.moduleName);
+            formData.append('dbgId', file.dbgId);
+            formData.append('lastModified', file.lastModified.toString());
+            formData.append('SendPdbsVersion', 'bsv1');
+        }
+
         const request = {
             method: 'POST',
             body: formData,
@@ -172,7 +177,7 @@ export class VersionsApiClient {
         }
 
         if (response.status !== 200) {
-            throw new Error(`Error getting presigned URL for ${symFileName}`);
+            throw new Error(`Error getting presigned URL for ${file.name}`);
         }
 
         const json = await response.json() as Response & { url?: string };
