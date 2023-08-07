@@ -1,4 +1,4 @@
-import { ApiClient, UploadableFile, BugSplatResponse, S3ApiClient, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
+import { ApiClient, BugSplatResponse, S3ApiClient, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
@@ -148,13 +148,13 @@ export class VersionsApiClient {
         formData.append('database', database);
         formData.append('appName', appName);
         formData.append('appVersion', appVersion);
-        formData.append('size', file.size.toString());
+        formData.append('size', `${file.size}`);
         formData.append('symFileName', file.name);
 
         if (file.dbgId && file.lastModified && file.moduleName) {
             formData.append('moduleName', file.moduleName);
             formData.append('dbgId', file.dbgId);
-            formData.append('lastModified', file.lastModified.toString());
+            formData.append('lastModified', `${file.lastModified}`);
             formData.append('SendPdbsVersion', 'bsv1');
         }
 
