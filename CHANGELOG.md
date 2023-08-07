@@ -1,3 +1,10 @@
+## [7.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.3.0...v7.3.1) (2023-08-07)
+
+
+### Bug Fixes
+
+* symbol upload moduleName ([#111](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/111)) ([1728d40](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/1728d40623a28a0e7370b7e9319848d3e25871f4))
+
 # [7.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.2.0...v7.3.0) (2023-07-26)
 
 
