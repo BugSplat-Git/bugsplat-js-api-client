@@ -13,7 +13,6 @@
             "runtimeArgs": [
                 "run-script", "test"
             ],
-            "port": 5858
         },
         {
             "name": "E2E",
@@ -24,7 +23,6 @@
             "runtimeArgs": [
                 "run-script", "e2e"
             ],
-            "port": 5858
         }
     ]
 }
