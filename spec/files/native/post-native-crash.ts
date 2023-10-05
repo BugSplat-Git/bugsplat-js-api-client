@@ -12,8 +12,8 @@ export async function postNativeCrashAndSymbols(
     application: string,
     version: string
 ): Promise<PostCrashResponse> {
-    const exeFile = createUploadableFile('./spec/files/native/myConsoleCrasher.exe');
-    const pdbFile = createUploadableFile('./spec/files/native/myConsoleCrasher.pdb');
+    const exeFile = await createUploadableFile('./spec/files/native/myConsoleCrasher.exe');
+    const pdbFile = await createUploadableFile('./spec/files/native/myConsoleCrasher.pdb');
     const files = [exeFile, pdbFile];
     const symbolsApiClient = new VersionsApiClient(authenticatedClient);
     await symbolsApiClient.postSymbols(
@@ -31,7 +31,7 @@ export async function postNativeCrash(
     application: string,
     version: string
 ): Promise<PostCrashResponse> {
-    const crashFile = createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
+    const crashFile = await createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
     const crashPostClient = new CrashPostClient(database);
     await firstValueFrom(timer(2000)); // Prevent rate-limiting
     const postCrashResult = await crashPostClient.postCrash(

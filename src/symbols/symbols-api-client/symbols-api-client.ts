@@ -1,0 +1,155 @@
+import { ApiClient, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
+import { lastValueFrom, timer } from 'rxjs';
+
+// const gzipMagic = '1f 8b';
+
+export class SymbolsApiClient {
+
+    private readonly uploadUrl = '/symsrv/uploadUrl';
+    private readonly uploadCompleteUrl = '/symsrv/uploadComplete';
+
+    private _s3ApiClient: S3ApiClient;
+    private _timer = timer;
+
+    constructor(private _client: ApiClient) {
+        this._s3ApiClient = new S3ApiClient();
+    }
+
+    async postSymbols(
+        database: string,
+        application: string,
+        version: string,
+        files: Array<GZippedSymbolFile> 
+    ): Promise<Array<BugSplatResponse>> {
+        const promises = files
+            .map(async (file) => {
+                const [checkStream, untouchedStream] = file.file.tee();
+                const { value, done } = await checkStream.getReader().read();
+
+                if (done) {
+                    throw new Error('Could not read symbol file stream');
+                }
+
+                if (!this.isGzipMagicBytes(value)) {
+                    throw new Error('Symbol file stream does not start with gzip magic bytes');
+                }
+
+                file.file = untouchedStream;
+                const presignedUrl = await this.getPresignedUrl(
+                    database,
+                    application,
+                    version,
+                    file
+                );
+    
+                const uploadResponse = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
+                
+                const completeResponse = await this.postUploadComplete(
+                    database,
+                    application,
+                    version,
+                    file
+                );
+                
+                await lastValueFrom(this._timer(1000));
+
+                return uploadResponse;
+            });
+    
+        return Promise.all(promises);
+    }
+
+    private async getPresignedUrl(
+        database: string,
+        appName: string,
+        appVersion: string,
+        file: GZippedSymbolFile
+    ): Promise<string> {
+        const formData = this._client.createFormData();
+        formData.append('database', database);
+        formData.append('appName', appName);
+        formData.append('appVersion', appVersion);
+        formData.append('size', `${file.uncompressedSize}`);
+        formData.append('symFileName', file.name);
+        formData.append('moduleName', file.moduleName);
+        formData.append('dbgId', file.dbgId);
+        formData.append('lastModified', `${file.lastModified}`);
+        formData.append('SendPdbsVersion', 'spdbsv2');
+
+        const request = {
+            method: 'POST',
+            body: formData,
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow',
+            duplex: 'half'
+        } as RequestInit;
+
+        const response = await this._client.fetch(this.uploadUrl, request);
+        if (response.status === 429) {
+            throw new Error('Error getting presigned URL, too many requests');
+        }
+
+        if (response.status === 403) {
+            throw new Error('Error getting presigned URL, invalid credentials');
+        }
+
+        if (response.status !== 200) {
+            throw new Error(`Error getting presigned URL for ${file.name}`);
+        }
+
+        const json = await response.json() as Response & { url?: string };
+        if (json.Status === 'Failed') {
+            throw new Error(json.Error);
+        }
+
+        return json.url as string;
+    }
+
+    private async postUploadComplete(
+        database: string,
+        appName: string,
+        appVersion: string,
+        file: GZippedSymbolFile
+    ): Promise<BugSplatResponse> {
+        const formData = this._client.createFormData();
+        formData.append('database', database);
+        formData.append('appName', appName);
+        formData.append('appVersion', appVersion);
+        formData.append('size', `${file.uncompressedSize}`);
+        formData.append('symFileName', file.name);
+        formData.append('moduleName', file.moduleName);
+        formData.append('dbgId', file.dbgId);
+        formData.append('lastModified', `${file.lastModified}`);
+        formData.append('SendPdbsVersion', 'spdbsv2');
+
+        const request = {
+            method: 'POST',
+            body: formData,
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow',
+            duplex: 'half'
+        } as RequestInit;
+
+        const response = await this._client.fetch(this.uploadCompleteUrl, request);
+
+        if (response.status !== 200) {
+            throw new Error(`Error completing symbol upload for ${file.name}, status ${response.status}`);
+        }
+
+        const json = await response.json() as Response & { url?: string };
+        if (json.Status === 'Failed') {
+            throw new Error(json.Error);
+        }
+
+        return response;
+    }
+
+    private isGzipMagicBytes(buffer: Buffer) {
+        const view = new Uint8Array(buffer);
+        return view[0] === 0x1f && view[1] === 0x8b;
+    }
+}
+
+type Response = { Status: string, Error?: string };

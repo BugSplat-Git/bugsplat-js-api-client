@@ -1,8 +1,7 @@
-import { ApiClient, BugSplatResponse, S3ApiClient, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
+import { ApiClient, BugSplatResponse, S3ApiClient, SymbolFile, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
-import { SymbolFile } from './symbol-file';
 
 export class VersionsApiClient {
 

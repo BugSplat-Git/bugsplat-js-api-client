@@ -2,7 +2,7 @@ import { BugSplatApiClient, UploadableFile } from '@common';
 import { config } from '@spec/config';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
 import { VersionsApiClient } from '@versions';
-import fs from 'fs';
+import fs, { ReadStream } from 'fs';
 import path from 'path';
 
 describe('VersionsApiClient', () => {
@@ -102,7 +102,8 @@ describe('VersionsApiClient', () => {
             const filePath = './spec/files/js/index.js.map';
             const name = path.basename(filePath);
             const size = fs.statSync(filePath).size;
-            const file = new UploadableFile(name, size, fs.createReadStream(filePath));
+            const readableStream = ReadStream.toWeb(fs.createReadStream(filePath));
+            const file = new UploadableFile(name, size, readableStream);
             const response = await client.postSymbols(
                 database,
                 application,
