@@ -1,8 +1,8 @@
 import { BugSplatApiClient } from '@common';
 import { config } from '@spec/config';
 import { SymbolsApiClient } from '@symbols';
-import { ReadStream, createReadStream, createWriteStream } from 'node:fs';
-import { stat } from 'node:fs/promises';
+import { createReadStream, createWriteStream, ReadStream } from 'node:fs';
+import { rm, stat } from 'node:fs/promises';
 import { basename } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import { createGzip } from 'node:zlib';
@@ -28,23 +28,24 @@ describe('SymbolsApiClient', () => {
     });
 
     describe('postSymbols', () => {
-        it('should return 200 for post with valid database, application, version and files', async () => {
-            const filePath = './spec/files/native/myConsoleCrasher.pdb';
-            const moduleName = 'myConsoleCrasher.pdb';
-            const dbgId = '2CA6992CEA8847A8B821730F6F5D20321';
-            const name = basename(filePath);
-            const stats = await stat(filePath);
-            const uncompressedSize = stats.size;
-            const lastModified = stats.mtime;
+        const filePath = './spec/files/native/myConsoleCrasher.pdb';
+        const moduleName = 'myConsoleCrasher.pdb';
+        const dbgId = '2CA6992CEA8847A8B821730F6F5D20321';
+        const gzipFilePath = `${filePath}.gz`;
 
-            const gzipFilePath = `${filePath}.gz`;
-
+        beforeEach(async () => 
             await pipeline(
                 createReadStream(filePath),
                 createGzip(),
                 createWriteStream(gzipFilePath)
-            );
+            )
+        );
 
+        it('should return 200 for post with valid database, application, version and files', async () => {
+            const name = basename(filePath);
+            const stats = await stat(filePath);
+            const uncompressedSize = stats.size;
+            const lastModified = stats.mtime;    
             const size = await stat(gzipFilePath).then(stats => stats.size);
             const file = ReadStream.toWeb(createReadStream(gzipFilePath));
             const gzippedSymbolFile = {
@@ -65,5 +66,7 @@ describe('SymbolsApiClient', () => {
 
             expect(response[0].status).toEqual(200);
         });
+
+        afterEach(async () => rm(gzipFilePath));
     });
 });

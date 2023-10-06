@@ -1,7 +1,9 @@
+import { ApiClient } from '@common';
+
 export function createFakeBugSplatApiClient(
     formData: FormData,
     response: any
-): any {
+): jasmine.SpyObj<ApiClient> {
     const fakeBugSplatApiClient = jasmine.createSpyObj('BugSplatApiClient', [
         'createFormData',
         'fetch'

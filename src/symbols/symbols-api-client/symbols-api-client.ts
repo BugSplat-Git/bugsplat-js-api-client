@@ -1,19 +1,13 @@
 import { ApiClient, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
 
-// const gzipMagic = '1f 8b';
-
 export class SymbolsApiClient {
-
     private readonly uploadUrl = '/symsrv/uploadUrl';
     private readonly uploadCompleteUrl = '/symsrv/uploadComplete';
-
-    private _s3ApiClient: S3ApiClient;
+    private _s3ApiClient = new S3ApiClient();
     private _timer = timer;
 
-    constructor(private _client: ApiClient) {
-        this._s3ApiClient = new S3ApiClient();
-    }
+    constructor(private _client: ApiClient) { }
 
     async postSymbols(
         database: string,
@@ -31,7 +25,7 @@ export class SymbolsApiClient {
                 }
 
                 if (!this.isGzipMagicBytes(value)) {
-                    throw new Error('Symbol file stream does not start with gzip magic bytes');
+                    throw new Error('Symbol file stream is not a gzipped stream');
                 }
 
                 file.file = untouchedStream;
@@ -44,7 +38,7 @@ export class SymbolsApiClient {
     
                 const uploadResponse = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
                 
-                const completeResponse = await this.postUploadComplete(
+                await this.postUploadComplete(
                     database,
                     application,
                     version,
