@@ -9,6 +9,8 @@ export class SymbolsApiClient {
 
     constructor(private _client: ApiClient) { }
 
+    // Gzip implementation is different in node.js vs browser
+    // Consumer must gzip files before calling this method
     async postSymbols(
         database: string,
         application: string,
