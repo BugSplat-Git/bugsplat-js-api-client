@@ -5,6 +5,7 @@ import { VersionsApiClient } from '@versions';
 import { firstValueFrom, timer } from 'rxjs';
 import { PostCrashResponse } from 'src/post/post-crash-response';
 import { createUploadableFile } from '../create-bugsplat-file';
+import { createSymbolFile } from '../create-symbol-file';
 
 export async function postNativeCrashAndSymbols(
     authenticatedClient: BugSplatApiClient,
@@ -12,8 +13,8 @@ export async function postNativeCrashAndSymbols(
     application: string,
     version: string
 ): Promise<PostCrashResponse> {
-    const exeFile = await createUploadableFile('./spec/files/native/myConsoleCrasher.exe');
-    const pdbFile = await createUploadableFile('./spec/files/native/myConsoleCrasher.pdb');
+    const exeFile = await createSymbolFile('./spec/files/native/myConsoleCrasher.exe');
+    const pdbFile = await createSymbolFile('./spec/files/native/myConsoleCrasher.pdb');
     const files = [exeFile, pdbFile];
     const symbolsApiClient = new VersionsApiClient(authenticatedClient);
     await symbolsApiClient.postSymbols(

@@ -1,5 +1,6 @@
 import { BugSplatApiClient, UploadableFile } from '@common';
 import { config } from '@spec/config';
+import { createSymbolFile } from '@spec/files/create-symbol-file';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
 import { VersionsApiClient } from '@versions';
 import { createReadStream, ReadStream, statSync } from 'node:fs';
@@ -100,10 +101,7 @@ describe('VersionsApiClient', () => {
     describe('postSymbols', () => {
         it('should return 200 for post with valid database, application, version and files', async () => {
             const filePath = './spec/files/js/index.js.map';
-            const name = basename(filePath);
-            const size = statSync(filePath).size;
-            const readableStream = ReadStream.toWeb(createReadStream(filePath));
-            const file = new UploadableFile(name, size, readableStream);
+            const file = await createSymbolFile(filePath);
             const response = await client.postSymbols(
                 database,
                 application,
