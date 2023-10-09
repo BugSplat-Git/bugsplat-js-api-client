@@ -5,7 +5,7 @@ import { PostCrashResponse } from './post-crash-response';
 export class CrashPostClient {
 
     private _processorApiClient: BugSplatApiClient;
-    private _s3ApiClient: S3ApiClient;
+    private _s3ApiClient = new S3ApiClient();
 
     constructor(
         private _database: string,
@@ -16,7 +16,6 @@ export class CrashPostClient {
             `https://${this._database}.bugsplat.com`,
             this._environment
         );
-        this._s3ApiClient = new S3ApiClient();
     }
 
     async postCrash(

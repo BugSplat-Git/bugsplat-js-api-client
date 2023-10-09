@@ -1,9 +1,11 @@
 import { UploadableFile } from '@common';
-import fs, { statSync } from 'fs';
-import path from 'path';
+import { createReadStream, ReadStream } from 'node:fs';
+import { stat } from 'node:fs/promises';
+import { basename } from 'node:path';
 
-export function createUploadableFile(filePath: string): UploadableFile {
-    const fileSize = statSync(filePath).size;
-    const fileName = path.basename(filePath);
-    return new UploadableFile(fileName, fileSize, fs.createReadStream(filePath));
+export async function createUploadableFile(filePath: string): Promise<UploadableFile> {
+    const fileSize = await stat(filePath).then(stats => stats.size);
+    const fileName = basename(filePath);
+    const readableStream = ReadStream.toWeb(createReadStream(filePath));
+    return new UploadableFile(fileName, fileSize, readableStream);
 }

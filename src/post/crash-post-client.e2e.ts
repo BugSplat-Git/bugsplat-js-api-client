@@ -11,7 +11,7 @@ describe('CrashPostClient', () => {
             const application = 'myConsoleCrasher';
             const version = `${Math.random() * 1000000}`;
             const md5 = 'ebe24c1cd1a0912904658fa4fad2b539';
-            const crashFile = createUploadableFile('spec/files/native/myConsoleCrasher.zip');
+            const crashFile = await createUploadableFile('spec/files/native/myConsoleCrasher.zip');
             const crashPostClient = new CrashPostClient(config.database);
             const result = await crashPostClient.postCrash(
                 application,

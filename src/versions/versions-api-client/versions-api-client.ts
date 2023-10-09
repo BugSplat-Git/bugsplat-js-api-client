@@ -1,19 +1,17 @@
-import { ApiClient, BugSplatResponse, S3ApiClient, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
+import { ApiClient, BugSplatResponse, S3ApiClient, SymbolFile, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
 import { lastValueFrom, timer } from 'rxjs';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
-import { SymbolFile } from './symbol-file';
 
 export class VersionsApiClient {
 
     private readonly route = '/api/versions';
 
-    private _s3ApiClient: S3ApiClient;
+    private _s3ApiClient = new S3ApiClient()
     private _tableDataClient: TableDataClient;
     private _timer = timer;
 
     constructor(private _client: ApiClient) {
-        this._s3ApiClient = new S3ApiClient();
         this._tableDataClient = new TableDataClient(this._client, this.route);
     }
 
