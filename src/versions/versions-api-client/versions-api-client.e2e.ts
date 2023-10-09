@@ -1,10 +1,8 @@
-import { BugSplatApiClient, UploadableFile } from '@common';
+import { BugSplatApiClient } from '@common';
 import { config } from '@spec/config';
 import { createSymbolFile } from '@spec/files/create-symbol-file';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
 import { VersionsApiClient } from '@versions';
-import { createReadStream, ReadStream, statSync } from 'node:fs';
-import { basename } from 'node:path';
 
 describe('VersionsApiClient', () => {
     let client: VersionsApiClient;
