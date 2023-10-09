@@ -1,3 +1,13 @@
+# [8.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.3.1...v8.0.0) (2023-10-09)
+
+
+* feat!: s3 symserv upload support (#112) ([e26c066](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/e26c06612e54549489431c6198d917a90f32bbbd)), closes [#112](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/112)
+
+
+### BREAKING CHANGES
+
+* drop support for fs.ReadableStream, as it's not browser-compatible. Use ReadStream.toWeb(...) to convert to web-compatible ReadableStream.
+
 ## [7.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.3.0...v7.3.1) (2023-08-07)
 
 
