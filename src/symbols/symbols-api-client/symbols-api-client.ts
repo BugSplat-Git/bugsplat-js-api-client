@@ -37,8 +37,11 @@ export class SymbolsApiClient {
                     version,
                     file
                 );
+                const additionalHeaders = {
+                    'content-encoding': 'gzip'
+                };
     
-                const uploadResponse = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
+                const uploadResponse = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file, additionalHeaders);
                 
                 await this.postUploadComplete(
                     database,
