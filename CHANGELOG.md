@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.0.0...v8.0.1) (2023-10-13)
+
+
+### Bug Fixes
+
+* gzip upload headers for symsrv ([#113](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/113)) ([6670bcb](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/6670bcb1b9214752402e9a1410e2e7a5391ed5a1))
+
 # [8.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v7.3.1...v8.0.0) (2023-10-09)
 
 
