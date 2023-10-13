@@ -69,7 +69,7 @@ export class SymbolsApiClient {
         formData.append('appName', appName);
         formData.append('appVersion', appVersion);
         formData.append('size', `${file.uncompressedSize}`);
-        formData.append('symFileName', file.name);
+        formData.append('fileName', file.name);
         formData.append('moduleName', file.moduleName);
         formData.append('dbgId', file.dbgId);
         formData.append('lastModified', `${file.lastModified}`);
@@ -116,7 +116,7 @@ export class SymbolsApiClient {
         formData.append('appName', appName);
         formData.append('appVersion', appVersion);
         formData.append('size', `${file.uncompressedSize}`);
-        formData.append('symFileName', file.name);
+        formData.append('fileName', file.name);
         formData.append('moduleName', file.moduleName);
         formData.append('dbgId', file.dbgId);
         formData.append('lastModified', `${file.lastModified}`);
