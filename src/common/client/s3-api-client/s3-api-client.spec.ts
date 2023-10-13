@@ -42,6 +42,29 @@ describe('S3ApiClient', () => {
             );
         });
 
+        it('should call fetch with additionalHeaders', async () => {
+            const url = 'https://bugsplat.com';
+            const name = '🐛.txt';
+            const size = 1337;
+            const file = { name, size, file: name } as any;
+            const additionalHeaders = { 'content-encoding': 'gzip' };
+
+            await s3ApiClient.uploadFileToPresignedUrl(url, file, additionalHeaders);
+
+            expect((s3ApiClient as any)._fetch).toHaveBeenCalledWith(
+                jasmine.anything(),
+                jasmine.objectContaining({
+                    method: 'PUT',
+                    headers: {
+                        'content-type': 'application/octet-stream',
+                        'content-length': `${size}`,
+                        ...additionalHeaders
+                    },
+                    body: file.file
+                })
+            );
+        });
+
         it('should return response', async () => {
             const url = 'https://bugsplat.com';
             const name = '🐛.txt';

@@ -84,6 +84,9 @@ describe('SymbolsApiClient', () => {
                 url,
                 jasmine.objectContaining({
                     file: fakeUntouchedStream
+                }),
+                jasmine.objectContaining({
+                    'content-encoding': 'gzip'
                 })
             );
         });

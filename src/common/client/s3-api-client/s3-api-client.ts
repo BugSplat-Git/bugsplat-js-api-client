@@ -4,12 +4,13 @@ export class S3ApiClient {
 
     private _fetch = globalThis.fetch;
 
-    async uploadFileToPresignedUrl(presignedUrl: string, file: UploadableFile): Promise<Response> {
+    async uploadFileToPresignedUrl(presignedUrl: string, file: UploadableFile, additionalHeaders: HeadersInit = {}): Promise<Response> {
         const response = await this._fetch(presignedUrl, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/octet-stream',
-                'content-length': `${file.size}`
+                'content-length': `${file.size}`,
+                ...additionalHeaders
             },
             body: file.file as BodyInit,
             duplex: 'half'
