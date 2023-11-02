@@ -149,11 +149,16 @@ export class VersionsApiClient {
         formData.append('size', `${file.size}`);
         formData.append('symFileName', file.name);
 
-        if (file.dbgId && file.lastModified && file.moduleName) {
-            formData.append('moduleName', file.moduleName);
+        if (file.dbgId) {
             formData.append('dbgId', file.dbgId);
+        }
+
+        if (file.lastModified) {
             formData.append('lastModified', `${file.lastModified}`);
-            formData.append('SendPdbsVersion', 'bsv1');
+        }
+
+        if (file.moduleName) {
+            formData.append('moduleName', file.moduleName);
         }
 
         const request = {
