@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.0.1...v8.0.2) (2023-11-02)
+
+
+### Bug Fixes
+
+* don't treat zip files as windows symbols ([#115](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/115)) ([4235535](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/423553509064acf0f6d42b78acd53d87c34ceaf0))
+
 ## [8.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.0.0...v8.0.1) (2023-10-13)
 
 
