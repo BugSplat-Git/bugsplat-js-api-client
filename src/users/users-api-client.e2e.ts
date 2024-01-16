@@ -1,4 +1,4 @@
-import { BugSplatApiClient, TableDataResponse } from '@common';
+import { BugSplatApiClient } from '@common';
 import { config } from '@spec/config';
 import { UserApiResponseStatus, UsersApiClient } from './users-api-client';
 
