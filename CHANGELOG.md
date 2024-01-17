@@ -1,3 +1,10 @@
+# [8.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.0.2...v8.1.0) (2024-01-17)
+
+
+### Features
+
+* users ([#116](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/116)) ([c730962](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/c730962eca5605f765554f0dd3fcddb61a62ae03))
+
 ## [8.0.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.0.1...v8.0.2) (2023-11-02)
 
 
