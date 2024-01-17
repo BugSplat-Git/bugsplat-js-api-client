@@ -1,7 +1,7 @@
 import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
-import * as SummaryTableDataClientModule from '../summary-table-data/summary-table-data-client';
+import * as TableDataClientModule from '../../common/data/table-data/table-data-client/table-data-client';
 import { SummaryApiClient } from './summary-api-client';
 
 describe('SummaryApiClient', () => {
@@ -31,24 +31,30 @@ describe('SummaryApiClient', () => {
         pageData = { coffee: 'black rifle' };
         rows = [{ stackKeyId, subKeyDepth, userSum }];
         tableDataClientResponse = createFakeResponseBody(200, { pageData, rows });
-        tableDataClient = jasmine.createSpyObj('SummaryTableDataClient', ['postGetData']);
+        tableDataClient = jasmine.createSpyObj('TableDataClient', ['postGetData']);
         tableDataClient.postGetData.and.resolveTo(tableDataClientResponse);
-        spyOn(SummaryTableDataClientModule, 'SummaryTableDataClient').and.returnValue(tableDataClient);
+        spyOn(TableDataClientModule, 'TableDataClient').and.returnValue(tableDataClient);
 
         sut = new SummaryApiClient(apiClient);
     });
 
     describe('getSummary', () => {
+        let applications;
+        let versions;
         let result;
         let request;
 
         beforeEach(async () => {
-            request = { database };
+            applications = ['☕️', '🍵'];
+            versions = ['1.0.0', '2.0.0'];
+            request = { database, applications, versions };
             result = await sut.getSummary(request);
         });
 
-        it('should call postGetData with request', () => {
-            expect(tableDataClient.postGetData).toHaveBeenCalledWith(request);
+        it('should call postGetData with request and initial formParts', () => {
+            const expectedAppNames = applications.join(',');
+            const expectedVersions = versions.join(',');
+            expect(tableDataClient.postGetData).toHaveBeenCalledWith(request, { appNames: expectedAppNames, versions: expectedVersions });
         });
 
         it('should return value with stackKeyId, subKeyDepth, and userSum values mapped to numbers', () => {

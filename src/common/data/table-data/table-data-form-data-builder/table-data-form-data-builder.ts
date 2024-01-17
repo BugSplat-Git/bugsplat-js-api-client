@@ -77,20 +77,6 @@ export class TableDataFormDataBuilder {
     return this;
   }
 
-  withApplications(applications: Array<string> | undefined): TableDataFormDataBuilder {
-    if (applications && applications.length) {
-      this._formParts.appNames = applications.join(',');
-    }
-    return this;
-  }
-
-  withVersions(versions: Array<string> | undefined): TableDataFormDataBuilder {
-    if (versions && versions.length) {
-      this._formParts.versions = versions.join(',');
-    }
-    return this;
-  }
-
   entries(): Record<string, string> {
     return this._formParts;
   }

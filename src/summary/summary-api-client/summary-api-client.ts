@@ -1,21 +1,27 @@
-import { ApiClient, TableDataResponse } from '@common';
+import { ApiClient, TableDataClient, TableDataResponse } from '@common';
 import { SummaryApiResponseRow, SummaryApiRow } from '../summary-api-row/summary-api-row';
-import { SummaryTableDataClient } from '../summary-table-data/summary-table-data-client';
 import { SummaryTableDataRequest } from '../summary-table-data/summary-table-data-request';
 
 export class SummaryApiClient {
 
-    private _tableDataClient: SummaryTableDataClient;
+    private _tableDataClient: TableDataClient;
 
     constructor(private _client: ApiClient) {
-        this._tableDataClient = new SummaryTableDataClient(this._client, '/summary?data');
+        this._tableDataClient = new TableDataClient(this._client, '/summary?data');
     }
 
     async getSummary(request: SummaryTableDataRequest): Promise<TableDataResponse<SummaryApiRow>> {
-        const response = await this._tableDataClient.postGetData(request);
+        const formParts = {};
+        if (request.applications && request.applications.length) {
+            formParts['appNames'] = request.applications.join(',');
+        }
+        if (request.versions && request.versions.length) {
+            formParts['versions'] = request.versions.join(',');
+        }
+        const response = await this._tableDataClient.postGetData<SummaryApiResponseRow>(request, formParts);
         const json = await response.json();
         const pageData = json.pageData;
-        const rows = json.rows.map((row: SummaryApiResponseRow) => new SummaryApiRow(
+        const rows = json.rows.map(row => new SummaryApiRow(
             row.stackKey,
             Number(row.stackKeyId),
             row.firstReport,
@@ -28,7 +34,7 @@ export class SummaryApiClient {
             row.comments,
             Number(row.subKeyDepth),
             Number(row.userSum)
-          )
+        )
         );
 
         return {
