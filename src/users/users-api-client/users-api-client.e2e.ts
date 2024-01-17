@@ -7,7 +7,6 @@ describe('UsersApiClient', () => {
     let testEmail: string;
     let usersClient: UsersApiClient;
 
-
     beforeEach(async () => {
         const { host, email, password } = config;
         const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);

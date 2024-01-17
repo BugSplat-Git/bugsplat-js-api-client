@@ -6,3 +6,4 @@ export * from './post';
 export * from './summary';
 export * from './versions';
 export * from './symbols';
+export * from './users';

@@ -11,9 +11,13 @@ export class SummaryApiClient {
     }
 
     async getSummary(request: SummaryTableDataRequest): Promise<TableDataResponse<SummaryApiRow>> {
-        const appNames = request.applications?.join(',') || '';
-        const versions = request.versions?.join(',') || '';
-        const formParts = { appNames, versions };
+        const formParts = {};
+        if (request.applications && request.applications.length) {
+            formParts['appNames'] = request.applications.join(',');
+        }
+        if (request.versions && request.versions.length) {
+            formParts['versions'] = request.versions.join(',');
+        }
         const response = await this._tableDataClient.postGetData<SummaryApiResponseRow>(request, formParts);
         const json = await response.json();
         const pageData = json.pageData;
