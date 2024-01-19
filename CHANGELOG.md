@@ -1,3 +1,10 @@
+## [8.1.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.0...v8.1.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* post with crashTypeId ([#117](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/117)) ([737e2c3](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/737e2c37bd1c09d295f6d7aba213c494e5b80900))
+
 # [8.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.0.2...v8.1.0) (2024-01-17)
 
 
