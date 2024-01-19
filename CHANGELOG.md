@@ -1,3 +1,10 @@
+## [8.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.1...v8.1.2) (2024-01-19)
+
+
+### Bug Fixes
+
+* mac crashTypeId ([#118](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/118)) ([afcb629](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/afcb629653a42f10559b933d5777aa1ec50a8c03))
+
 ## [8.1.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.0...v8.1.1) (2024-01-19)
 
 
