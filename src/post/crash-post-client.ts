@@ -83,7 +83,8 @@ export class CrashPostClient {
         formData.append('database', database);
         formData.append('appName', application);
         formData.append('appVersion', version);
-        formData.append('crashType', crashType);
+        formData.append('crashType', crashType.name);
+        formData.append('crashTypeId', `${crashType.id}`);
         formData.append('s3key', s3Key);
         formData.append('md5', md5);
 

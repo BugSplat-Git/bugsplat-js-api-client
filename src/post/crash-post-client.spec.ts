@@ -76,7 +76,8 @@ describe('CrashPostClient', () => {
             expect(fakeFormData.append).toHaveBeenCalledWith('database', database);
             expect(fakeFormData.append).toHaveBeenCalledWith('appName', application);
             expect(fakeFormData.append).toHaveBeenCalledWith('appVersion', version);
-            expect(fakeFormData.append).toHaveBeenCalledWith('crashType', type);
+            expect(fakeFormData.append).toHaveBeenCalledWith('crashType', type.name);
+            expect(fakeFormData.append).toHaveBeenCalledWith('crashTypeId', `${type.id}`);
             expect(fakeFormData.append).toHaveBeenCalledWith('s3key', url);
             expect(fakeFormData.append).toHaveBeenCalledWith('md5', md5);
             expect(bugsplatApiClient.fetch).toHaveBeenCalledWith(
