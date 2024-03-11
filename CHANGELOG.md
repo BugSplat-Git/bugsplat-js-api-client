@@ -1,3 +1,10 @@
+## [8.1.3](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.2...v8.1.3) (2024-03-11)
+
+
+### Bug Fixes
+
+* add stackKey to CrashDetails ([#119](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/119)) ([87c25e7](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/87c25e7f12f38a0e3ca0e8a76a05da6c47caaa4b))
+
 ## [8.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.1...v8.1.2) (2024-01-19)
 
 
