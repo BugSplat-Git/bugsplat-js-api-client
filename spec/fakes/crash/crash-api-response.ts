@@ -26,6 +26,7 @@ export const createFakeCrashApiResponse = () => ({
     platform: 'NES',
     previousCrashId: 998,
     processor: 'Pentium 4',
+    stackKey: 'myConsoleCrasher(1337)',
     stackKeyComment: 'hello world!',
     stackKeyId: 117,
     stackKeyDefectLabel: 'idk',
