@@ -46,6 +46,7 @@ export interface CrashDetails {
   platform: string;
   previousCrashId: number;
   processor: string;
+  stackKey: string;
   stackKeyComment: string;
   stackKeyId: number;
   stackKeyDefectId: number;
@@ -79,6 +80,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   const ipAddress = defaultToEmptyString(options.ipAddress, 'options.ipAddress');
   const platform = defaultToEmptyString(options.platform, 'options.platform');
   const processor = defaultToEmptyString(options.processor, 'options.processor');
+  const stackKey = defaultToEmptyString(options.stackKey, 'options.stackKey');
   const stackKeyComment = defaultToEmptyString(options.stackKeyComment,'options.stackKeyComment');
   const stackKeyDefectLabel = defaultToEmptyString(options.stackKeyDefectLabel, 'options.stackKeyDefectLabel');
   const stackKeyDefectUrl = defaultToEmptyString(options.stackKeyDefectUrl, 'options.stackKeyDefectUrl');
@@ -114,6 +116,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
       ipAddress,
       platform,
       processor,
+      stackKey,
       stackKeyComment,
       stackKeyDefectLabel,
       stackKeyDefectUrl,
