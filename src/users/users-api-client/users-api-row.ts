@@ -8,6 +8,7 @@ export class UsersApiRow {
     public readonly unrestricted: number,
     public readonly requireMFA: number,
     public readonly firstName: string = '',
-    public readonly lastName: string = ''
+    public readonly lastName: string = '',
+    public readonly ssoGroups: string = '',
   ) {}
 }
