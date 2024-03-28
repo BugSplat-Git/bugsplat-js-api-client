@@ -1,3 +1,10 @@
+# [8.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.3...v8.2.0) (2024-03-28)
+
+
+### Features
+
+* add ssoGroups ([#120](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/120)) ([6b696df](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/6b696df7d014b2d390da043962bca758f39d2b18))
+
 ## [8.1.3](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.2...v8.1.3) (2024-03-11)
 
 
