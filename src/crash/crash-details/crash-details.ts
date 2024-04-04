@@ -1,7 +1,7 @@
 import { AdditionalInfo, GroupableThreadCollection, ThreadCollection } from '@crash';
 import { Event } from '@events';
 import ac from 'argument-contracts';
-import { safeParseJson } from 'src/common/parse';
+import { safeParseJson } from '../../common/parse';
 import { EventResponseObject, createEvents } from '../../events/events-api-client/event';
 import { AdditionalInfoResponseObject } from '../additional-info/additional-info';
 

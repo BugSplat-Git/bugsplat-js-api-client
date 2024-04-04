@@ -1,4 +1,4 @@
-import { safeParseJson } from 'src/common/parse';
+import { safeParseJson } from '../../common/parse';
 
 interface CrashData {
   groupByCount: number;
