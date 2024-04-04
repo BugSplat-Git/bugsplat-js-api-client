@@ -1,3 +1,10 @@
+## [8.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.3.0...v8.3.1) (2024-04-04)
+
+
+### Bug Fixes
+
+* import paths ([c504c2f](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/c504c2f0faec79d8a7be7ba4f127901747fc90e2))
+
 # [8.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.2.0...v8.3.0) (2024-04-04)
 
 
