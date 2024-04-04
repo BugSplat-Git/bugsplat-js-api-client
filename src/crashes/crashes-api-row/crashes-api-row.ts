@@ -18,6 +18,7 @@ interface CrashData {
   skComments: string;
   exceptionCode: string;
   exceptionMessage: string;
+  attributes?: string;
 }
 
 interface CrashDataWithMappedProperties extends CrashData {
@@ -88,6 +89,7 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
   skComments: string;
   exceptionCode: string;
   exceptionMessage: string;
+  attributes?: string;
 
   constructor(rawApiRow: CrashesApiResponseRow) {
     this.id = Number(rawApiRow.id);
@@ -114,6 +116,7 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
     this.skComments = rawApiRow.skComments;
     this.exceptionCode = rawApiRow.exceptionCode;
     this.exceptionMessage = rawApiRow.exceptionMessage;
+    this.attributes = rawApiRow.attributes;
 
     Object.freeze(this);
   }

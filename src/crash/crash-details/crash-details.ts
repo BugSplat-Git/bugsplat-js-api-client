@@ -27,6 +27,7 @@ export interface CrashDetails {
   appKey: string;
   appName: string;
   appVersion: string;
+  attributes: string;
   comments: string;
   crashTime: string;
   defectTrackerType: DefectTrackerType;
@@ -64,10 +65,10 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   ac.assertNumber(<number>options.stackKeyId, 'options.stackKeyId');
   ac.assertBoolean(<boolean>options.missingSymbols, 'options.missingSymbols');
 
-  // TODO BG, the API should really guarantee reasonable defaults for these values
   const appName = defaultToEmptyString(options.appName, 'options.appName');
   const appVersion = defaultToEmptyString(options.appVersion, 'options.appVersion');
   const appKey = defaultToEmptyString(options.appKey, 'options.appKey');
+  const attributes = defaultToEmptyString(options.attributes, 'options.attributes');
   const comments = defaultToEmptyString(options.comments, 'options.comments');
   const crashTime = defaultToEmptyString(options.crashTime, 'options.crashTime');
   const defectLabel = defaultToEmptyString(options.defectLabel, 'options.defectLabel');
@@ -81,7 +82,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   const platform = defaultToEmptyString(options.platform, 'options.platform');
   const processor = defaultToEmptyString(options.processor, 'options.processor');
   const stackKey = defaultToEmptyString(options.stackKey, 'options.stackKey');
-  const stackKeyComment = defaultToEmptyString(options.stackKeyComment,'options.stackKeyComment');
+  const stackKeyComment = defaultToEmptyString(options.stackKeyComment, 'options.stackKeyComment');
   const stackKeyDefectLabel = defaultToEmptyString(options.stackKeyDefectLabel, 'options.stackKeyDefectLabel');
   const stackKeyDefectUrl = defaultToEmptyString(options.stackKeyDefectUrl, 'options.stackKeyDefectUrl');
   const user = defaultToEmptyString(options.user, 'options.user');
@@ -92,38 +93,39 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
 
   const events = createEvents(options.events as EventResponseObject[]);
   const thread = new GroupableThreadCollection({
-      ...<ThreadCollection>options.thread,
-      stackKeyId: <number>options.stackKeyId,
+    ...<ThreadCollection>options.thread,
+    stackKeyId: <number>options.stackKeyId,
   });
   const additionalInfo = AdditionalInfo.fromRawResponse(
-      options.debuggerOutput
+    options.debuggerOutput
   );
 
   return {
-      ...options,
-      appKey,
-      appName,
-      appVersion,
-      comments,
-      crashTime,
-      defectLabel,
-      defectUrl,
-      description,
-      dumpfile,
-      email,
-      exceptionCode,
-      exceptionMessage,
-      ipAddress,
-      platform,
-      processor,
-      stackKey,
-      stackKeyComment,
-      stackKeyDefectLabel,
-      stackKeyDefectUrl,
-      user,
-      thread,
-      additionalInfo,
-      events,
+    ...options,
+    appKey,
+    appName,
+    appVersion,
+    attributes,
+    comments,
+    crashTime,
+    defectLabel,
+    defectUrl,
+    description,
+    dumpfile,
+    email,
+    exceptionCode,
+    exceptionMessage,
+    ipAddress,
+    platform,
+    processor,
+    stackKey,
+    stackKeyComment,
+    stackKeyDefectLabel,
+    stackKeyDefectUrl,
+    user,
+    thread,
+    additionalInfo,
+    events,
   } as CrashDetails;
 }
 
@@ -134,9 +136,9 @@ export interface CrashDetailsRawResponse extends Partial<Omit<CrashDetails, 'eve
 
 function defaultToEmptyString(value, name) {
   if (value) {
-      ac.assertString(value, name);
-      return value;
+    ac.assertString(value, name);
+    return value;
   } else {
-      return '';
+    return '';
   }
 }
