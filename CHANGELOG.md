@@ -1,3 +1,10 @@
+# [8.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.2.0...v8.3.0) (2024-04-04)
+
+
+### Features
+
+* attributes ([#121](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/121)) ([f2cf741](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/f2cf74172310514654204852a750ff218407cfb8))
+
 # [8.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.1.3...v8.2.0) (2024-03-28)
 
 
