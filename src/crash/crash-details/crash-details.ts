@@ -1,7 +1,8 @@
 import { AdditionalInfo, GroupableThreadCollection, ThreadCollection } from '@crash';
 import { Event } from '@events';
 import ac from 'argument-contracts';
-import { createEvents, EventResponseObject } from '../../events/events-api-client/event';
+import { safeParseJson } from 'src/common/parse';
+import { EventResponseObject, createEvents } from '../../events/events-api-client/event';
 import { AdditionalInfoResponseObject } from '../additional-info/additional-info';
 
 export enum ProcessingStatus {
@@ -27,7 +28,7 @@ export interface CrashDetails {
   appKey: string;
   appName: string;
   appVersion: string;
-  attributes: string;
+  attributes: Record<string, unknown>;
   comments: string;
   crashTime: string;
   defectTrackerType: DefectTrackerType;
@@ -68,7 +69,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   const appName = defaultToEmptyString(options.appName, 'options.appName');
   const appVersion = defaultToEmptyString(options.appVersion, 'options.appVersion');
   const appKey = defaultToEmptyString(options.appKey, 'options.appKey');
-  const attributes = defaultToEmptyString(options.attributes, 'options.attributes');
+  const attributes = safeParseJson(options.attributes);
   const comments = defaultToEmptyString(options.comments, 'options.comments');
   const crashTime = defaultToEmptyString(options.crashTime, 'options.crashTime');
   const defectLabel = defaultToEmptyString(options.defectLabel, 'options.defectLabel');
@@ -129,7 +130,8 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   } as CrashDetails;
 }
 
-export interface CrashDetailsRawResponse extends Partial<Omit<CrashDetails, 'events' | 'debuggerOutput'>> {
+export interface CrashDetailsRawResponse extends Partial<Omit<CrashDetails, 'events' | 'debuggerOutput' | 'attributes'>> {
+  attributes?: string;
   events?: Array<EventResponseObject>;
   debuggerOutput?: AdditionalInfoResponseObject;
 }
