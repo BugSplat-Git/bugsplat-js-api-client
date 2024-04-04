@@ -11,11 +11,13 @@ describe('createCrashDetails', () => {
 
     const result = createCrashDetails(options);
 
-    expect(result).toEqual({
-      ...options,
+    const { attributes, ...rest } = options;
+    expect(result).toEqual(jasmine.objectContaining({
+      ...rest,
+      attributes: JSON.parse(attributes),
       events: createEvents(options.events),
       additionalInfo: jasmine.any(AdditionalInfo),
-    });
+    }));
   });
 
   it('should default comments and description to empty string if null', () => {

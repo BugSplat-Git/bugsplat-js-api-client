@@ -9,6 +9,7 @@ export const createFakeCrashApiResponse = () => ({
     appKey: 'ardvark',
     appName: 'boregard',
     appVersion: '1.2.3.4',
+    attributes: '{ "key": "value"}',
     comments: 'blah blah blah',
     crashTime: '2023-02-04T17:58:15+0000Z',
     defectLabel: 'weee!',

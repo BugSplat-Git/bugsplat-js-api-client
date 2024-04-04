@@ -1,3 +1,5 @@
+import { safeParseJson } from 'src/common/parse';
+
 interface CrashData {
   groupByCount: number;
   stackKey: string;
@@ -26,6 +28,7 @@ interface CrashDataWithMappedProperties extends CrashData {
   stackKeyId: number;
   comments: string;
   ipAddress: string;
+  attributes: Record<string, unknown>;
 }
 
 export interface CrashesApiResponseRow extends CrashData {
@@ -34,6 +37,7 @@ export interface CrashesApiResponseRow extends CrashData {
   stackKeyId: string;
   Comments: string;
   IpAddress: string;
+  attributes?: string;
 }
 
 export enum CrashTypeId {
@@ -88,6 +92,7 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
   skComments: string;
   exceptionCode: string;
   exceptionMessage: string;
+  attributes: Record<string, unknown>;
 
   constructor(rawApiRow: CrashesApiResponseRow) {
     this.id = Number(rawApiRow.id);
@@ -114,6 +119,7 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
     this.skComments = rawApiRow.skComments;
     this.exceptionCode = rawApiRow.exceptionCode;
     this.exceptionMessage = rawApiRow.exceptionMessage;
+    this.attributes = safeParseJson(rawApiRow.attributes);
 
     Object.freeze(this);
   }
