@@ -1,11 +1,11 @@
 import { ApiClient, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
-import { lastValueFrom, timer } from 'rxjs';
+import { delay } from '../../common/delay';
 
 export class SymbolsApiClient {
     private readonly uploadUrl = '/symsrv/uploadUrl';
     private readonly uploadCompleteUrl = '/symsrv/uploadComplete';
     private _s3ApiClient = new S3ApiClient();
-    private _timer = timer;
+    private _timer = delay;
 
     constructor(private _client: ApiClient) { }
 
@@ -15,7 +15,7 @@ export class SymbolsApiClient {
         database: string,
         application: string,
         version: string,
-        files: Array<GZippedSymbolFile> 
+        files: Array<GZippedSymbolFile>
     ): Promise<Array<BugSplatResponse>> {
         const promises = files
             .map(async (file) => {
@@ -40,21 +40,21 @@ export class SymbolsApiClient {
                 const additionalHeaders = {
                     'content-encoding': 'gzip'
                 };
-    
+
                 const uploadResponse = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file, additionalHeaders);
-                
+
                 await this.postUploadComplete(
                     database,
                     application,
                     version,
                     file
                 );
-                
-                await lastValueFrom(this._timer(1000));
+
+                await this._timer(1000);
 
                 return uploadResponse;
             });
-    
+
         return Promise.all(promises);
     }
 

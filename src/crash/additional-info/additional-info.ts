@@ -4,26 +4,26 @@ import { ModuleResponseObject } from '../module/module';
 const ATTRIBUTES = '@attributes';
 
 export interface AdditionalInfoConstructorOptions {
-  os: string;
-  debuggerOutput: string;
-  registers: Array<Register>;
-  modules: Array<Module>;
-  threads: Array<ThreadCollection>;
+  os?: string;
+  debuggerOutput?: string;
+  registers?: Array<Register>;
+  modules?: Array<Module>;
+  threads?: Array<ThreadCollection>;
 }
 
 export interface AdditionalInfoResponseObject {
   os: string;
   process: {
-    DebugOutput: {
+    DebugOutput?: {
       DbgEngOutput: string;
     },
-    exception: {
+    exception?: {
       registers: Record<string, string>;
     },
-    threads: {
+    threads?: {
       thread: ThreadResponseObject | Array<ThreadResponseObject>;
     },
-    modules: {
+    modules?: {
       module: Array<ModuleResponseObject>;
     }
   };
@@ -45,7 +45,7 @@ export interface ThreadResponseObject {
   frame: FrameResponseObject | Array<FrameResponseObject>
 }
 
-export class AdditionalInfo implements AdditionalInfoConstructorOptions {
+export class AdditionalInfo implements Required<AdditionalInfoConstructorOptions> {
   os: string;
   debuggerOutput: string;
   registers: Array<Register>;
@@ -78,19 +78,19 @@ export class AdditionalInfo implements AdditionalInfoConstructorOptions {
     const os = response.os || '';
 
     const debuggerOutput = !isEmpty(response.process.DebugOutput)
-      ? response.process.DebugOutput.DbgEngOutput
+      ? response.process.DebugOutput?.DbgEngOutput
       : '';
 
-    const registers = !isEmpty(response.process.exception.registers)
-      ? createRegistersArray(response.process.exception.registers)
+    const registers = !isEmpty(response.process.exception?.registers)
+      ? createRegistersArray(response.process.exception?.registers)
       : [];
 
     const threads = !isEmpty(response.process.threads)
-      ? createThreadCollectionArray(response.process.threads.thread)
+      ? createThreadCollectionArray(response.process.threads?.thread)
       : [];
 
     const modules = !isEmpty(response.process.modules)
-      ? createModulesArray(response.process.modules.module)
+      ? createModulesArray(response.process.modules?.module)
       : [];
 
     return new AdditionalInfo({
@@ -103,7 +103,7 @@ export class AdditionalInfo implements AdditionalInfoConstructorOptions {
   }
 }
 
-function createModulesArray(modules: Array<ModuleResponseObject>): Array<Module> {
+function createModulesArray(modules?: Array<ModuleResponseObject>): Array<Module> {
   if (!modules) {
     modules = [];
   }
@@ -115,11 +115,15 @@ function createModulesArray(modules: Array<ModuleResponseObject>): Array<Module>
   return modules.map(module => Module.fromResponseObject(module));
 }
 
-function createRegistersArray(registers: Record<string, string>): Array<Register> {
+function createRegistersArray(registers?: Record<string, string>): Array<Register> {
+  if (!registers) {
+    return [];
+  }
+
   return Register.fromResponseObject(registers);
 }
 
-function createThreadCollectionArray(threads: ThreadResponseObject | Array<ThreadResponseObject>): Array<ThreadCollection> {
+function createThreadCollectionArray(threads?: ThreadResponseObject | Array<ThreadResponseObject>): Array<ThreadCollection> {
   if (!threads) {
     threads = [];
   }

@@ -81,6 +81,12 @@ describe('AdditionalInfo', () => {
 
       expect(result.threads).toEqual([]);
     });
+
+    it('should not throw if exception is undefined', () => {
+      apiResponse.process.exception = undefined;
+
+      expect(() => AdditionalInfo.fromRawResponse(apiResponse)).not.toThrow();
+    });
   });
 });
 

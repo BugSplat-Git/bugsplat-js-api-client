@@ -2,10 +2,10 @@ import { BugSplatApiClient } from '@common';
 import { CrashApiClient } from '@crash';
 import { CrashPostClient, CrashType } from '@post';
 import { VersionsApiClient } from '@versions';
-import { firstValueFrom, timer } from 'rxjs';
 import { PostCrashResponse } from 'src/post/post-crash-response';
 import { createUploadableFile } from '../create-bugsplat-file';
 import { createSymbolFile } from '../create-symbol-file';
+import { delay } from '../../../src/common/delay';
 
 export async function postNativeCrashAndSymbols(
     authenticatedClient: BugSplatApiClient,
@@ -34,7 +34,7 @@ export async function postNativeCrash(
 ): Promise<PostCrashResponse> {
     const crashFile = await createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
     const crashPostClient = new CrashPostClient(database);
-    await firstValueFrom(timer(2000)); // Prevent rate-limiting
+    await delay(2000); // Prevent rate-limiting
     const postCrashResult = await crashPostClient.postCrash(
         application,
         version,
@@ -75,7 +75,7 @@ export async function postNativeCrashAndWaitForCrashToProcess(
         if (stackKeyId > 0) {
             break;
         }
-        await firstValueFrom(timer(3000));
+        await delay(3000);
     }
 
     return {

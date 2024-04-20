@@ -2,7 +2,6 @@ import { ApiClient } from '@common';
 import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
-import { of } from 'rxjs';
 import { SymbolsApiClient } from './symbols-api-client';
 
 describe('SymbolsApiClient', () => {
@@ -35,7 +34,7 @@ describe('SymbolsApiClient', () => {
         symbolsApiClient = new SymbolsApiClient(apiClient);
 
         fakeTimer = jasmine.createSpy('timer');
-        fakeTimer.and.returnValue(of(0));
+        fakeTimer.and.resolveTo(0);
         fakeUploadResponse = createFakeResponseBody(200, { Status: 'Success' });
         (symbolsApiClient as any)._s3ApiClient = jasmine.createSpyObj('S3ApiClient', ['uploadFileToPresignedUrl']);
         (symbolsApiClient as any)._s3ApiClient.uploadFileToPresignedUrl.and.resolveTo(fakeUploadResponse);

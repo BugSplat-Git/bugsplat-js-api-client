@@ -50,8 +50,7 @@
     ]
   },
   "dependencies": {
-    "argument-contracts": "^1.2.3",
-    "rxjs": "^7.1.0"
+    "argument-contracts": "^1.2.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",

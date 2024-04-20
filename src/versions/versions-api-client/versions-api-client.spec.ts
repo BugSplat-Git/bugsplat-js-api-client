@@ -3,7 +3,6 @@ import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
 import { VersionsApiClient } from '@versions';
 import path from 'path';
-import { of } from 'rxjs';
 import * as S3ApiClientModule from '../../common/client/s3-api-client/s3-api-client';
 import * as TableDataClientModule from '../../common/data/table-data/table-data-client/table-data-client';
 import { VersionsApiRow } from '../versions-api-row/versions-api-row';
@@ -232,7 +231,7 @@ describe('VersionsApiClient', () => {
                 size: 1337
             }];
             timer = jasmine.createSpy();
-            timer.and.returnValue(of(0));
+            timer.and.resolveTo(0);
             (<any>versionsApiClient)._timer = timer;
 
             result = await versionsApiClient.postSymbols(
@@ -295,7 +294,7 @@ describe('VersionsApiClient', () => {
                     files
                 )).toBeRejectedWithError('Error getting presigned URL, invalid credentials');
             });
-            
+
             it('should throw if response status is not 200, or 403', async () => {
                 const fakeErrorResponse = createFakeResponseBody(400);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
