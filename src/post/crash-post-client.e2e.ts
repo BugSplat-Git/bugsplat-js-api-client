@@ -1,7 +1,7 @@
 import { CrashPostClient, CrashType } from '@post';
 import { config } from '@spec/config';
 import { createUploadableFile } from '@spec/files/create-bugsplat-file';
-import { delay } from 'src/common/delay';
+import { delay } from '../common/delay';
 
 describe('CrashPostClient', () => {
     beforeEach(async () => delay(2000));  // Prevent rate-limiting

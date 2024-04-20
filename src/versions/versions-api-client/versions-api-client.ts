@@ -1,5 +1,5 @@
 import { ApiClient, BugSplatResponse, S3ApiClient, SymbolFile, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
-import { delay } from 'src/common/delay';
+import { delay } from '../../common/delay';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
 

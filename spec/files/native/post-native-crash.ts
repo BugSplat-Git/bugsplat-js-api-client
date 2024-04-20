@@ -5,7 +5,7 @@ import { VersionsApiClient } from '@versions';
 import { PostCrashResponse } from 'src/post/post-crash-response';
 import { createUploadableFile } from '../create-bugsplat-file';
 import { createSymbolFile } from '../create-symbol-file';
-import { delay } from 'src/common/delay';
+import { delay } from '../../../src/common/delay';
 
 export async function postNativeCrashAndSymbols(
     authenticatedClient: BugSplatApiClient,

@@ -2,7 +2,7 @@ import { BugSplatApiClient } from '@common';
 import { config } from '@spec/config';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
 import { SummaryApiClient } from './summary-api-client';
-import { delay } from 'src/common/delay';
+import { delay } from '../../common/delay';
 
 describe('SummaryApiClient', () => {
     let summaryClient: SummaryApiClient;
