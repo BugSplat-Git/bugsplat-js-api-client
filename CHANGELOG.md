@@ -1,3 +1,10 @@
+## [8.3.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.3.1...v8.3.2) (2024-04-20)
+
+
+### Bug Fixes
+
+* handle missing additional info ([#122](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/122)) ([ea3af3c](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/ea3af3cb4c6ba7ca8bc94b5ff8377a98e0fa852f))
+
 ## [8.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.3.0...v8.3.1) (2024-04-04)
 
 
