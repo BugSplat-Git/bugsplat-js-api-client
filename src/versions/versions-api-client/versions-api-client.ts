@@ -1,5 +1,5 @@
 import { ApiClient, BugSplatResponse, S3ApiClient, SymbolFile, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
-import { lastValueFrom, timer } from 'rxjs';
+import { delay } from 'src/common/delay';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
 
@@ -9,7 +9,7 @@ export class VersionsApiClient {
 
     private _s3ApiClient = new S3ApiClient()
     private _tableDataClient: TableDataClient;
-    private _timer = timer;
+    private _timer = delay;
 
     constructor(private _client: ApiClient) {
         this._tableDataClient = new TableDataClient(this._client, this.route);
@@ -67,7 +67,7 @@ export class VersionsApiClient {
 
         return this._client.fetch(route, request);
     }
-    
+
     async putRetired(
         database: string,
         application: string,
@@ -116,7 +116,7 @@ export class VersionsApiClient {
         database: string,
         application: string,
         version: string,
-        files: Array<SymbolFile> 
+        files: Array<SymbolFile>
     ): Promise<Array<BugSplatResponse>> {
         const promises = files
             .map(async (file) => {
@@ -126,13 +126,13 @@ export class VersionsApiClient {
                     version,
                     file
                 );
-    
+
                 const response = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
-                await lastValueFrom(this._timer(1000));
+                await this._timer(1000);
 
                 return response;
             });
-    
+
         return Promise.all(promises);
     }
 

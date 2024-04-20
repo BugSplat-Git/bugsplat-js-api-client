@@ -1,8 +1,8 @@
 import { BugSplatApiClient } from '@common';
 import { config } from '@spec/config';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
-import { firstValueFrom, timer } from 'rxjs';
 import { SummaryApiClient } from './summary-api-client';
+import { delay } from 'src/common/delay';
 
 describe('SummaryApiClient', () => {
     let summaryClient: SummaryApiClient;
@@ -25,7 +25,7 @@ describe('SummaryApiClient', () => {
 
     describe('getSummary', () => {
         it('should return 200 and array of stack keys', async () => {
-            const stackKey =  'myConsoleCrasher!MemoryException(150)';
+            const stackKey = 'myConsoleCrasher!MemoryException(150)';
             const database = config.database;
             const applications = [application];
             const versions = [version];
@@ -45,9 +45,9 @@ describe('SummaryApiClient', () => {
                     break;
                 }
 
-                await firstValueFrom(timer(2000));
+                await delay(2000);
             }
-            
+
             const row = result.rows.find(row => row.stackKey === stackKey);
             expect(result.rows).toBeTruthy();
             expect(result.rows.length).toEqual(pageSize);

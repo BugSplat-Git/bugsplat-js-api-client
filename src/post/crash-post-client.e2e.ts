@@ -1,11 +1,11 @@
 import { CrashPostClient, CrashType } from '@post';
 import { config } from '@spec/config';
 import { createUploadableFile } from '@spec/files/create-bugsplat-file';
-import { firstValueFrom, timer } from 'rxjs';
+import { delay } from 'src/common/delay';
 
 describe('CrashPostClient', () => {
-    beforeEach(async () => firstValueFrom(timer(2000)));  // Prevent rate-limiting
-    
+    beforeEach(async () => delay(2000));  // Prevent rate-limiting
+
     describe('postCrash', () => {
         it('should post crash to BugSplat and return 200', async () => {
             const application = 'myConsoleCrasher';
