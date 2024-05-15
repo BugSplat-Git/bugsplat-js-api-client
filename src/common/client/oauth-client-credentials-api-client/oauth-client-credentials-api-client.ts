@@ -1,5 +1,6 @@
 import { ApiClient, bugsplatAppHostUrl, BugSplatResponse } from '@common';
 import { OAuthLoginResponse } from './oauth-login-response';
+import { BugSplatAuthenticationError } from '../api-client';
 
 export class OAuthClientCredentialsClient implements ApiClient {
 
@@ -46,7 +47,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         const responseJson = await response.json();
 
         if ((responseJson as ErrorResponse).error === 'invalid_client') {
-            throw new Error('Could not authenticate, check credentials and try again');
+            throw new BugSplatAuthenticationError('Could not authenticate, check credentials and try again');
         }
 
         const loginResponse = responseJson as OAuthLoginResponse;
@@ -75,7 +76,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         const body = response.body;
         
         if (status === 401) {
-            throw new Error('Could not authenticate, check credentials and try again');
+            throw new BugSplatAuthenticationError('Could not authenticate, check credentials and try again');
         }
 
         return {

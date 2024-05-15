@@ -1,5 +1,6 @@
 import { ApiClient, bugsplatAppHostUrl, BugSplatResponse, Environment } from '@common';
 import { BugSplatLoginResponse } from './bugsplat-login-response';
+import { BugSplatAuthenticationError } from '../api-client';
 
 export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
@@ -78,7 +79,7 @@ export class BugSplatApiClient implements ApiClient {
         const response = await this._fetch(url.href, request);
 
         if (response.status === 401) {
-            throw new Error('Could not authenticate, check credentials and try again');
+            throw new BugSplatAuthenticationError('Could not authenticate, check credentials and try again');
         }
 
         if (this._environment === Environment.Node) {
@@ -99,7 +100,7 @@ export class BugSplatApiClient implements ApiClient {
         const regex = new RegExp(/xsrf-token=[^;]*/g);
         const matches = cookie.match(regex);
         if (!matches) {
-            throw new Error('Could not parse XSRF token');
+            throw new BugSplatAuthenticationError('Could not parse XSRF token');
         }
 
         const xsrfCookie = matches[0];
