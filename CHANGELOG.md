@@ -1,3 +1,10 @@
+# [8.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.3.2...v8.4.0) (2024-05-15)
+
+
+### Features
+
+* better hook for handling auth errors ([#123](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/123)) ([1bf4a2d](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/1bf4a2da34e37f6df193ec80571fb3a36abaabf7))
+
 ## [8.3.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.3.1...v8.3.2) (2024-04-20)
 
 
