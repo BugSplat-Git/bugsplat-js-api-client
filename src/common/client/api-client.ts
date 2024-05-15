@@ -9,3 +9,7 @@ export interface BugSplatResponse<T = unknown> {
     json: () => Promise<T>;
     text: () => Promise<string>;
 }
+
+export class BugSplatAuthenticationError extends Error {
+    readonly isAuthenticationError = true;
+}
