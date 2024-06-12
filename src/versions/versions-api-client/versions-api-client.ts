@@ -7,7 +7,7 @@ export class VersionsApiClient {
 
     private readonly route = '/api/versions';
 
-    private _s3ApiClient = new S3ApiClient()
+    private _s3ApiClient = new S3ApiClient();
     private _tableDataClient: TableDataClient;
     private _timer = delay;
 
