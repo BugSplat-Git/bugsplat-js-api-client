@@ -119,8 +119,11 @@ describe('SymbolsApiClient', () => {
 function createFakeStream(value: any, done: boolean) {
     return {
         getReader: () => ({
-            read: () => Promise.resolve({ value, done })
-        })
+            read: () => Promise.resolve({ value, done }),
+            releaseLock: jasmine.createSpy('releaseLock'),
+            cancel: jasmine.createSpy('reader-cancel')
+        }),
+        cancel: jasmine.createSpy('stream-cancel')
     };
 }
 

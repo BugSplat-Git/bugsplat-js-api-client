@@ -19,36 +19,56 @@ export class SymbolsApiClient {
     ): Promise<Array<BugSplatResponse>> {
         const promises = files
             .map(async (file) => {
-                const [checkStream, untouchedStream] = file.file.tee();
-                const { value, done } = await checkStream.getReader().read();
+                const originalStream = file.file;
+                const [checkStream, uploadStream] = originalStream.tee();
+                const reader = checkStream.getReader();
+                try {
+                    const { value, done } = await reader.read();
+                    
+                    if (done) {
+                        throw new Error('Could not read symbol file stream');
+                    }
 
-                if (done) {
-                    throw new Error('Could not read symbol file stream');
+                    if (!this.isGzipMagicBytes(value)) {
+                        throw new Error('Symbol file stream is not a gzipped stream');
+                    }
+                } finally {
+                    // Teed streams cause the original stream to dequeue at the rate of the slowest stream.
+                    // If we don't cancel checkStream, the buffer will up to the size of the original stream.
+                    // Release the lock, so we can cancel the reader, then cancel the stream.
+                    reader.releaseLock();
+                    reader.cancel();
+                    checkStream.cancel();
                 }
 
-                if (!this.isGzipMagicBytes(value)) {
-                    throw new Error('Symbol file stream is not a gzipped stream');
+                let uploadResponse: globalThis.Response;
+
+                try {
+                    file.file = uploadStream;
+                    const presignedUrl = await this.getPresignedUrl(
+                        database,
+                        application,
+                        version,
+                        file
+                    );
+                    const additionalHeaders = {
+                        'content-encoding': 'gzip'
+                    };
+    
+                    uploadResponse = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file, additionalHeaders);
+    
+                    await this.postUploadComplete(
+                        database,
+                        application,
+                        version,
+                        file
+                    );
+                } finally {
+                    // Unfortunately, the original stream gets locked when we tee it, so we can't cancel it directly.
+                    // When both teed streams are cancelled, the original stream _should_ also be cancelled.
+                    // There's not a lot of documentation on this, so we might be mistaken.
+                    uploadStream.cancel();
                 }
-
-                file.file = untouchedStream;
-                const presignedUrl = await this.getPresignedUrl(
-                    database,
-                    application,
-                    version,
-                    file
-                );
-                const additionalHeaders = {
-                    'content-encoding': 'gzip'
-                };
-
-                const uploadResponse = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file, additionalHeaders);
-
-                await this.postUploadComplete(
-                    database,
-                    application,
-                    version,
-                    file
-                );
 
                 await this._timer(1000);
 
