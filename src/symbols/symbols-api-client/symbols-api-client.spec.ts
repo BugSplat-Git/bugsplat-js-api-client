@@ -141,9 +141,9 @@ function createFakeStream(value: any, done: boolean, releaseLock?: jasmine.Spy) 
         getReader: () => ({
             read: () => Promise.resolve({ value, done }),
             releaseLock: releaseLock ?? jasmine.createSpy('releaseLock'),
-            cancel: jasmine.createSpy('reader-cancel')
+            cancel: jasmine.createSpy('reader-cancel').and.resolveTo()
         }),
-        cancel: jasmine.createSpy('stream-cancel')
+        cancel: jasmine.createSpy('stream-cancel').and.resolveTo()
     };
 }
 
