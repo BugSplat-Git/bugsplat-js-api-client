@@ -28,7 +28,7 @@ describe('SymbolsApiClient', () => {
         fakeFormData = createFakeFormData();
         files = [{ file: fakeFile }];
         url = 'https://presigned.url';
-        
+
         const fakePresignedUrlResponse = createFakeResponseBody(200, { url });
         apiClient = createFakeBugSplatApiClient(fakeFormData, fakePresignedUrlResponse);
         symbolsApiClient = new SymbolsApiClient(apiClient);
@@ -113,14 +113,37 @@ describe('SymbolsApiClient', () => {
 
             expect(result).toEqual([fakeUploadResponse]);
         });
+
+        describe('error', () => {
+            it('should release checkStream reader lock, cancel checkStream reader, and cancel checkStream', async () => {
+                const releaseLock = jasmine.createSpy('releaseLock');
+                fakeCheckStream = createFakeStream(new Uint8Array([]), false, releaseLock);
+                fakeFile = createFakeFile(fakeCheckStream, fakeUntouchedStream);
+                files = [{ file: fakeFile }];
+                await expectAsync(symbolsApiClient.postSymbols(database, application, version, files)).toBeRejected();
+
+                expect(releaseLock).toHaveBeenCalled();
+                expect(fakeCheckStream.cancel).toHaveBeenCalled();
+            });
+
+            it('should cancel uploadStream', async () => {
+                apiClient.createFormData.and.throwError('error');
+                await expectAsync(symbolsApiClient.postSymbols(database, application, version, files)).toBeRejected();
+
+                expect(fakeUntouchedStream.cancel).toHaveBeenCalled();
+            });
+        });
     });
 });
 
-function createFakeStream(value: any, done: boolean) {
+function createFakeStream(value: any, done: boolean, releaseLock?: jasmine.Spy) {
     return {
         getReader: () => ({
-            read: () => Promise.resolve({ value, done })
-        })
+            read: () => Promise.resolve({ value, done }),
+            releaseLock: releaseLock ?? jasmine.createSpy('releaseLock'),
+            cancel: jasmine.createSpy('reader-cancel')
+        }),
+        cancel: jasmine.createSpy('stream-cancel')
     };
 }
 
