@@ -1,3 +1,10 @@
+## [8.4.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.4.1...v8.4.2) (2024-06-14)
+
+
+### Bug Fixes
+
+* can't find cancel ([8bac7ac](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/8bac7acc8dad557db64f98f3e4ec7d869b9a48cf))
+
 ## [8.4.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.4.0...v8.4.1) (2024-06-14)
 
 
