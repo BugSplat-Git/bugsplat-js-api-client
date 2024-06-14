@@ -1,3 +1,11 @@
+## [8.4.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.4.0...v8.4.1) (2024-06-14)
+
+
+### Bug Fixes
+
+* leaky symbol upload streams ([#124](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/124)) ([f8b7164](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/f8b7164d3e346070ecce432073780fd19de4dc3f))
+* safe cancel upload stream ([#126](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/126)) ([1330b03](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/1330b033079f791a605c1b8895b8bf24ae9f9e77))
+
 # [8.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.3.2...v8.4.0) (2024-05-15)
 
 
