@@ -1,5 +1,6 @@
 import { ApiClient, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
 import { delay } from '../../common/delay';
+import { safeCancel } from 'src/common/cancel';
 
 export class SymbolsApiClient {
     private readonly uploadUrl = '/symsrv/uploadUrl';
@@ -38,7 +39,7 @@ export class SymbolsApiClient {
                     // Release the lock, so we can cancel the stream.
                     // See https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/tee and https://github.com/whatwg/streams/issues/1033#issuecomment-601471668
                     reader.releaseLock();
-                    checkStream.cancel();
+                    safeCancel(checkStream);
                 }
 
                 let uploadResponse: globalThis.Response;
@@ -67,7 +68,7 @@ export class SymbolsApiClient {
                     // Unfortunately, the original stream gets locked when we tee it, so we can't cancel it directly.
                     // When both teed streams are cancelled, the original stream _should_ also be cancelled.
                     // There's not a lot of documentation on this, so we might be mistaken.
-                    uploadStream.cancel();
+                    safeCancel(uploadStream);
                 }
 
                 await this._timer(1000);
