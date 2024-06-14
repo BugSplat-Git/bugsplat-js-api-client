@@ -1,6 +1,6 @@
 import { ApiClient, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
 import { delay } from '../../common/delay';
-import { safeCancel } from 'src/common/cancel';
+import { safeCancel } from '../../common/cancel';
 
 export class SymbolsApiClient {
     private readonly uploadUrl = '/symsrv/uploadUrl';
