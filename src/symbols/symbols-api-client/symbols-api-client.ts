@@ -35,9 +35,9 @@ export class SymbolsApiClient {
                 } finally {
                     // Teed streams cause the original stream to dequeue at the rate of the slowest stream.
                     // If we don't cancel checkStream, the buffer will up to the size of the original stream.
-                    // Release the lock, so we can cancel the reader, then cancel the stream.
+                    // Release the lock, so we can cancel the stream.
+                    // See https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/tee and https://github.com/whatwg/streams/issues/1033#issuecomment-601471668
                     reader.releaseLock();
-                    reader.cancel();
                     checkStream.cancel();
                 }
 

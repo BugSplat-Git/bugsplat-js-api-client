@@ -117,14 +117,12 @@ describe('SymbolsApiClient', () => {
         describe('error', () => {
             it('should release checkStream reader lock, cancel checkStream reader, and cancel checkStream', async () => {
                 const releaseLock = jasmine.createSpy('releaseLock');
-                const cancel = jasmine.createSpy('cancel');
-                fakeCheckStream = createFakeStream(new Uint8Array([]), false, releaseLock, cancel);
+                fakeCheckStream = createFakeStream(new Uint8Array([]), false, releaseLock);
                 fakeFile = createFakeFile(fakeCheckStream, fakeUntouchedStream);
                 files = [{ file: fakeFile }];
                 await expectAsync(symbolsApiClient.postSymbols(database, application, version, files)).toBeRejected();
 
                 expect(releaseLock).toHaveBeenCalled();
-                expect(cancel).toHaveBeenCalled();
                 expect(fakeCheckStream.cancel).toHaveBeenCalled();
             });
 
@@ -138,12 +136,12 @@ describe('SymbolsApiClient', () => {
     });
 });
 
-function createFakeStream(value: any, done: boolean, releaseLock?: jasmine.Spy, cancel?: jasmine.Spy) {
+function createFakeStream(value: any, done: boolean, releaseLock?: jasmine.Spy) {
     return {
         getReader: () => ({
             read: () => Promise.resolve({ value, done }),
             releaseLock: releaseLock ?? jasmine.createSpy('releaseLock'),
-            cancel: cancel ?? jasmine.createSpy('reader-cancel')
+            cancel: jasmine.createSpy('reader-cancel')
         }),
         cancel: jasmine.createSpy('stream-cancel')
     };
