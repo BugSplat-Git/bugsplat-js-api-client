@@ -18,7 +18,8 @@ export enum DefectTrackerType {
   Azure = 'Azure DevOps',
   YouTrack = 'YouTrack',
   GitHub = 'GitHub',
-  Assembla = 'Assembla'
+  Assembla = 'Assembla',
+  Monday = 'Monday',
 }
 
 export interface CrashDetails {
