@@ -1,3 +1,10 @@
+# [8.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.4.2...v8.5.0) (2024-08-05)
+
+
+### Features
+
+* defect tracker type for monday.com ([#127](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/127)) ([27cdd5c](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/27cdd5c1d828cceeb810ec93537db0c723652e3e))
+
 ## [8.4.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.4.1...v8.4.2) (2024-06-14)
 
 
