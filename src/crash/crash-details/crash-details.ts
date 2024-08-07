@@ -20,6 +20,7 @@ export enum DefectTrackerType {
   GitHub = 'GitHub',
   Assembla = 'Assembla',
   Monday = 'Monday',
+  GitLab = 'GitLab',
 }
 
 export interface CrashDetails {
