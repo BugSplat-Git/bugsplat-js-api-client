@@ -1,3 +1,10 @@
+# [8.6.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.5.0...v8.6.0) (2024-08-08)
+
+
+### Features
+
+* add gitlab defect tracker type ([#128](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/128)) ([7f87b40](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/7f87b40ec81f1175d3ae0eec2665a1e071c2bd8d))
+
 # [8.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.4.2...v8.5.0) (2024-08-05)
 
 
