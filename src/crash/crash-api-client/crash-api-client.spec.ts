@@ -30,7 +30,7 @@ describe('CrashApiClient', () => {
         });
 
         it('should call fetch with correct route', () => {
-            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/data', jasmine.anything());
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/details', jasmine.anything());
         });
 
         it('should call fetch with formData containing database and id', () => {
@@ -106,7 +106,7 @@ describe('CrashApiClient', () => {
         });
 
         it('should call fetch with correct route', () => {
-            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/reprocess', jasmine.anything());
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/details/reprocess', jasmine.anything());
         });
 
         it('should call form data append with processor if provided', async () => {

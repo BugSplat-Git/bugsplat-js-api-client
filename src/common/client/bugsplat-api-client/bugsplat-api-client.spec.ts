@@ -31,7 +31,7 @@ describe('BugSplatApiClient', () => {
     });
 
     describe('fetch', () => {
-        const route = '/api/crash/data';
+        const route = '/api/crash/details';
         let body;
         let headers;
         let init;

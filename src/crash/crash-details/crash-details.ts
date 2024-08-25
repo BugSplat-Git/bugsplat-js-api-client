@@ -26,7 +26,6 @@ export enum DefectTrackerType {
 export interface CrashDetails {
   processed: ProcessingStatus;
 
-  additionalFiles: Array<string>;
   appKey: string;
   appName: string;
   appVersion: string;
@@ -91,7 +90,6 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   const user = defaultToEmptyString(options.user, 'options.user');
 
   ac.assertType(options.thread, ThreadCollection, 'options.thread');
-  ac.assertType(options.additionalFiles, Array, 'options.additionalFiles');
   ac.assertType(options.events, Array, 'options.events');
 
   const events = createEvents(options.events as EventResponseObject[]);

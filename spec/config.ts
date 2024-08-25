@@ -32,6 +32,13 @@ if (!clientSecret) {
     throw new Error('Please set BUGSPLAT_CLIENT_SECRET env variable');
 }
 
+if (host.includes('octomore')) {
+    // This allows us to use self-signed certificates, or out-of-date certs in our tests.
+    // Without this, Node fetch rejects the requests to octomore.bugsplat.com when we map
+    // it to a local IP address using /etc/hosts.
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 export const config = {
     host,
     email,
