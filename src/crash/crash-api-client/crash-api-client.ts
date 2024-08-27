@@ -66,7 +66,7 @@ export class CrashApiClient {
             duplex: 'half'
         } as RequestInit;
 
-        const response = await this._client.fetch<ReprocessCrashResponse>('/api/crash/details/reprocess', init);
+        const response = await this._client.fetch<ReprocessCrashResponse>('/api/crash/reprocess', init);
         const json = await response.json();
 
         if (response.status !== 202) {
