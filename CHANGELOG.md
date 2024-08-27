@@ -1,3 +1,13 @@
+# [9.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.6.0...v9.0.0) (2024-08-27)
+
+
+* fix!: deprecate old api/crash/data endpoint (#129) ([3421cad](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/3421cad62c5c1ef75bdff12b7d3c19ad98667660)), closes [#129](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/129)
+
+
+### BREAKING CHANGES
+
+* new api/crash/details does not return addtionalFiles
+
 # [8.6.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.5.0...v8.6.0) (2024-08-08)
 
 
