@@ -30,7 +30,7 @@ describe('CrashApiClient', () => {
         });
 
         it('should call fetch with correct route', () => {
-            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/data', jasmine.anything());
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/details', jasmine.anything());
         });
 
         it('should call fetch with formData containing database and id', () => {
