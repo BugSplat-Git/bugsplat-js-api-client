@@ -21,6 +21,7 @@ export enum DefectTrackerType {
   Assembla = 'Assembla',
   Monday = 'Monday',
   GitLab = 'GitLab',
+  Favro = 'Favro',
 }
 
 export interface CrashDetails {
