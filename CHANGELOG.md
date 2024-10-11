@@ -1,3 +1,10 @@
+# [9.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.0.0...v9.1.0) (2024-10-11)
+
+
+### Features
+
+* add favro support ([#130](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/130)) ([3dd275a](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/3dd275a4823c987f9597e37c344428ae4e296157))
+
 # [9.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v8.6.0...v9.0.0) (2024-08-27)
 
 
