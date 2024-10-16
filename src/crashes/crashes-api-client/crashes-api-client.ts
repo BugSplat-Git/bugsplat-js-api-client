@@ -50,6 +50,7 @@ export class CrashesApiClient {
     };
   }
 
+  // TODO BG we should move this to an api/crash/notes endpoint and reture allcrash
   postNotes(
     database: string,
     id: number,
@@ -70,6 +71,6 @@ export class CrashesApiClient {
       duplex: 'half',
     } as RequestInit;
 
-    return this._client.fetch('/api/crashes.php', request);
+    return this._client.fetch('/browse/allcrash.php', request);
   }
 }
