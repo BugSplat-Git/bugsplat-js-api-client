@@ -4,5 +4,7 @@ export class CrashType {
     static readonly electron = new CrashType('Electron', 22);
     static readonly native = new CrashType('Windows.Native', 1);
     static readonly mac = new CrashType('macOS', 13);
+    static readonly ps4 = new CrashType('PlayStation 4', 28);
+    static readonly ps5 = new CrashType('PlayStation 5', 29);
     private constructor(public readonly name: string, public readonly id: number) { }
 }
