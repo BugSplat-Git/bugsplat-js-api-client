@@ -1,3 +1,10 @@
+## [9.2.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.2.0...v9.2.1) (2024-10-29)
+
+
+### Bug Fixes
+
+* bump braces in the npm_and_yarn group across 1 directory ([#133](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/133)) ([3b4b88f](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/3b4b88f1dab12bdcaf28e07e63f4972dea2837b6))
+
 # [9.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.1.0...v9.2.0) (2024-10-16)
 
 
