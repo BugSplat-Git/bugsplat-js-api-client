@@ -1,3 +1,4 @@
+import { CrashStatus } from '@crash';
 import { safeParseJson } from '../../common/parse';
 
 interface CrashData {
@@ -14,6 +15,7 @@ interface CrashData {
   defectId: string;
   defectUrl: string;
   defectLabel: string;
+  status: CrashStatus;
   skDefectId: string;
   skDefectUrl: string;
   skDefectLabel: string;
@@ -70,6 +72,7 @@ export enum CrashTypeId {
 export class CrashesApiRow implements CrashDataWithMappedProperties {
   id: number;
   groupByCount: number;
+  status: CrashStatus;
   stackKey: string;
   stackId: number;
   stackKeyId: number;
@@ -97,6 +100,7 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
   constructor(rawApiRow: CrashesApiResponseRow) {
     this.id = Number(rawApiRow.id);
     this.groupByCount = Number(rawApiRow.groupByCount) || 0;
+    this.status = Number(rawApiRow.status) as CrashStatus;
     this.stackKey = rawApiRow.stackKey;
     this.stackKeyId = Number(rawApiRow.stackKeyId);
     this.stackId = Number(rawApiRow.stackId);
