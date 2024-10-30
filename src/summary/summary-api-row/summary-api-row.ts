@@ -1,4 +1,7 @@
+import { CrashStatus } from '@crash';
+
 interface SummaryData {
+  status: CrashStatus,
   stackKey: string,
   firstReport: string,
   lastReport: string,
@@ -36,6 +39,7 @@ export class SummaryApiRow implements SummaryDataWithMappedProperties {
     public stackKeyDefectLabel: string,
     public comments: string,
     public subKeyDepth: number,
-    public userSum: number
+    public userSum: number,
+    public status: CrashStatus
   ) { }
 }

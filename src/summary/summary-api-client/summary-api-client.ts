@@ -33,7 +33,8 @@ export class SummaryApiClient {
             row.stackKeyDefectLabel,
             row.comments,
             Number(row.subKeyDepth),
-            Number(row.userSum)
+            Number(row.userSum),
+            Number(row.status)
         )
         );
 
