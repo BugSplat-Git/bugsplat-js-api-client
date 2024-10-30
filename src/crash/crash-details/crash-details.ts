@@ -24,6 +24,12 @@ export enum DefectTrackerType {
   Favro = 'Favro',
 }
 
+export enum CrashStatus {
+  Open = 0,
+  Closed = 1,
+  Regression = 2,
+}
+
 export interface CrashDetails {
   processed: ProcessingStatus;
 
@@ -50,6 +56,7 @@ export interface CrashDetails {
   platform: string;
   previousCrashId: number;
   processor: string;
+  status: CrashStatus;
   stackKey: string;
   stackKeyComment: string;
   stackKeyId: number;
@@ -65,6 +72,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   ac.assertNumber(options.processed as number, 'options.processed');
 
   ac.assertNumber(<number>options.id, 'options.id');
+  ac.assertNumber(<number>options.status, 'options.status');
   ac.assertNumber(<number>options.stackKeyId, 'options.stackKeyId');
   ac.assertBoolean(<boolean>options.missingSymbols, 'options.missingSymbols');
 

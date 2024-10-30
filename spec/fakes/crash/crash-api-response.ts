@@ -1,7 +1,7 @@
 import { GroupableThreadCollection, ProcessingStatus } from '@crash';
 import { EventType } from '@events';
 import { createFakeEvents } from '@spec/fakes/events/events';
-import { CrashDetailsRawResponse } from 'src/crash/crash-details/crash-details';
+import { CrashDetailsRawResponse, CrashStatus } from 'src/crash/crash-details/crash-details';
 
 export const createFakeCrashApiResponse = () => ({
     processed: ProcessingStatus.Complete as number,
@@ -27,6 +27,7 @@ export const createFakeCrashApiResponse = () => ({
     platform: 'NES',
     previousCrashId: 998,
     processor: 'Pentium 4',
+    status: CrashStatus.Open,
     stackKey: 'myConsoleCrasher(1337)',
     stackKeyComment: 'hello world!',
     stackKeyId: 117,

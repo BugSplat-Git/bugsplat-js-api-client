@@ -1,4 +1,4 @@
-import { AdditionalInfo, ProcessingStatus } from '@crash';
+import { AdditionalInfo, CrashStatus, ProcessingStatus } from '@crash';
 import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
 import ac from 'argument-contracts';
 import { createEvents } from '../../events/events-api-client/event';
@@ -44,7 +44,8 @@ describe('createCrashDetails', () => {
       processor: 'OBAN-10.0.7.144',
       comments: null,
       processed: ProcessingStatus.Complete,
-      thread: (<any>{ stackFrames: [], stackKeyId: 0 })
+      thread: (<any>{ stackFrames: [], stackKeyId: 0 }),
+      status: CrashStatus.Open,
     };
 
     const result = createCrashDetails(<any>options);
