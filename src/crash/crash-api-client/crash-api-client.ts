@@ -1,7 +1,7 @@
 import { ApiClient } from '@common';
 import { CrashDetails } from '@crash';
 import ac from 'argument-contracts';
-import { CrashDetailsRawResponse, createCrashDetails } from '../crash-details/crash-details';
+import { CrashDetailsRawResponse, CrashStatus, createCrashDetails } from '../crash-details/crash-details';
 
 export class CrashApiClient {
 
@@ -75,9 +75,38 @@ export class CrashApiClient {
 
         return json as SuccessResponse;
     }
+
+    async postStatus(database: string, groupId: number, status: CrashStatus): Promise<SuccessResponse> {
+        ac.assertNonWhiteSpaceString(database, 'database');
+        ac.assertNumber(groupId, 'groupId');
+        ac.assertNumber(status, 'status');
+
+        const formData = this._client.createFormData();
+        formData.append('database', database);
+        formData.append('groupId', groupId.toString());
+        formData.append('status', status.toString());
+        const init = {
+            method: 'POST',
+            body: formData,
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow',
+            duplex: 'half'
+        } as RequestInit;
+
+        const response = await this._client.fetch<PostStatusResponse>('/api/crash/status', init);
+        const json = await response.json();
+
+        if (response.status !== 200) {
+            throw new Error((json as ErrorResponse).message);
+        }
+
+        return json as SuccessResponse;
+    }
 }
 
-type SuccessResponse = { success: boolean };
+type SuccessResponse = { status: 'success' };
 type ErrorResponse = { message: string };
 type GetCrashByIdResponse = CrashDetailsRawResponse | ErrorResponse;
 type ReprocessCrashResponse = SuccessResponse | ErrorResponse;
+type PostStatusResponse = SuccessResponse | ErrorResponse;

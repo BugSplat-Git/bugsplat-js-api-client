@@ -72,7 +72,6 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   ac.assertNumber(options.processed as number, 'options.processed');
 
   ac.assertNumber(<number>options.id, 'options.id');
-  ac.assertNumber(<number>options.status, 'options.status');
   ac.assertNumber(<number>options.stackKeyId, 'options.stackKeyId');
   ac.assertBoolean(<boolean>options.missingSymbols, 'options.missingSymbols');
 
@@ -101,6 +100,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   ac.assertType(options.thread, ThreadCollection, 'options.thread');
   ac.assertType(options.events, Array, 'options.events');
 
+  const status = (options.status || 0) as CrashStatus;
   const events = createEvents(options.events as EventResponseObject[]);
   const thread = new GroupableThreadCollection({
     ...<ThreadCollection>options.thread,
@@ -128,6 +128,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
     ipAddress,
     platform,
     processor,
+    status,
     stackKey,
     stackKeyComment,
     stackKeyDefectLabel,
