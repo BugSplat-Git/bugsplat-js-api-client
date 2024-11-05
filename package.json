@@ -1,7 +1,7 @@
 {
   "name": "@bugsplat/js-api-client",
   "description": "JS client for consuming the BugSplat API",
-  "version": "9.2.1",
+  "version": "9.3.0",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "files": [

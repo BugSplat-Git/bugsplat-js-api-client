@@ -1,3 +1,10 @@
+# [9.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.2.1...v9.3.0) (2024-11-05)
+
+
+### Features
+
+* crash status ([#134](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/134)) ([6385b36](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/6385b36ff7c43e5fa6592f6c4f3c33fa51627f17))
+
 ## [9.2.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.2.0...v9.2.1) (2024-10-29)
 
 
