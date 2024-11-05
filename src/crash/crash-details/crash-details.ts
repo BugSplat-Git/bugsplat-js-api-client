@@ -24,6 +24,12 @@ export enum DefectTrackerType {
   Favro = 'Favro',
 }
 
+export enum CrashStatus {
+  Open = 0,
+  Closed = 1,
+  Regression = 2,
+}
+
 export interface CrashDetails {
   processed: ProcessingStatus;
 
@@ -50,6 +56,7 @@ export interface CrashDetails {
   platform: string;
   previousCrashId: number;
   processor: string;
+  status: CrashStatus;
   stackKey: string;
   stackKeyComment: string;
   stackKeyId: number;
@@ -93,6 +100,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   ac.assertType(options.thread, ThreadCollection, 'options.thread');
   ac.assertType(options.events, Array, 'options.events');
 
+  const status = (options.status || 0) as CrashStatus;
   const events = createEvents(options.events as EventResponseObject[]);
   const thread = new GroupableThreadCollection({
     ...<ThreadCollection>options.thread,
@@ -120,6 +128,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
     ipAddress,
     platform,
     processor,
+    status,
     stackKey,
     stackKeyComment,
     stackKeyDefectLabel,

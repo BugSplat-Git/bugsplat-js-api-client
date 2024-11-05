@@ -3,7 +3,7 @@ import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-cli
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody } from '@spec/fakes/common/response';
 import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
-import { createCrashDetails } from '../crash-details/crash-details';
+import { CrashStatus, createCrashDetails } from '../crash-details/crash-details';
 
 describe('CrashApiClient', () => {
     const database = 'fred';
@@ -167,6 +167,61 @@ describe('CrashApiClient', () => {
                 fail('reprocessCrash was supposed to throw!');
             } catch (error: any) {
                 expect(error.message).toMatch(/to be positive non-zero numbers/);
+            }
+        });
+    });
+
+    describe('postStatus', () => {
+        let client: CrashApiClient;
+        let fakePostStatusApiResponse;
+        let fakeBugSplatApiClient;
+        let result;
+
+        beforeEach(async () => {
+            fakePostStatusApiResponse = { success: true };
+            const fakeResponse = createFakeResponseBody(200, fakePostStatusApiResponse);
+            fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
+            client = new CrashApiClient(fakeBugSplatApiClient);
+
+            result = await client.postStatus(database, id, CrashStatus.Closed);
+        });
+
+        it('should call fetch with correct route', () => {
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith('/api/crash/status', jasmine.anything());
+        });
+
+        it('should call fetch with formData containing database, id and status', () => {
+            expect(fakeFormData.append).toHaveBeenCalledWith('database', database);
+            expect(fakeFormData.append).toHaveBeenCalledWith('groupId', id.toString());
+            expect(fakeFormData.append).toHaveBeenCalledWith('status', CrashStatus.Closed.toString());
+        });
+
+        it('should return response json', () => {
+            expect(result).toEqual(fakePostStatusApiResponse);
+        });
+
+        it('should throw if status is not 200', async () => {
+            const message = 'Bad request';
+
+            try {
+                const fakePostStatusErrorBody = { message };
+                const fakeResponse = createFakeResponseBody(400, fakePostStatusErrorBody, false);
+                const fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
+                const client = new CrashApiClient(fakeBugSplatApiClient);
+
+                await client.postStatus(database, id, CrashStatus.Closed);
+                fail('postStatus was supposed to throw!');
+            } catch (error: any) {
+                expect(error.message).toEqual(message);
+            }
+        });
+
+        it('should throw if database is falsy', async () => {
+            try {
+                await client.postStatus('', id, CrashStatus.Closed);
+                fail('postStatus was supposed to throw!');
+            } catch (error: any) {
+                expect(error.message).toMatch(/to be a non white space string/);
             }
         });
     });
