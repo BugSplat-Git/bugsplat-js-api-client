@@ -34,7 +34,7 @@ export class TableDataFormDataBuilder {
             this._formParts[`filteroperator${filtersCount}`] = firstFilter ? group.groupOperator?.value : group.filterOperator?.value;
             this._formParts[`filterdatafield${filtersCount}`] = filter.filterDataField;
             this._formParts[`filtercondition${filtersCount}`] = filter.filterCondition;
-            this._formParts[`filtervalue${filtersCount}`] = filter.filterValue;
+            this._formParts[`filtervalue${filtersCount}`] = filter.filterValue.toString();
             this._formParts[`filtergroupclose${filtersCount}`] = lastFilter ? '1' : '0';
             filtersCount++;
           });
