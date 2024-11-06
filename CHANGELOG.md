@@ -1,3 +1,10 @@
+## [9.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.3.0...v9.3.1) (2024-11-06)
+
+
+### Bug Fixes
+
+* allow numbers as query filter values ([#135](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/135)) ([9643acd](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/9643acd52eaf1142c31e0e70ad46adabb91111ae))
+
 # [9.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.2.1...v9.3.0) (2024-11-05)
 
 
