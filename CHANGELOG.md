@@ -1,3 +1,10 @@
+## [9.3.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.3.1...v9.3.2) (2024-11-14)
+
+
+### Bug Fixes
+
+* last modified date format ([#136](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/136)) ([ebb6cd8](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/ebb6cd84fa2cad49e2957681a58d7a29a50c51a3))
+
 ## [9.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.3.0...v9.3.1) (2024-11-06)
 
 
