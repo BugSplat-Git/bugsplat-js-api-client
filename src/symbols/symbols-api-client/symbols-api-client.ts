@@ -93,7 +93,7 @@ export class SymbolsApiClient {
         formData.append('symFileName', file.name);
         formData.append('moduleName', file.moduleName);
         formData.append('dbgId', file.dbgId);
-        formData.append('lastModified', `${file.lastModified}`);
+        formData.append('lastModified', `${file.lastModified?.toISOString()}`);
         formData.append('SendPdbsVersion', 'spdbsv2');
 
         const request = {
