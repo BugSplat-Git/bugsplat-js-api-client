@@ -1,3 +1,10 @@
+# [9.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.3.2...v9.4.0) (2024-11-18)
+
+
+### Features
+
+* add status events ([#137](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/137)) ([7bd115d](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/7bd115d076245fffb6df001493071021abf6ecb6))
+
 ## [9.3.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.3.1...v9.3.2) (2024-11-14)
 
 
