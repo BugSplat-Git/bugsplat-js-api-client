@@ -20,7 +20,10 @@ export enum EventType {
   AddCrashDefect = 'AddCrashDefect',
   RemoveCrashDefect = 'RemoveCrashDefect',
   AddStackKeyDefect = 'AddStackKeyDefect',
-  RemoveStackKeyDefect = 'RemoveStackKeyDefect'
+  RemoveStackKeyDefect = 'RemoveStackKeyDefect',
+  StackKeyDefectStatusOpen = 'StackKeyDefectStatusOpen',
+  StackKeyDefectStatusClosed = 'StackKeyDefectStatusClosed',
+  StackKeyDefectStatusRegression = 'StackKeyDefectStatusRegression'
 }
 
 export function createEvents(events: Array<EventResponseObject>): Array<Event> {
