@@ -44,9 +44,9 @@ export class BugSplatApiClient implements ApiClient {
         if (this._environment === Environment.WebBrowser) {
             init.credentials = 'include';
         }
-
+        
         if (this._environment === Environment.Node) {
-            init.headers ? init.headers = { ...init.headers, ...this._headers } : null;
+            init.headers = { ...init.headers, ...this._headers };
         }
 
         const url = new URL(route, this._host);

@@ -1,31 +1,9 @@
 module.exports = {
-  root: true,
-  parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint'
-  ],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  rules: {
-    'semi': ['error', 'always'],
-    'object-curly-spacing': ['error', 'always'],
-    'quotes': ['error', 'single'],
-  },
-  overrides: [
-    {
-      'files': ['**/*.spec.ts', '**/*.e2e.ts'],
-      'rules': {
-        '@typescript-eslint/no-explicit-any': 'off'
-      }
+    // ... other config options
+    env: {
+        // ... other environments
+        jest: true,     // This will include Jest globals
+        jasmine: true   // This will include Jasmine globals
     },
-    {
-      'files': ['spec/fakes/**/*'],
-      'rules': {
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/explicit-module-boundary-types': 'off'
-      }
-    }
-  ]
-};
+    // ... rest of your config
+} 
