@@ -75,6 +75,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   ac.assertNumber(<number>options.id, 'options.id');
   ac.assertNumber(<number>options.stackKeyId, 'options.stackKeyId');
   ac.assertBoolean(<boolean>options.missingSymbols, 'options.missingSymbols');
+  ac.assertNumber(<number>options.dumpfileSize, 'options.dumpfileSize');
 
   const appName = defaultToEmptyString(options.appName, 'options.appName');
   const appVersion = defaultToEmptyString(options.appVersion, 'options.appVersion');

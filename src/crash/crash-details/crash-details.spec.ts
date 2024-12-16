@@ -29,6 +29,7 @@ describe('createCrashDetails', () => {
       stackId: 11372,
       stackKeyId: 1364,
       dumpfile: '/fred/myconsolecrasher-2019.2.3.0/2019/02/03/myconsolecrasher_2019.2.3.0_orgjilct-1706618358.zip',
+      dumpfileSize: 42,
       appName: 'myConsoleCrasher',
       appVersion: '2019.2.3.0',
       appKey: '',
