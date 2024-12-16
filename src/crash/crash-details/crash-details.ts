@@ -45,6 +45,7 @@ export interface CrashDetails {
   defectUrl: string;
   description: string;
   dumpfile: string;
+  dumpfileSize: number;
   email: string;
   events: Array<Event>;
   exceptionCode: string;
