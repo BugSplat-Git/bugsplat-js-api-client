@@ -1,3 +1,10 @@
+# [9.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.4.0...v9.5.0) (2024-12-18)
+
+
+### Features
+
+* add dumpfileSize to crash API ([#139](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/139)) ([aef3f98](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/aef3f98de22d64ca20a1220e4dd9078f39835ebb))
+
 # [9.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.3.2...v9.4.0) (2024-11-18)
 
 
