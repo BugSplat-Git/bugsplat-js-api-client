@@ -16,6 +16,7 @@ export const createFakeCrashApiResponse = () => ({
     defectUrl: 'http://newayz.net',
     description: 'haa!',
     dumpfile: '💩',
+    dumpfileSize: 42,
     email: 'bobby@newayz.net',
     events: createFakeEvents([EventType.Comment]),
     exceptionCode: '0010',
