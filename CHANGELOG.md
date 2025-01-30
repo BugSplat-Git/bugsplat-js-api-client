@@ -1,3 +1,13 @@
+# [10.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.5.0...v10.0.0) (2025-01-30)
+
+
+* fix!: retire usage of uid in users endpoint ([#141](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/141)) ([bfb7cdc](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/bfb7cdc75fa7fe52386ea63fe1e4892bbbac1939))
+
+
+### BREAKING CHANGES
+
+* users are removed by email instead of uid
+
 # [9.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.4.0...v9.5.0) (2024-12-18)
 
 
