@@ -53,8 +53,8 @@ describe('UsersApiClient', () => {
 
     describe('removeUserFromDatabase', () => {
         it('should return 200 and message', async () => {
-            const { uId } = await await usersClient.addUserToDatabase(config.database, testEmail).then(response => response.json());
-            const response = await usersClient.removeUserFromDatabase(config.database, uId);
+            await usersClient.addUserToDatabase(config.database, testEmail);
+            const response = await usersClient.removeUserFromDatabase(config.database, testEmail);
             const body = await response.json();
             expect(response.status).toEqual(200);
             expect(body.status).toEqual(UserApiResponseStatus.success);
