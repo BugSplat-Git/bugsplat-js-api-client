@@ -1,0 +1,38 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+        with:
+          persist-credentials: false
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+
+      - name: Install
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: E2E
+        run: npm run e2e
+        env:
+          BUGSPLAT_HOST: ${{ secrets.BUGSPLAT_HOST }}
+          BUGSPLAT_USER: ${{ secrets.BUGSPLAT_USER }}
+          BUGSPLAT_PASSWORD: ${{ secrets.BUGSPLAT_PASSWORD }}
+          BUGSPLAT_DATABASE: ${{ secrets.BUGSPLAT_DATABASE }}
+          BUGSPLAT_CLIENT_ID: ${{ secrets.BUGSPLAT_CLIENT_ID }}
+          BUGSPLAT_CLIENT_SECRET: ${{ secrets.BUGSPLAT_CLIENT_SECRET }} 
