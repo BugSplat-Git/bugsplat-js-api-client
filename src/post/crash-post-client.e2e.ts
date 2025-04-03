@@ -1,6 +1,7 @@
 import { CrashPostClient, CrashType } from '@post';
 import { createUploadableFile } from '@spec/files/create-bugsplat-file';
 import { delay } from '../common/delay';
+import { config } from '@spec/config';
 
 describe('CrashPostClient', () => {
   beforeEach(async () => delay(1000)); // Prevent rate-limiting
@@ -10,7 +11,7 @@ describe('CrashPostClient', () => {
       const application = 'myConsoleCrasher';
       const version = `${Math.random() * 1000000}`;
       const crashFile = await createUploadableFile('spec/files/native/myConsoleCrasher.zip');
-      const crashPostClient = new CrashPostClient('octomore');
+      const crashPostClient = new CrashPostClient(config.database);
       const attributes = {
         test: 'test',
       };
