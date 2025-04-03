@@ -1,4 +1,4 @@
-import { Environment } from '@common';
+import { Environment, UploadableFile } from '@common';
 import { CrashPostClient, CrashType } from '@post';
 import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-client';
 import { createFakeFormData } from '@spec/fakes/common/form-data';
@@ -15,26 +15,29 @@ describe('CrashPostClient', () => {
     let fakeGetUploadUrlResponse;
     let s3ApiClient;
 
-    let application;
-    let database;
-    let file;
-    let ipAddress;
-    let md5;
-    let type;
-    let url;
-    let version;
+    let application: string;
+    let attributes: Record<string, string>;
+    let database: string;
+    let file: UploadableFile;
+    let ipAddress: string;
+    let type: CrashType;
+    let url: string;
+    let version: string;
 
     let result;
 
     beforeEach(() => {
         database = 'pumpkin';
         application = 'spice';
-        file = { name: 'pumpkin-spice-latte-recipe.txt', file: '🎃🌶☕️', size: 100 };
+        attributes = {
+            'test': 'test'
+        };
+        file = { name: 'pumpkin-spice-latte-recipe.txt', file: '🎃🌶☕️' as any, size: 100 };
         ipAddress = '127.0.0.1';
-        md5 = '93aebd31ecc781f6574cc396a1e0c4d2';
         type = CrashType.native;
         url = 'https://cassies.coffee/yum';
         version = 'latte';
+
         fakeFormData = createFakeFormData();
         fakeCommitS3UploadResponse = createFakeResponseBody(200);
         fakeGetUploadUrlResponse = createFakeResponseBody(200, { url });
@@ -59,7 +62,7 @@ describe('CrashPostClient', () => {
                 version,
                 type,
                 file,
-                md5
+                attributes
             );
         });
 
@@ -79,7 +82,7 @@ describe('CrashPostClient', () => {
             expect(fakeFormData.append).toHaveBeenCalledWith('crashType', type.name);
             expect(fakeFormData.append).toHaveBeenCalledWith('crashTypeId', `${type.id}`);
             expect(fakeFormData.append).toHaveBeenCalledWith('s3key', url);
-            expect(fakeFormData.append).toHaveBeenCalledWith('md5', md5);
+            expect(fakeFormData.append).toHaveBeenCalledWith('attributes', JSON.stringify(attributes));
             expect(bugsplatApiClient.fetch).toHaveBeenCalledWith(
                 '/api/commitS3CrashUpload',
                 jasmine.objectContaining({
