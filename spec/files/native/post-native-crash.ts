@@ -34,13 +34,12 @@ export async function postNativeCrash(
 ): Promise<PostCrashResponse> {
     const crashFile = await createUploadableFile('./spec/files/native/myConsoleCrasher.zip');
     const crashPostClient = new CrashPostClient(database);
-    await delay(2000); // Prevent rate-limiting
+    await delay(1000); // Prevent rate-limiting
     const postCrashResult = await crashPostClient.postCrash(
         application,
         version,
         CrashType.native,
         crashFile,
-        'ebe24c1cd1a0912904658fa4fad2b539'
     );
     return postCrashResult.json();
 }

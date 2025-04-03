@@ -23,7 +23,7 @@ export class CrashPostClient {
         version: string,
         type: CrashType,
         file: UploadableFile,
-        md5 = ''
+        attributes?: Record<string, string>
     ): Promise<BugSplatResponse<PostCrashResponse>> {
         const uploadUrl = await this.getCrashUploadUrl(
             this._database,
@@ -40,7 +40,7 @@ export class CrashPostClient {
             application,
             version,
             type,
-            md5,
+            attributes,
             this._processor
         );
     }
@@ -75,7 +75,7 @@ export class CrashPostClient {
         application: string,
         version: string,
         crashType: CrashType,
-        md5: string,
+        attributes?: Record<string, string>,
         processor?: string,
     ): Promise<BugSplatResponse<PostCrashResponse>> {
         const route = '/api/commitS3CrashUpload';
@@ -86,7 +86,10 @@ export class CrashPostClient {
         formData.append('crashType', crashType.name);
         formData.append('crashTypeId', `${crashType.id}`);
         formData.append('s3key', s3Key);
-        formData.append('md5', md5);
+
+        if (attributes) {
+            formData.append('attributes', JSON.stringify(attributes));
+        }
 
         if (processor) {
             formData.append('processor', processor);
