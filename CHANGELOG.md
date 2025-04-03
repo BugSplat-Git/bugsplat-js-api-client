@@ -1,3 +1,13 @@
+# [11.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v10.0.0...v11.0.0) (2025-04-03)
+
+
+* feat!: crash attributes ([#143](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/143)) ([f8be05f](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/f8be05f94653eae6c101cb0179ddeee4f47b7ebd))
+
+
+### BREAKING CHANGES
+
+* removes md5, no longer used
+
 # [10.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v9.5.0...v10.0.0) (2025-01-30)
 
 
