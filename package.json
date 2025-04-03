@@ -14,7 +14,6 @@
     "prepare": "husky install",
     "pretest": "npm run lint:fix",
     "test": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
-    "test:teamcity": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.spec.json",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "e2e": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
