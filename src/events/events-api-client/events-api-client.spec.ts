@@ -6,7 +6,7 @@ import { createFakeEvents } from '@spec/fakes/events/events';
 import { fakeEventsApiResponse } from '@spec/fakes/events/events-api-response';
 import { createEvents } from './event';
 
-describe('CrashApiClient', () => {
+describe('EventsApiClient', () => {
     const database = 'fred';
     const id = 100000;
     const comment = 'hello world!';

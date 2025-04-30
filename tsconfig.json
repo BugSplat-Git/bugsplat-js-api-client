@@ -29,6 +29,9 @@
       "@events": [
         "src/events/index"
       ],
+      "@issue": [
+        "src/issue/index"
+      ],
       "@post": [
         "src/post/index"
       ],
