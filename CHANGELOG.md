@@ -1,3 +1,10 @@
+# [11.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v11.0.0...v11.1.0) (2025-04-30)
+
+
+### Features
+
+* issue client ([#146](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/146)) ([ea5f36d](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/ea5f36dd5b7ca3158c0fdc60f25e2feb377c8499))
+
 # [11.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v10.0.0...v11.0.0) (2025-04-03)
 
 
