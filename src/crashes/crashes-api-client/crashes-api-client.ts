@@ -43,23 +43,4 @@ export class CrashesApiClient {
       pageData,
     };
   }
-
-  postNotes(database: string, id: number, notes: string): Promise<BugSplatResponse> {
-    const formData = this._client.createFormData();
-    formData.append('update', 'true');
-    formData.append('database', database);
-    formData.append('id', `${id}`);
-    formData.append('notes', notes);
-
-    const request = {
-      method: 'POST',
-      body: formData,
-      cache: 'no-cache',
-      credentials: 'include',
-      redirect: 'follow',
-      duplex: 'half',
-    } as RequestInit;
-
-    return this._client.fetch('/api/crash/notes.php', request);
-  }
 }

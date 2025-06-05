@@ -4,52 +4,68 @@ import { config } from '@spec/config';
 import { postNativeCrashAndWaitForCrashToProcess } from '@spec/files/native/post-native-crash';
 
 describe('CrashApiClient', () => {
-    let crashClient: CrashApiClient;
-    let application: string;
-    let version: string;
-    let id: number;
-    let stackKeyId: number;
+  let crashClient: CrashApiClient;
+  let application: string;
+  let version: string;
+  let id: number;
+  let stackKeyId: number;
 
-    beforeEach(async () => {
-        const { host, email, password } = config;
-        const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
-        application = 'myConsoleCrasher';
-        version = `${Math.random() * 1000000}`;
-        crashClient = new CrashApiClient(bugsplatApiClient);
-        const result = await postNativeCrashAndWaitForCrashToProcess(
-            bugsplatApiClient,
-            crashClient,
-            config.database,
-            application,
-            version
-        );
-        id = result.crashId;
-        stackKeyId = result.stackKeyId;
+  beforeEach(async () => {
+    const { host, email, password } = config;
+    const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(
+      email,
+      password,
+      host
+    );
+    application = 'myConsoleCrasher';
+    version = `${Math.random() * 1000000}`;
+    crashClient = new CrashApiClient(bugsplatApiClient);
+    const result = await postNativeCrashAndWaitForCrashToProcess(
+      bugsplatApiClient,
+      crashClient,
+      config.database,
+      application,
+      version
+    );
+    id = result.crashId;
+    stackKeyId = result.stackKeyId;
+  });
+
+  describe('getCrashById', () => {
+    it('should return 200', async () => {
+      const response = await crashClient.getCrashById(config.database, id);
+
+      expect(response.id).toEqual(id);
+      expect(response.appName).toEqual(application);
+      expect(response.appVersion).toEqual(version);
     });
+  });
 
-    describe('getCrashById', () => {
-        it('should return 200', async () => {
-            const response = await crashClient.getCrashById(config.database, id);
+  describe('reprocessCrash', () => {
+    it('should return 200 for a recent crash that has symbols', async () => {
+      const response = await crashClient.reprocessCrash(config.database, id);
 
-            expect(response.id).toEqual(id);
-            expect(response.appName).toEqual(application);
-            expect(response.appVersion).toEqual(version);
-        });
+      expect(response.status).toEqual('success');
     });
+  });
 
-    describe('reprocessCrash', () => {
-        it('should return 200 for a recent crash that has symbols', async () => {
-            const response = await crashClient.reprocessCrash(config.database, id);
+  describe('postNotes', () => {
+    it('should return 200', async () => {
+      const database = config.database;
+      const notes = 'BugSplat rocks!';
 
-            expect(response.status).toEqual('success');
-        });
+      await crashClient.postNotes(database, id, notes);
+      const result = await crashClient.getCrashById(database, id);
+
+      expect(result.comments).toEqual(notes);
     });
+  });
 
-    describe('postStatus', () => {
-        it('should return 200', async () => {
-            const response = await crashClient.postStatus(config.database, stackKeyId, CrashStatus.Open);
+  describe('postStatus', () => {
+    it('should return 200', async () => {
+      const response = await crashClient.postStatus(config.database, stackKeyId, CrashStatus.Open);
 
-            expect(response.status).toEqual('success');
-        });
+      expect(response.status).toEqual('success');
     });
+  });
 });
