@@ -6,4 +6,9 @@ export { Register } from './register/register';
 export { StackFrame, VariableValuePair } from './stack-frame/stack-frame';
 export { GroupableThreadCollection } from './thread-collection/groupable-thread-collection';
 export { ThreadCollection } from './thread-collection/thread-collection';
-
+export interface PostNotesResponse {
+  status: 'success',
+  database: string,
+  id: number,
+  notes: string,
+}

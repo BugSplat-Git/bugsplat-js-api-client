@@ -1,5 +1,5 @@
 import { ApiClient, BugSplatResponse } from '@common';
-import { CrashDetails } from '@crash';
+import { CrashDetails, PostNotesResponse } from '@crash';
 import ac from 'argument-contracts';
 import {
   CrashDetailsRawResponse,
@@ -91,7 +91,11 @@ export class CrashApiClient {
     return json as SuccessResponse;
   }
 
-  postNotes(database: string, id: number, notes: string): Promise<BugSplatResponse> {
+  postNotes(
+    database: string,
+    id: number,
+    notes: string
+  ): Promise<BugSplatResponse<PostNotesResponse>> {
     const formData = this._client.createFormData();
     formData.append('update', 'true');
     formData.append('database', database);
