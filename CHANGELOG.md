@@ -1,3 +1,15 @@
+# [12.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v11.1.0...v12.0.0) (2025-06-09)
+
+
+### Bug Fixes
+
+* update to new notes API ([#147](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/147)) ([39c63a9](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/39c63a9e14d4441dcdabdae038c974fa17081595))
+
+
+### BREAKING CHANGES
+
+* moves postNotes from crashesApiClient to crashApiClient
+
 # [11.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v11.0.0...v11.1.0) (2025-04-30)
 
 
