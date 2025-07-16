@@ -7,7 +7,7 @@ export class SummaryApiClient {
     private _tableDataClient: TableDataClient;
 
     constructor(private _client: ApiClient) {
-        this._tableDataClient = new TableDataClient(this._client, '/summary?data');
+        this._tableDataClient = new TableDataClient(this._client, 'api/v2/summary');
     }
 
     async getSummary(request: SummaryTableDataRequest): Promise<TableDataResponse<SummaryApiRow>> {
