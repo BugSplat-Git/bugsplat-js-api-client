@@ -1,3 +1,15 @@
+# [13.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v12.0.0...v13.0.0) (2025-07-16)
+
+
+### Bug Fixes
+
+* migrate to summary v2 endpoint ([#148](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/148)) ([e7a3fb8](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/e7a3fb82eaba6439c37bcd5d33e7f8e7292f9279))
+
+
+### BREAKING CHANGES
+
+* summary time frame is now filtered by startDate and endDate not firstReport and lastReport
+
 # [12.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v11.1.0...v12.0.0) (2025-06-09)
 
 
