@@ -14,9 +14,10 @@ jobs:
         with:
           persist-credentials: false
       
+      # Pin to Node.js 22.12 as 22.18+ breaks tsconfig-paths/register functionality
       - uses: actions/setup-node@v4
         with:
-          node-version: "22.x"
+          node-version: "22.12"
 
       - name: Install
         run: npm install

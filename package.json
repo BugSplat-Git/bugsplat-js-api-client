@@ -8,7 +8,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0 <22.13.0"
   },
   "scripts": {
     "prepare": "husky install",
@@ -69,6 +69,7 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsconfig-replace-paths": "^0.0.14",
+    "tsx": "^4.20.4",
     "typescript": "^5.7.2"
   }
 }
