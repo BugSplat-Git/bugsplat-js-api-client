@@ -28,6 +28,7 @@ export enum CrashStatus {
   Open = 0,
   Closed = 1,
   Regression = 2,
+  Ignored = 3,
 }
 
 export interface CrashDetails {
