@@ -1,3 +1,10 @@
+## [13.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v13.0.0...v13.0.1) (2025-08-15)
+
+
+### Bug Fixes
+
+* add ignored status for crash details ([#149](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/149)) ([ff4dcfb](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/ff4dcfb36ab748e24c0af8c510c5f901497fbe23))
+
 # [13.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v12.0.0...v13.0.0) (2025-07-16)
 
 
