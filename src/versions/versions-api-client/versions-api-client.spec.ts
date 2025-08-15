@@ -232,7 +232,7 @@ describe('VersionsApiClient', () => {
             }];
             timer = jasmine.createSpy();
             timer.and.resolveTo(0);
-            (<any>versionsApiClient)._timer = timer;
+            (versionsApiClient as any)._timer = timer;
 
             result = await versionsApiClient.postSymbols(
                 database,
@@ -273,7 +273,7 @@ describe('VersionsApiClient', () => {
         });
 
         it('should sleep between requests', () => {
-            expect((<any>versionsApiClient)._timer).toHaveBeenCalledWith(1000);
+            expect((versionsApiClient as any)._timer).toHaveBeenCalledWith(1000);
         });
 
         it('should return response', () => {

@@ -46,7 +46,7 @@ describe('BugSplatApiClient', () => {
         });
 
         it('should call fetch with correct route', () => {
-            expect((<any>client)._fetch).toHaveBeenCalledWith(`${fakeBugSplatHost}${route}`, jasmine.anything());
+            expect((client as any)._fetch).toHaveBeenCalledWith(`${fakeBugSplatHost}${route}`, jasmine.anything());
         });
 
         describe('when environment is Browser', () => {
@@ -59,7 +59,7 @@ describe('BugSplatApiClient', () => {
 
                 await client.fetch(route, init);
 
-                expect((<any>client)._fetch).toHaveBeenCalledWith(
+                expect((client as any)._fetch).toHaveBeenCalledWith(
                     jasmine.any(String),
                     jasmine.objectContaining({
                         body,
@@ -71,7 +71,7 @@ describe('BugSplatApiClient', () => {
 
         describe('when environment is Node', () => {
             it('should call fetch with cookie and xsrf-token headers in request init', () => {
-                expect((<any>client)._fetch).toHaveBeenCalledWith(
+                expect((client as any)._fetch).toHaveBeenCalledWith(
                     jasmine.any(String),
                     jasmine.objectContaining({
                         body,
@@ -98,7 +98,7 @@ describe('BugSplatApiClient', () => {
         beforeEach(async () => result = await client.login(email, password));
 
         it('should call fetch with correct url', () => {
-            expect((<any>client)._fetch).toHaveBeenCalledWith(`${fakeBugSplatHost}/api/authenticatev3`, jasmine.anything());
+            expect((client as any)._fetch).toHaveBeenCalledWith(`${fakeBugSplatHost}/api/authenticatev3`, jasmine.anything());
         });
     
         it('should append email, password and Login properties to formData', () => {
@@ -108,7 +108,7 @@ describe('BugSplatApiClient', () => {
         });
     
         it('should call fetch with formData', () => {
-            expect((<any>client)._fetch).toHaveBeenCalledWith(
+            expect((client as any)._fetch).toHaveBeenCalledWith(
                 jasmine.any(String),
                 jasmine.objectContaining({
                     method: 'POST',
@@ -125,7 +125,7 @@ describe('BugSplatApiClient', () => {
 
         describe('error', () => {
             it('should throw if response status is 401', async () => {
-                (<any>client)._fetch.and.returnValue({ status: 401 });
+                (client as any)._fetch.and.returnValue({ status: 401 });
                 
                 await expectAsync(client.login(email, password)).toBeRejectedWithError(
                     Error,
@@ -142,8 +142,8 @@ function createFakeBugSplatApiClient(
     formData
 ): BugSplatApiClient {
     const client = new BugSplatApiClient(fakeBugSplatHost, environment);
-    (<any>client)._fetch = jasmine.createSpy();
-    (<any>client)._fetch.and.returnValue(responseBody);
-    (<any>client)._createFormData = () => formData;
+    (client as any)._fetch = jasmine.createSpy();
+    (client as any)._fetch.and.returnValue(responseBody);
+    (client as any)._createFormData = () => formData;
     return client;
 }

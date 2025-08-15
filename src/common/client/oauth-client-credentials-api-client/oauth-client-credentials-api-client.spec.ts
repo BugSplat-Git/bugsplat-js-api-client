@@ -33,7 +33,7 @@ describe('OAuthClientCredentialsClient', () => {
             fakeAuthorizeResponseBody,
             fakeFormData
         );
-        (<any>sut)._fetch.and.returnValues(
+        (sut as any)._fetch.and.returnValues(
             Promise.resolve(fakeAuthorizeResponseBody),
             Promise.resolve(fakeFetchResponseBody)
         );
@@ -45,7 +45,7 @@ describe('OAuthClientCredentialsClient', () => {
         beforeEach(async () => result = await sut.login());
 
         it('should call fetch with correct url', () => {
-            expect((<any>sut)._fetch).toHaveBeenCalledWith(
+            expect((sut as any)._fetch).toHaveBeenCalledWith(
                 `${host}/oauth2/authorize`,
                 jasmine.anything()
             );
@@ -56,7 +56,7 @@ describe('OAuthClientCredentialsClient', () => {
             expect(fakeFormData.append).toHaveBeenCalledWith('client_id', clientId);
             expect(fakeFormData.append).toHaveBeenCalledWith('client_secret', clientSecret);
             expect(fakeFormData.append).toHaveBeenCalledWith('scope', 'restricted');
-            expect((<any>sut)._fetch).toHaveBeenCalledWith(
+            expect((sut as any)._fetch).toHaveBeenCalledWith(
                 jasmine.anything(),
                 jasmine.objectContaining({
                     method: 'POST',
@@ -104,14 +104,14 @@ describe('OAuthClientCredentialsClient', () => {
         });
 
         it('should call fetch with correct url', () => {
-            expect((<any>sut)._fetch).toHaveBeenCalledWith(
+            expect((sut as any)._fetch).toHaveBeenCalledWith(
                 `${host}${route}`,
                 jasmine.anything()
             );
         });
 
         it('should call fetch with init containing Authorization header', () => {
-            const mostRecentCallArgs = (<any>sut)._fetch.calls.mostRecent().args;
+            const mostRecentCallArgs = (sut as any)._fetch.calls.mostRecent().args;
             const headers = mostRecentCallArgs[1].headers;
             expect(headers).toEqual(jasmine.objectContaining({
                 ...headers,
@@ -120,11 +120,11 @@ describe('OAuthClientCredentialsClient', () => {
         });
 
         it('should call fetch with new init if init is not provided', async () => {
-            (<any>sut)._fetch.and.returnValue(Promise.resolve(fakeAuthorizeResponseBody));
+            (sut as any)._fetch.and.returnValue(Promise.resolve(fakeAuthorizeResponseBody));
 
             await sut.fetch(route);
 
-            const mostRecentCallArgs = (<any>sut)._fetch.calls.mostRecent().args;
+            const mostRecentCallArgs = (sut as any)._fetch.calls.mostRecent().args;
             const headers = mostRecentCallArgs[1].headers;
             expect(headers).toEqual(jasmine.objectContaining({
                 Authorization: `${fakeAuthorizeResult.token_type} ${fakeAuthorizeResult.access_token}`
@@ -139,7 +139,7 @@ describe('OAuthClientCredentialsClient', () => {
 
         describe('error', () => {
             it('should throw error with useful message if fetch returns 401', async () => {
-                (<any>sut)._fetch.and.resolveTo(createFakeResponseBody(401));
+                (sut as any)._fetch.and.resolveTo(createFakeResponseBody(401));
 
                 await expectAsync(sut.fetch(route)).toBeRejectedWithError(
                     Error,
@@ -158,9 +158,9 @@ function createFakeOAuthClientCredentialsClient(
     formData
 ): OAuthClientCredentialsClient {
     const client = new OAuthClientCredentialsClient(clientId, clientSecret, host);
-    (<any>client)._fetch = jasmine.createSpy();
-    (<any>client)._fetch.and.returnValue(responseBody);
-    (<any>client)._createFormData = () => formData;
+    (client as any)._fetch = jasmine.createSpy();
+    (client as any)._fetch.and.returnValue(responseBody);
+    (client as any)._createFormData = () => formData;
     return client;
 }
 

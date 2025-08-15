@@ -45,11 +45,11 @@ describe('createCrashDetails', () => {
       processor: 'OBAN-10.0.7.144',
       comments: null,
       processed: ProcessingStatus.Complete,
-      thread: (<any>{ stackFrames: [], stackKeyId: 0 }),
+      thread: ({ stackFrames: [], stackKeyId: 0 } as any),
       status: CrashStatus.Open,
     };
 
-    const result = createCrashDetails(<any>options);
+    const result = createCrashDetails(options as any);
 
     expect(result.comments).toEqual('');
     expect(result.description).toEqual('');

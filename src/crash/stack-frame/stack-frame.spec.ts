@@ -4,19 +4,19 @@ describe('stackFrame', () => {
 
   describe('constructor', () => {
     it('should throw if fileName is not a string', () => {
-      expect(() => new StackFrame(<any>{ fileName: {} })).toThrow();
+      expect(() => new StackFrame({ fileName: {} } as any)).toThrow();
     });
 
     it('should throw if functionName is not a string', () => {
-      expect(() => new StackFrame(<any>{ fileName: 'string', functionName: {} })).toThrow();
+      expect(() => new StackFrame({ fileName: 'string', functionName: {} } as any)).toThrow();
     });
 
     it('should throw if lineNumber is not a number', () => {
-      expect(() => new StackFrame(<any>{ fileName: 'string', functionName: 'another string', lineNumber: 'string' })).toThrow();
+      expect(() => new StackFrame({ fileName: 'string', functionName: 'another string', lineNumber: 'string' } as any)).toThrow();
     });
 
     it('should throw if stackFrameLevel is not a number', () => {
-      expect(() => new StackFrame(<any>{ fileName: 'string', functionName: 'another string', lineNumber: 0, stackFrameLevel: 'another string' })).toThrow();
+      expect(() => new StackFrame({ fileName: 'string', functionName: 'another string', lineNumber: 0, stackFrameLevel: 'another string' } as any)).toThrow();
     });
 
     it('should convert arguments to an array if it is an object', () => {
@@ -174,7 +174,7 @@ describe('stackFrame', () => {
     });
 
     it('should return empty string if fileName and lineNumber are falsy', () => {
-      const result = (new StackFrame(<any>{ fileName: '', lineNumber: null })).getLocation();
+      const result = (new StackFrame({ fileName: '', lineNumber: null } as any)).getLocation();
 
       expect(result).toEqual('');
     });
@@ -184,7 +184,7 @@ describe('stackFrame', () => {
     it('should split on / and return last item', () => {
       const expectedFileName = 'drill.ts';
 
-      const result = new StackFrame(<any>{ fileName: `./this/is/not/a/${expectedFileName}`, lineNumber: null }).getLocation();
+      const result = new StackFrame({ fileName: `./this/is/not/a/${expectedFileName}`, lineNumber: null } as any).getLocation();
 
       expect(result).toEqual(expectedFileName);
     });
@@ -192,7 +192,7 @@ describe('stackFrame', () => {
     it('should split on \\ and return last item', () => {
       const expectedFileName = 'black.ts';
 
-      const result = new StackFrame(<any>{ fileName: `.\\this\\suit\\is\\not\\${expectedFileName}`, lineNumber: null }).getLocation();
+      const result = new StackFrame({ fileName: `.\\this\\suit\\is\\not\\${expectedFileName}`, lineNumber: null } as any).getLocation();
 
       expect(result).toEqual(expectedFileName);
     });
@@ -200,7 +200,7 @@ describe('stackFrame', () => {
     it('should return correct file name if neither \\ or / exist in string', () => {
       const expectedFileName = 'lettuce turnip the beat.ts';
 
-      const result = new StackFrame(<any>{ fileName: expectedFileName, lineNumber: null }).getLocation();
+      const result = new StackFrame({ fileName: expectedFileName, lineNumber: null } as any).getLocation();
 
       expect(result).toEqual(expectedFileName);
     });
