@@ -1,3 +1,10 @@
+# [13.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v13.0.1...v13.1.0) (2025-09-11)
+
+
+### Features
+
+* crash details by group ([#150](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/150)) ([7fbdc02](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/7fbdc029d77bd180b253a529684602bfbc88706e))
+
 ## [13.0.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v13.0.0...v13.0.1) (2025-08-15)
 
 
