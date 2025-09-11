@@ -10,6 +10,40 @@ import {
 export class CrashApiClient {
   constructor(private _client: ApiClient) {}
 
+  async getCrashByGroupId(database: string, groupId: number): Promise<CrashDetails> {
+    ac.assertNonWhiteSpaceString(database, 'database');
+    if (groupId <= 0) {
+      throw new Error(
+        `Expected groupId to be a positive non-zero number. Value received: "${groupId}"`
+      );
+    }
+
+    const formData = this._client.createFormData();
+    formData.append('database', database);
+    formData.append('stackKeyId', groupId.toString());
+
+    const init = {
+      method: 'POST',
+      body: formData,
+      cache: 'no-cache',
+      credentials: 'include',
+      redirect: 'follow',
+      duplex: 'half',
+    } as RequestInit;
+
+    const response = await this._client.fetch<GetCrashByIdResponse>(
+      '/api/crash/details',
+      init
+    );
+    const json = await response.json();
+
+    if (response.status !== 200) {
+      throw new Error((json as Error).message);
+    }
+
+    return createCrashDetails(json as CrashDetailsRawResponse);
+  }
+
   async getCrashById(database: string, crashId: number): Promise<CrashDetails> {
     ac.assertNonWhiteSpaceString(database, 'database');
     if (crashId <= 0) {

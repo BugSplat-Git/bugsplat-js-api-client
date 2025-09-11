@@ -7,17 +7,14 @@
   "files": [
     "dist"
   ],
-  "engines": {
-    "node": ">=18.0.0 <22.13.0"
-  },
   "scripts": {
     "prepare": "husky install",
     "pretest": "npm run lint:fix",
-    "test": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
+    "test": "NODE_OPTIONS='--no-experimental-strip-types' ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "e2e": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
-    "e2e:teamcity": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.e2e.json",
+    "e2e": "NODE_OPTIONS='--no-experimental-strip-types' ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.e2e.json",
+    "e2e:teamcity": "NODE_OPTIONS='--no-experimental-strip-types' ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.teamcity.e2e.json",
     "release": "npm run build && npm publish --access public",
     "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc -p tsconfig.cjs.json && tsconfig-replace-paths -p tsconfig.json -o ./dist/cjs -s ./src",

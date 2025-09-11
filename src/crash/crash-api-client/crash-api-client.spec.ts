@@ -91,6 +91,92 @@ describe('CrashApiClient', () => {
     });
   });
 
+  describe('getCrashByGroupId', () => {
+    let client: CrashApiClient;
+    let fakeBugSplatApiClient;
+    let fakeCrashApiResponse;
+    let result;
+    const groupId = 12345;
+
+    beforeEach(async () => {
+      fakeCrashApiResponse = createFakeCrashApiResponse();
+      const fakeResponse = createFakeResponseBody(200, fakeCrashApiResponse);
+      fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
+      client = new CrashApiClient(fakeBugSplatApiClient);
+
+      result = await client.getCrashByGroupId(database, groupId);
+    });
+
+    it('should call fetch with correct route', () => {
+      expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+        '/api/crash/details',
+        jasmine.anything()
+      );
+    });
+
+    it('should call fetch with formData containing database and stackKeyId', () => {
+      expect(fakeFormData.append).toHaveBeenCalledWith('database', database);
+      expect(fakeFormData.append).toHaveBeenCalledWith('stackKeyId', groupId.toString());
+      expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+        jasmine.any(String),
+        jasmine.objectContaining({
+          method: 'POST',
+          body: fakeFormData,
+          cache: 'no-cache',
+          credentials: 'include',
+          redirect: 'follow',
+        })
+      );
+    });
+
+    it('should return response json', () => {
+      expect(result).toEqual(jasmine.objectContaining(createCrashDetails(fakeCrashApiResponse)));
+    });
+
+    it('should throw if status is not 200', async () => {
+      const message = 'Bad request';
+
+      try {
+        const fakeErrorBody = { message };
+        const fakeResponse = createFakeResponseBody(400, fakeErrorBody, false);
+        const fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
+        const client = new CrashApiClient(fakeBugSplatApiClient);
+
+        await client.getCrashByGroupId(database, groupId);
+        fail('getCrashByGroupId was supposed to throw!');
+      } catch (error: any) {
+        expect(error.message).toEqual(message);
+      }
+    });
+
+    it('should throw if database is falsy', async () => {
+      try {
+        await client.getCrashByGroupId('', groupId);
+        fail('getCrashByGroupId was supposed to throw!');
+      } catch (error: any) {
+        expect(error.message).toMatch(/to be a non white space string/);
+      }
+    });
+
+    it('should throw if groupId is less than or equal to 0', async () => {
+      try {
+        await client.getCrashByGroupId(database, 0);
+        fail('getCrashByGroupId was supposed to throw!');
+      } catch (error: any) {
+        expect(error.message).toMatch(/to be a positive non-zero number/);
+      }
+    });
+
+    it('should throw if groupId is negative', async () => {
+      try {
+        await client.getCrashByGroupId(database, -1);
+        fail('getCrashByGroupId was supposed to throw!');
+      } catch (error: any) {
+        expect(error.message).toMatch(/to be a positive non-zero number/);
+      }
+    });
+  });
+
   describe('reprocessCrash', () => {
     let client: CrashApiClient;
     let fakeReprocessApiResponse;
