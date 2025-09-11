@@ -41,6 +41,20 @@ describe('CrashApiClient', () => {
     });
   });
 
+  describe('getCrashByGroupId', () => {
+    it('should return crash details for the given stack key group', async () => {
+      const response = await crashClient.getCrashByGroupId(config.database, stackKeyId);
+
+      expect(response).toBeDefined();
+      expect(typeof response.stackKeyId).toBe('number');
+      expect(response.stackKeyId).toBeGreaterThan(0);
+      expect(response.appName).toEqual(application);
+      expect(response.appVersion).toBeDefined();
+      expect(typeof response.appVersion).toBe('string');
+      expect(response.appVersion.length).toBeGreaterThan(0);
+    });
+  });
+
   describe('reprocessCrash', () => {
     it('should return 200 for a recent crash that has symbols', async () => {
       const response = await crashClient.reprocessCrash(config.database, id);
