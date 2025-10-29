@@ -1,6 +1,7 @@
 import { ApiClient, TableDataClient, TableDataResponse } from '@common';
 import { SummaryApiResponseRow, SummaryApiRow } from '../summary-api-row/summary-api-row';
 import { SummaryTableDataRequest } from '../summary-table-data/summary-table-data-request';
+import { ErrorResponse } from 'src/common/data/table-data/table-data-client/table-data-client';
 
 export class SummaryApiClient {
 
@@ -20,8 +21,22 @@ export class SummaryApiClient {
         }
         const response = await this._tableDataClient.postGetData<SummaryApiResponseRow>(request, formParts);
         const json = await response.json();
-        const pageData = json.pageData;
-        const rows = json.rows.map(row => new SummaryApiRow(
+
+        if (response.status === 400) {
+            throw new Error((json as ErrorResponse).message || 'Bad Request');
+        }
+
+        if (response.status === 401) {
+            throw new Error('Could not authenticate, check credentials and try again');
+        }
+
+        if (response.status === 403) {
+            throw new Error('Forbidden');
+        }
+
+        const responseData = await response.json() as TableDataResponse<SummaryApiResponseRow>;
+        const pageData = responseData.pageData;
+        const rows = responseData.rows.map(row => new SummaryApiRow(
             row.stackKey,
             Number(row.stackKeyId),
             row.firstReport,

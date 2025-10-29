@@ -13,7 +13,7 @@ export class TableDataClient {
   async postGetData<T, U = Record<string, unknown> | undefined>(
     request: TableDataRequest,
     formParts: Record<string, string> = {}
-  ): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
+  ): Promise<BugSplatResponse<TableDataResponse<T, U> | ErrorResponse>> {
     const factory = () => this._apiClient.createFormData();
     const formData = new TableDataFormDataBuilder(factory, formParts)
       .withDatabase(request.database)
@@ -95,3 +95,5 @@ export class TableDataClient {
 export type RawResponse<T> = Array<{
   [Property in keyof T as Capitalize<string & Property>]: T[Property];
 }>;
+
+export type ErrorResponse = { message: string };

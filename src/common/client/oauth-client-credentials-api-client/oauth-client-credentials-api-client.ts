@@ -36,7 +36,6 @@ export class OAuthClientCredentialsClient implements ApiClient {
         body.append('grant_type', 'client_credentials');
         body.append('client_id', this._clientId);
         body.append('client_secret', this._clientSecret);
-        body.append('scope', 'restricted');
         const request = {
             method,
             body,

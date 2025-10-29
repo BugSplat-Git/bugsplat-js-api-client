@@ -55,7 +55,6 @@ describe('OAuthClientCredentialsClient', () => {
             expect(fakeFormData.append).toHaveBeenCalledWith('grant_type', 'client_credentials');
             expect(fakeFormData.append).toHaveBeenCalledWith('client_id', clientId);
             expect(fakeFormData.append).toHaveBeenCalledWith('client_secret', clientSecret);
-            expect(fakeFormData.append).toHaveBeenCalledWith('scope', 'restricted');
             expect((sut as any)._fetch).toHaveBeenCalledWith(
                 jasmine.anything(),
                 jasmine.objectContaining({
