@@ -131,7 +131,6 @@ export class CrashApiClient {
     notes: string
   ): Promise<BugSplatResponse<PostNotesResponse>> {
     const formData = this._client.createFormData();
-    formData.append('update', 'true');
     formData.append('database', database);
     formData.append('id', `${id}`);
     formData.append('notes', notes);
