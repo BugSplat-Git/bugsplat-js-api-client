@@ -4,9 +4,9 @@ import {
     TableDataClient,
     TableDataRequest,
     TableDataResponse,
+    isErrorResponse,
 } from '@common';
 import { CrashesApiRow, CrashesPageData } from '@crashes';
-import { isErrorResponse } from 'src/common/data/table-data/table-data-client/table-data-client';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
 
 export class CrashesApiClient {

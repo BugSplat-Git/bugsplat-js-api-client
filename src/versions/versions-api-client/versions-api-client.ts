@@ -6,11 +6,11 @@ import {
     TableDataClient,
     TableDataRequest,
     TableDataResponse,
+    isErrorResponse,
 } from '@common';
 import { delay } from '../../common/delay';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
-import { isErrorResponse } from 'src/common/data/table-data/table-data-client/table-data-client';
 
 export class VersionsApiClient {
     private readonly route = '/api/versions';

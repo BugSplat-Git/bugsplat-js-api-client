@@ -1,16 +1,15 @@
-import { ApiClient, BugSplatResponse, TableDataClient, TableDataResponse } from '@common';
+import { ApiClient, BugSplatResponse, TableDataClient, TableDataResponse, isErrorResponse } from '@common';
 import { CrashesApiRow } from '@crashes';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
 import { createKeyCrashPageData, KeyCrashPageData, KeyCrashPageDataRawResponse } from './key-crash-page-data';
 import { KeyCrashTableDataRequest } from './key-crash-table-data-request';
-import { isErrorResponse } from 'src/common/data/table-data/table-data-client/table-data-client';
 
 export class KeyCrashApiClient {
 
     private _tableDataClient: TableDataClient;
 
     constructor(private _client: ApiClient) {
-        this._tableDataClient = new TableDataClient(this._client, '/api/groups');
+        this._tableDataClient = new TableDataClient(this._client, '/api/v2/keycrash');
     }
 
     async getCrashes(request: KeyCrashTableDataRequest): Promise<TableDataResponse<CrashesApiRow, KeyCrashPageData>> {

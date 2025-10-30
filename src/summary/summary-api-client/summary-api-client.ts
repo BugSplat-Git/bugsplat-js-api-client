@@ -1,5 +1,4 @@
-import { ApiClient, TableDataClient, TableDataResponse } from '@common';
-import { isErrorResponse } from 'src/common/data/table-data/table-data-client/table-data-client';
+import { ApiClient, TableDataClient, TableDataResponse, isErrorResponse } from '@common';
 import { SummaryApiResponseRow, SummaryApiRow } from '../summary-api-row/summary-api-row';
 import { SummaryTableDataRequest } from '../summary-table-data/summary-table-data-request';
 
