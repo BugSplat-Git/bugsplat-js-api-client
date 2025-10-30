@@ -3,18 +3,22 @@ import { CrashesApiRow } from '@crashes';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
 import { createKeyCrashPageData, KeyCrashPageData, KeyCrashPageDataRawResponse } from './key-crash-page-data';
 import { KeyCrashTableDataRequest } from './key-crash-table-data-request';
+import { isErrorResponse } from 'src/common/data/table-data/table-data-client/table-data-client';
 
 export class KeyCrashApiClient {
 
     private _tableDataClient: TableDataClient;
 
     constructor(private _client: ApiClient) {
-        this._tableDataClient = new TableDataClient(this._client, '/keycrash?data&crashTimeSpan');
+        this._tableDataClient = new TableDataClient(this._client, '/api/groups');
     }
 
     async getCrashes(request: KeyCrashTableDataRequest): Promise<TableDataResponse<CrashesApiRow, KeyCrashPageData>> {
         const formParts = { stackKeyId: `${request.stackKeyId}` };
         const response = await this._tableDataClient.postGetData<CrashesApiResponseRow, KeyCrashPageDataRawResponse>(request, formParts);
+        if (isErrorResponse(response)) {
+            throw new Error(response.message);
+        }
         const json = await response.json() as Required<TableDataResponse<CrashesApiResponseRow, KeyCrashPageDataRawResponse>>;
         const pageData = createKeyCrashPageData(json.pageData);
         const rows = json.rows.map(row => new CrashesApiRow(row));
