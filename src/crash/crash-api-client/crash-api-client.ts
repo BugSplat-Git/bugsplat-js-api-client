@@ -144,7 +144,7 @@ export class CrashApiClient {
       duplex: 'half',
     } as RequestInit;
 
-    return this._client.fetch('/api/crash/notes.php', request);
+    return this._client.fetch('/api/crash/notes', request);
   }
 
   async postStatus(

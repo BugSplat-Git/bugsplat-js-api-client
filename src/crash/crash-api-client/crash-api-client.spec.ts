@@ -284,7 +284,7 @@ describe('CrashApiClient', () => {
     });
 
     it('should call fetch with correct route', () => {
-      expect(apiClient.fetch).toHaveBeenCalledWith('/api/crash/notes.php', jasmine.anything());
+      expect(apiClient.fetch).toHaveBeenCalledWith('/api/crash/notes', jasmine.anything());
     });
 
     it('should call fetch with requestInit containing formData', () => {
