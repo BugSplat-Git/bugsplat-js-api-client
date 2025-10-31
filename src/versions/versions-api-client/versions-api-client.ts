@@ -26,7 +26,7 @@ export class VersionsApiClient {
     async getVersions(request: TableDataRequest): Promise<TableDataResponse<VersionsApiRow>> {
         const response = await this._tableDataClient.getData<VersionsApiResponseRow>(request);
         if (isErrorResponse(response)) {
-            throw new Error(response.message);
+            throw new Error((await response.json()).message);
         }
         const json = await response.json();
         const pageData = json.pageData;

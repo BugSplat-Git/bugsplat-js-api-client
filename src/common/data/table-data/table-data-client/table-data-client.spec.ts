@@ -76,7 +76,7 @@ describe('TableDataClient', () => {
                 sortOrder,
             });
             if (isErrorResponse(response)) {
-                throw new Error(response.message);
+                throw new Error((await response.json()).message);
             }
             result = await response.json();
         });

@@ -16,7 +16,7 @@ export class KeyCrashApiClient {
         const formParts = { stackKeyId: `${request.stackKeyId}` };
         const response = await this._tableDataClient.postGetData<CrashesApiResponseRow, KeyCrashPageDataRawResponse>(request, formParts);
         if (isErrorResponse(response)) {
-            throw new Error(response.message);
+            throw new Error((await response.json()).message);
         }
         const json = await response.json() as Required<TableDataResponse<CrashesApiResponseRow, KeyCrashPageDataRawResponse>>;
         const pageData = createKeyCrashPageData(json.pageData);

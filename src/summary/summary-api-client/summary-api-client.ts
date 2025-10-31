@@ -24,7 +24,7 @@ export class SummaryApiClient {
         );
 
         if (isErrorResponse(response)) {
-            throw new Error(response.message);
+            throw new Error((await response.json()).message);
         }
 
         const responseData = await response.json();

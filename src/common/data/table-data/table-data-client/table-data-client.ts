@@ -8,7 +8,7 @@ export class TableDataClient {
     async postGetData<T, U = Record<string, unknown> | undefined>(
         request: TableDataRequest,
         formParts: Record<string, string> = {}
-    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | ErrorResponse> {
+    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
         const factory = () => this._apiClient.createFormData();
         const formData = new TableDataFormDataBuilder(factory, formParts)
             .withDatabase(request.database)
@@ -32,7 +32,7 @@ export class TableDataClient {
 
     async getData<T, U = Record<string, unknown> | undefined>(
         request: TableDataRequest
-    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | ErrorResponse> {
+    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
         const factory = () => this._apiClient.createFormData();
         const formData = new TableDataFormDataBuilder(factory)
             .withDatabase(request.database)
@@ -56,14 +56,14 @@ export class TableDataClient {
     private async makeRequest<T, U = unknown>(
         url: string,
         init: RequestInit
-    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | ErrorResponse> {
-        const response = await this._apiClient.fetch<TableDataResponse<T, U>>(url, init);
+    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
+        const response = await this._apiClient.fetch<TableDataResponse<T, U> | ErrorResponse>(url, init);
 
-        if (isErrorResponse(response)) {
-            return response;
+        if (response.status !== 200) {
+            return response as unknown as BugSplatResponse<ErrorResponse>;
         }
 
-        const responseData = await response.json();
+        const responseData = await response.json() as TableDataResponse<T, U>;
         const rows = responseData.rows || [];
         const pageData = responseData.pageData || {};
         const status = response.status;
@@ -82,8 +82,14 @@ export class TableDataClient {
 
 export type ErrorResponse = { status: number; message: string };
 
-export const isErrorResponse = (
-    response: BugSplatResponse<unknown> | ErrorResponse
-): response is ErrorResponse => {
+export function isSuccessResponse<T, U = Record<string, unknown> | undefined>(
+    response: BugSplatResponse<TableDataResponse<T, U> | ErrorResponse>
+): response is BugSplatResponse<TableDataResponse<T, U>> {
+    return 'status' in response && response.status === 200;
+}
+
+export function isErrorResponse<T, U = Record<string, unknown> | undefined>(
+    response: BugSplatResponse<TableDataResponse<T, U> | ErrorResponse>
+): response is BugSplatResponse<ErrorResponse> {
     return 'status' in response && response.status !== 200;
-};
+}
