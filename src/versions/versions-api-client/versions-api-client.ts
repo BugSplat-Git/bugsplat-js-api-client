@@ -13,7 +13,7 @@ import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/vers
 import { PutRetiredResponse } from './put-retired-response';
 
 export class VersionsApiClient {
-    private readonly route = '/api/versions';
+    private readonly route = '/api/v2/versions';
 
     private _s3ApiClient = new S3ApiClient();
     private _tableDataClient: TableDataClient;
