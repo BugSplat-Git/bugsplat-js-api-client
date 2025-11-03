@@ -1,3 +1,13 @@
+# [14.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v13.1.0...v14.0.0) (2025-11-03)
+
+
+* fix!: remove oauth2 scope ([#151](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/151)) ([898c309](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/898c3095bce68497f94c68e0fefb1be63845bcf3))
+
+
+### BREAKING CHANGES
+
+* improves crashes, summary, and version API error transparency.
+
 # [13.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v13.0.1...v13.1.0) (2025-09-11)
 
 
