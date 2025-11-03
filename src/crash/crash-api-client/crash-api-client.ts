@@ -131,7 +131,6 @@ export class CrashApiClient {
     notes: string
   ): Promise<BugSplatResponse<PostNotesResponse>> {
     const formData = this._client.createFormData();
-    formData.append('update', 'true');
     formData.append('database', database);
     formData.append('id', `${id}`);
     formData.append('notes', notes);
@@ -145,7 +144,7 @@ export class CrashApiClient {
       duplex: 'half',
     } as RequestInit;
 
-    return this._client.fetch('/api/crash/notes.php', request);
+    return this._client.fetch('/api/crash/notes', request);
   }
 
   async postStatus(

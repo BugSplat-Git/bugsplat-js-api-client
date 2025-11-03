@@ -1,11 +1,19 @@
-import { ApiClient, BugSplatResponse, S3ApiClient, SymbolFile, TableDataClient, TableDataRequest, TableDataResponse } from '@common';
+import {
+    ApiClient,
+    BugSplatResponse,
+    S3ApiClient,
+    SymbolFile,
+    TableDataClient,
+    TableDataRequest,
+    TableDataResponse,
+    isErrorResponse,
+} from '@common';
 import { delay } from '../../common/delay';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
 
 export class VersionsApiClient {
-
-    private readonly route = '/api/versions';
+    private readonly route = '/api/v2/versions';
 
     private _s3ApiClient = new S3ApiClient();
     private _tableDataClient: TableDataClient;
@@ -17,32 +25,42 @@ export class VersionsApiClient {
 
     async getVersions(request: TableDataRequest): Promise<TableDataResponse<VersionsApiRow>> {
         const response = await this._tableDataClient.getData<VersionsApiResponseRow>(request);
+        if (isErrorResponse(response)) {
+            throw new Error((await response.json()).message);
+        }
         const json = await response.json();
         const pageData = json.pageData;
-        const rows = json.rows.map(row => new VersionsApiRow(row));
+        const rows = json.rows.map((row) => new VersionsApiRow(row));
 
         return {
             rows,
-            pageData
+            pageData,
         };
     }
 
-    async deleteVersions(database: string, appVersions: Array<{ application: string, version: string }>): Promise<BugSplatResponse> {
-        const appVersionsParam = appVersions.reduce((prev, curr) => [...prev, curr.application, curr.version], [] as Array<string>).join(',');
+    async deleteVersions(
+        database: string,
+        appVersions: Array<{ application: string; version: string }>
+    ): Promise<BugSplatResponse> {
+        const appVersionsParam = appVersions
+            .reduce((prev, curr) => [...prev, curr.application, curr.version], [] as Array<string>)
+            .join(',');
         const route = `${this.route}?database=${database}&appVersions=${appVersionsParam}`;
         const request = {
             method: 'DELETE',
             cache: 'no-cache',
             credentials: 'include',
-            redirect: 'follow'
+            redirect: 'follow',
         } as RequestInit;
 
         const response = await this._client.fetch(route, request);
         if (response.status !== 200) {
-            throw new Error(`Error deleting symbols for ${database}-${appVersionsParam} status ${response.status}`);
+            throw new Error(
+                `Error deleting symbols for ${database}-${appVersionsParam} status ${response.status}`
+            );
         }
 
-        const json = await response.json() as Response;
+        const json = (await response.json()) as Response;
         if (json.Status === 'Failed') {
             throw new Error(json.Error);
         }
@@ -62,7 +80,7 @@ export class VersionsApiClient {
             method: 'PUT',
             cache: 'no-cache',
             credentials: 'include',
-            redirect: 'follow'
+            redirect: 'follow',
         } as RequestInit;
 
         return this._client.fetch(route, request);
@@ -80,7 +98,7 @@ export class VersionsApiClient {
             method: 'PUT',
             cache: 'no-cache',
             credentials: 'include',
-            redirect: 'follow'
+            redirect: 'follow',
         } as RequestInit;
 
         return this._client.fetch(route, request);
@@ -96,15 +114,17 @@ export class VersionsApiClient {
             method: 'DELETE',
             cache: 'no-cache',
             credentials: 'include',
-            redirect: 'follow'
+            redirect: 'follow',
         } as RequestInit;
 
         const response = await this._client.fetch(route, request);
         if (response.status !== 200) {
-            throw new Error(`Error deleting symbols for ${database}-${application}-${version} status ${response.status}`);
+            throw new Error(
+                `Error deleting symbols for ${database}-${application}-${version} status ${response.status}`
+            );
         }
 
-        const json = await response.json() as Response;
+        const json = (await response.json()) as Response;
         if (json.Status === 'Failed') {
             throw new Error(json.Error);
         }
@@ -118,20 +138,14 @@ export class VersionsApiClient {
         version: string,
         files: Array<SymbolFile>
     ): Promise<Array<BugSplatResponse>> {
-        const promises = files
-            .map(async (file) => {
-                const presignedUrl = await this.getPresignedUrl(
-                    database,
-                    application,
-                    version,
-                    file
-                );
+        const promises = files.map(async (file) => {
+            const presignedUrl = await this.getPresignedUrl(database, application, version, file);
 
-                const response = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
-                await this._timer(1000);
+            const response = await this._s3ApiClient.uploadFileToPresignedUrl(presignedUrl, file);
+            await this._timer(1000);
 
-                return response;
-            });
+            return response;
+        });
 
         return Promise.all(promises);
     }
@@ -167,7 +181,7 @@ export class VersionsApiClient {
             cache: 'no-cache',
             credentials: 'include',
             redirect: 'follow',
-            duplex: 'half'
+            duplex: 'half',
         } as RequestInit;
 
         const response = await this._client.fetch(this.route, request);
@@ -183,7 +197,7 @@ export class VersionsApiClient {
             throw new Error(`Error getting presigned URL for ${file.name}`);
         }
 
-        const json = await response.json() as Response & { url?: string };
+        const json = (await response.json()) as Response & { url?: string };
         if (json.Status === 'Failed') {
             throw new Error(json.Error);
         }
@@ -192,4 +206,4 @@ export class VersionsApiClient {
     }
 }
 
-type Response = { Status: string, Error?: string };
+type Response = { Status: string; Error?: string };

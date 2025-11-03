@@ -277,15 +277,14 @@ describe('CrashApiClient', () => {
       result = await client.postNotes(database, id, notes);
     });
 
-    it('should append, update true, database, id, and Comments to formData', () => {
-      expect(fakeFormData.append).toHaveBeenCalledWith('update', 'true');
+    it('should append, database, id, and Comments to formData', () => {
       expect(fakeFormData.append).toHaveBeenCalledWith('database', database);
       expect(fakeFormData.append).toHaveBeenCalledWith('id', `${id}`);
       expect(fakeFormData.append).toHaveBeenCalledWith('notes', notes);
     });
 
     it('should call fetch with correct route', () => {
-      expect(apiClient.fetch).toHaveBeenCalledWith('/api/crash/notes.php', jasmine.anything());
+      expect(apiClient.fetch).toHaveBeenCalledWith('/api/crash/notes', jasmine.anything());
     });
 
     it('should call fetch with requestInit containing formData', () => {

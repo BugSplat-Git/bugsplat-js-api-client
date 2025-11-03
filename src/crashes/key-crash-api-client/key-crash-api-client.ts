@@ -1,4 +1,4 @@
-import { ApiClient, BugSplatResponse, TableDataClient, TableDataResponse } from '@common';
+import { ApiClient, BugSplatResponse, TableDataClient, TableDataResponse, isErrorResponse } from '@common';
 import { CrashesApiRow } from '@crashes';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
 import { createKeyCrashPageData, KeyCrashPageData, KeyCrashPageDataRawResponse } from './key-crash-page-data';
@@ -9,12 +9,15 @@ export class KeyCrashApiClient {
     private _tableDataClient: TableDataClient;
 
     constructor(private _client: ApiClient) {
-        this._tableDataClient = new TableDataClient(this._client, '/keycrash?data&crashTimeSpan');
+        this._tableDataClient = new TableDataClient(this._client, '/api/v2/keycrash');
     }
 
     async getCrashes(request: KeyCrashTableDataRequest): Promise<TableDataResponse<CrashesApiRow, KeyCrashPageData>> {
         const formParts = { stackKeyId: `${request.stackKeyId}` };
         const response = await this._tableDataClient.postGetData<CrashesApiResponseRow, KeyCrashPageDataRawResponse>(request, formParts);
+        if (isErrorResponse(response)) {
+            throw new Error((await response.json()).message);
+        }
         const json = await response.json() as Required<TableDataResponse<CrashesApiResponseRow, KeyCrashPageDataRawResponse>>;
         const pageData = createKeyCrashPageData(json.pageData);
         const rows = json.rows.map(row => new CrashesApiRow(row));

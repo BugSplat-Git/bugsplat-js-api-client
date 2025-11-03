@@ -1,97 +1,95 @@
-import {
-  ApiClient,
-  TableDataRequest,
-  BugSplatResponse,
-  TableDataResponse,
-} from '@common';
+import { ApiClient, BugSplatResponse, TableDataRequest, TableDataResponse } from '@common';
 import { TableDataFormDataBuilder } from '../table-data-form-data-builder/table-data-form-data-builder';
 
 export class TableDataClient {
-  constructor(private _apiClient: ApiClient, private _url: string) {}
+    constructor(private _apiClient: ApiClient, private _url: string) {}
 
-  // We use POST to get data in most cases because it supports longer queries
-  async postGetData<T, U = Record<string, unknown> | undefined>(
-    request: TableDataRequest,
-    formParts: Record<string, string> = {}
-  ): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
-    const factory = () => this._apiClient.createFormData();
-    const formData = new TableDataFormDataBuilder(factory, formParts)
-      .withDatabase(request.database)
-      .withFilterGroups(request.filterGroups)
-      .withColumnGroups(request.columnGroups)
-      .withPage(request.page)
-      .withPageSize(request.pageSize)
-      .withSortColumn(request.sortColumn)
-      .withSortOrder(request.sortOrder)
-      .build();
-    const requestInit = {
-      method: 'POST',
-      body: formData,
-      cache: 'no-cache',
-      credentials: 'include',
-      redirect: 'follow',
-      duplex: 'half',
-    } as RequestInit;
-    return this.makeRequest<T, U>(this._url, requestInit);
-  }
+    // We use POST to get data in most cases because it supports longer queries
+    async postGetData<T, U = Record<string, unknown> | undefined>(
+        request: TableDataRequest,
+        formParts: Record<string, string> = {}
+    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
+        const factory = () => this._apiClient.createFormData();
+        const formData = new TableDataFormDataBuilder(factory, formParts)
+            .withDatabase(request.database)
+            .withFilterGroups(request.filterGroups)
+            .withColumnGroups(request.columnGroups)
+            .withPage(request.page)
+            .withPageSize(request.pageSize)
+            .withSortColumn(request.sortColumn)
+            .withSortOrder(request.sortOrder)
+            .build();
+        const requestInit = {
+            method: 'POST',
+            body: formData,
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow',
+            duplex: 'half',
+        } as RequestInit;
+        return this.makeRequest<T, U>(this._url, requestInit);
+    }
 
-  async getData<T, U = Record<string, unknown> | undefined>(
-    request: TableDataRequest
-  ): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
-    const factory = () => this._apiClient.createFormData();
-    const formData = new TableDataFormDataBuilder(factory)
-      .withDatabase(request.database)
-      .withFilterGroups(request.filterGroups)
-      .withColumnGroups(request.columnGroups)
-      .withPage(request.page)
-      .withPageSize(request.pageSize)
-      .withSortColumn(request.sortColumn)
-      .withSortOrder(request.sortOrder)
-      .entries();
-    const requestInit = {
-      method: 'GET',
-      cache: 'no-cache',
-      credentials: 'include',
-      redirect: 'follow',
-    } as RequestInit;
-    const queryParams = new URLSearchParams(formData).toString();
-    return this.makeRequest<T, U>(`${this._url}?${queryParams}`, requestInit);
-  }
+    async getData<T, U = Record<string, unknown> | undefined>(
+        request: TableDataRequest
+    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
+        const factory = () => this._apiClient.createFormData();
+        const formData = new TableDataFormDataBuilder(factory)
+            .withDatabase(request.database)
+            .withFilterGroups(request.filterGroups)
+            .withColumnGroups(request.columnGroups)
+            .withPage(request.page)
+            .withPageSize(request.pageSize)
+            .withSortColumn(request.sortColumn)
+            .withSortOrder(request.sortOrder)
+            .entries();
+        const requestInit = {
+            method: 'GET',
+            cache: 'no-cache',
+            credentials: 'include',
+            redirect: 'follow',
+        } as RequestInit;
+        const queryParams = new URLSearchParams(formData).toString();
+        return this.makeRequest<T, U>(`${this._url}?${queryParams}`, requestInit);
+    }
 
-  private async makeRequest<T, U = unknown>(
-    url: string,
-    init: RequestInit
-  ): Promise<BugSplatResponse<TableDataResponse<T, U>>> {
-    const response = await this._apiClient.fetch<
-      RawResponse<TableDataResponse<T, U>> | TableDataResponse<T, U>
-    >(url, init);
-    const responseData = await response.json();
+    private async makeRequest<T, U = unknown>(
+        url: string,
+        init: RequestInit
+    ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
+        const response = await this._apiClient.fetch<TableDataResponse<T, U> | ErrorResponse>(url, init);
 
-    // Handle legacy and new API responses until we can upgrade legacy APIs
-    const rows =
-      (responseData as TableDataResponse<T, U>)?.rows ??
-      responseData?.[0]?.Rows ??
-      [];
-    const pageData =
-      (responseData as TableDataResponse<T, U>)?.pageData ??
-      responseData?.[0]?.PageData ??
-      {};
+        if (response.status !== 200) {
+            return response as unknown as BugSplatResponse<ErrorResponse>;
+        }
 
-    const status = response.status;
-    const body = response.body;
-    const payload = { rows, pageData } as TableDataResponse<T, U>;
-    const json = async () => payload;
-    const text = async () => JSON.stringify(payload);
-    return {
-      status,
-      body,
-      json,
-      text,
-    };
-  }
+        const responseData = await response.json() as TableDataResponse<T, U>;
+        const rows = responseData.rows || [];
+        const pageData = responseData.pageData || {};
+        const status = response.status;
+        const body = response.body;
+        const payload = { rows, pageData } as TableDataResponse<T, U>;
+        const json = async () => payload;
+        const text = async () => JSON.stringify(payload);
+        return {
+            status,
+            body,
+            json,
+            text,
+        };
+    }
 }
 
-// https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as
-export type RawResponse<T> = Array<{
-  [Property in keyof T as Capitalize<string & Property>]: T[Property];
-}>;
+export type ErrorResponse = { status: number; message: string };
+
+export function isSuccessResponse<T, U = Record<string, unknown> | undefined>(
+    response: BugSplatResponse<TableDataResponse<T, U> | ErrorResponse>
+): response is BugSplatResponse<TableDataResponse<T, U>> {
+    return 'status' in response && response.status === 200;
+}
+
+export function isErrorResponse<T, U = Record<string, unknown> | undefined>(
+    response: BugSplatResponse<TableDataResponse<T, U> | ErrorResponse>
+): response is BugSplatResponse<ErrorResponse> {
+    return 'status' in response && response.status !== 200;
+}
