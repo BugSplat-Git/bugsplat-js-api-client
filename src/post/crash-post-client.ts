@@ -5,17 +5,20 @@ import { PostCrashResponse } from './post-crash-response';
 export class CrashPostClient {
 
     private _processorApiClient: BugSplatApiClient;
-    private _s3ApiClient = new S3ApiClient();
+    private _s3ApiClient: S3ApiClient;
 
     constructor(
         private _database: string,
         private _environment: Environment = Environment.Node,
-        private _processor: string = '' // Internal use only
+        private _processor: string = '', // Internal use only
+        verbose: boolean = false
     ) {
         this._processorApiClient = new BugSplatApiClient(
             `https://${this._database}.bugsplat.com`,
-            this._environment
+            this._environment,
+            verbose
         );
+        this._s3ApiClient = new S3ApiClient(this._processorApiClient.logger);
     }
 
     async postCrash(

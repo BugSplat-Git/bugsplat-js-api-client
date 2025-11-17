@@ -15,11 +15,12 @@ import { PutRetiredResponse } from './put-retired-response';
 export class VersionsApiClient {
     private readonly route = '/api/v2/versions';
 
-    private _s3ApiClient = new S3ApiClient();
+    private _s3ApiClient: S3ApiClient;
     private _tableDataClient: TableDataClient;
     private _timer = delay;
 
     constructor(private _client: ApiClient) {
+        this._s3ApiClient = new S3ApiClient(this._client.logger);
         this._tableDataClient = new TableDataClient(this._client, this.route);
     }
 
@@ -185,21 +186,55 @@ export class VersionsApiClient {
         } as RequestInit;
 
         const response = await this._client.fetch(this.route, request);
+        
+        this._client.logger?.log(`Getting presigned URL for ${file.name}`, {
+            database,
+            appName,
+            appVersion,
+            status: response.status
+        });
+
         if (response.status === 429) {
-            throw new Error('Error getting presigned URL, too many requests');
+            const error = 'Error getting presigned URL, too many requests';
+            this._client.logger?.error(error, { file: file.name, status: response.status });
+            throw new Error(error);
         }
 
         if (response.status === 403) {
-            throw new Error('Error getting presigned URL, invalid credentials');
+            const error = 'Error getting presigned URL, invalid credentials';
+            this._client.logger?.error(error, { file: file.name, status: response.status });
+            throw new Error(error);
         }
 
         if (response.status !== 200) {
+            let errorDetails: unknown = { status: response.status };
+            try {
+                const responseText = await response.text();
+                errorDetails = { status: response.status, responseText };
+                this._client.logger?.error(`Error getting presigned URL for ${file.name}`, errorDetails);
+            } catch (e) {
+                this._client.logger?.error(`Error getting presigned URL for ${file.name} - failed to read response text`, e);
+            }
             throw new Error(`Error getting presigned URL for ${file.name}`);
         }
 
-        const json = (await response.json()) as Response & { url?: string };
+        let json: Response & { url?: string };
+        try {
+            json = (await response.json()) as Response & { url?: string };
+        } catch (e) {
+            this._client.logger?.error(`Error parsing presigned URL response for ${file.name}`, { 
+                status: response.status, 
+                parseError: e instanceof Error ? e.message : String(e)
+            });
+            throw new Error(`Error getting presigned URL for ${file.name}: Failed to parse response`);
+        }
         if (json.Status === 'Failed') {
-            throw new Error(json.Error);
+            const error = json.Error || 'Unknown error';
+            this._client.logger?.error(`Presigned URL request failed for ${file.name}`, { 
+                status: json.Status, 
+                error 
+            });
+            throw new Error(error);
         }
 
         return json.url as string;

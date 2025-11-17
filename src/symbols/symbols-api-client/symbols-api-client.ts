@@ -5,10 +5,12 @@ import { safeCancel } from '../../common/cancel';
 export class SymbolsApiClient {
     private readonly uploadUrl = '/symsrv/uploadUrl';
     private readonly uploadCompleteUrl = '/symsrv/uploadComplete';
-    private _s3ApiClient = new S3ApiClient();
+    private _s3ApiClient: S3ApiClient;
     private _timer = delay;
 
-    constructor(private _client: ApiClient) { }
+    constructor(private _client: ApiClient) {
+        this._s3ApiClient = new S3ApiClient(this._client.logger);
+    }
 
     // Gzip implementation is different in node.js vs browser
     // Consumer must gzip files before calling this method
@@ -106,21 +108,55 @@ export class SymbolsApiClient {
         } as RequestInit;
 
         const response = await this._client.fetch(this.uploadUrl, request);
+        
+        this._client.logger?.log(`Getting presigned URL for ${file.name}`, {
+            database,
+            appName,
+            appVersion,
+            status: response.status
+        });
+
         if (response.status === 429) {
-            throw new Error('Error getting presigned URL, too many requests');
+            const error = 'Error getting presigned URL, too many requests';
+            this._client.logger?.error(error, { file: file.name, status: response.status });
+            throw new Error(error);
         }
 
         if (response.status === 403) {
-            throw new Error('Error getting presigned URL, invalid credentials');
+            const error = 'Error getting presigned URL, invalid credentials';
+            this._client.logger?.error(error, { file: file.name, status: response.status });
+            throw new Error(error);
         }
 
         if (response.status !== 200) {
+            let errorDetails: unknown = { status: response.status };
+            try {
+                const responseText = await response.text();
+                errorDetails = { status: response.status, responseText };
+                this._client.logger?.error(`Error getting presigned URL for ${file.name}`, errorDetails);
+            } catch (e) {
+                this._client.logger?.error(`Error getting presigned URL for ${file.name} - failed to read response text`, e);
+            }
             throw new Error(`Error getting presigned URL for ${file.name}`);
         }
 
-        const json = await response.json() as Response & { url?: string };
+        let json: Response & { url?: string, Status?: 'Success' | 'Failed' };
+        try {
+            json = await response.json() as Response & { url?: string, Status?: 'Success' | 'Failed' };
+        } catch (e) {
+            this._client.logger?.error(`Error parsing presigned URL response for ${file.name}`, { 
+                status: response.status, 
+                parseError: e instanceof Error ? e.message : String(e)
+            });
+            throw new Error(`Error getting presigned URL for ${file.name}: Failed to parse response`);
+        }
         if (json.Status === 'Failed') {
-            throw new Error(json.Error);
+            const error = json.Error || 'Unknown error';
+            this._client.logger?.error(`Presigned URL request failed for ${file.name}`, { 
+                status: json.Status, 
+                error 
+            });
+            throw new Error(error);
         }
 
         return json.url as string;

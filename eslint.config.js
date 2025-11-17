@@ -39,7 +39,8 @@ module.exports = [
         ReadableStream: 'readonly',
         process: 'readonly',
         HeadersInit: 'readonly',
-        setTimeout: 'readonly'
+        setTimeout: 'readonly',
+        console: 'readonly'
       }
     },
     plugins: {

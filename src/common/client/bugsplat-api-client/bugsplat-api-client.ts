@@ -1,4 +1,4 @@
-import { ApiClient, bugsplatAppHostUrl, BugSplatResponse, Environment } from '@common';
+import { ApiClient, bugsplatAppHostUrl, BugSplatResponse, Environment, Logger } from '@common';
 import { BugSplatLoginResponse } from './bugsplat-login-response';
 import { BugSplatAuthenticationError } from '../api-client';
 
@@ -6,18 +6,25 @@ export class BugSplatApiClient implements ApiClient {
     private _createFormData = () => new FormData();
     private _fetch = globalThis.fetch;
     private _headers = {};
+    public logger?: Logger;
 
     constructor(
         private _host: string = bugsplatAppHostUrl,
-        private _environment: Environment = Environment.Node
-    ) { }
+        private _environment: Environment = Environment.Node,
+        verbose: boolean = false
+    ) {
+        if (verbose) {
+            this.logger = new Logger(true);
+        }
+    }
 
     static async createAuthenticatedClientForNode(
         email: string,
         password: string,
-        host: string = bugsplatAppHostUrl
+        host: string = bugsplatAppHostUrl,
+        verbose: boolean = false
     ): Promise<BugSplatApiClient> {
-        const client = new BugSplatApiClient(host, Environment.Node);
+        const client = new BugSplatApiClient(host, Environment.Node, verbose);
         await client.login(email, password);
         return client;
     }
@@ -25,9 +32,10 @@ export class BugSplatApiClient implements ApiClient {
     static async createAuthenticatedClientForWebBrowser(
         email: string,
         password: string,
-        host: string = bugsplatAppHostUrl
+        host: string = bugsplatAppHostUrl,
+        verbose: boolean = false
     ): Promise<BugSplatApiClient> {
-        const client = new BugSplatApiClient(host, Environment.WebBrowser);
+        const client = new BugSplatApiClient(host, Environment.WebBrowser, verbose);
         await client.login(email, password);
         return client;
     }

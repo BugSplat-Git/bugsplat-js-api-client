@@ -1,4 +1,4 @@
-import { ApiClient, bugsplatAppHostUrl, BugSplatResponse } from '@common';
+import { ApiClient, bugsplatAppHostUrl, BugSplatResponse, Logger } from '@common';
 import { OAuthLoginResponse } from './oauth-login-response';
 import { BugSplatAuthenticationError } from '../api-client';
 
@@ -8,22 +8,30 @@ export class OAuthClientCredentialsClient implements ApiClient {
     private _tokenType = '';
     private _createFormData = () => new FormData();
     private _fetch = globalThis.fetch;
+    public logger?: Logger;
 
     constructor(
         private _clientId: string,
         private _clientSecret: string,
-        private _host: string = bugsplatAppHostUrl
-    ) { }
+        private _host: string = bugsplatAppHostUrl,
+        verbose: boolean = false
+    ) {
+        if (verbose) {
+            this.logger = new Logger(true);
+        }
+    }
 
     static async createAuthenticatedClient(
         clientId: string,
         clientSecret: string,
-        host: string = bugsplatAppHostUrl
+        host: string = bugsplatAppHostUrl,
+        verbose: boolean = false
     ): Promise<OAuthClientCredentialsClient> {
         const client = new OAuthClientCredentialsClient(
             clientId,
             clientSecret,
-            host
+            host,
+            verbose
         );
         await client.login();
         return client;
