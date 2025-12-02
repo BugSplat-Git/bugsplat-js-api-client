@@ -28,7 +28,7 @@ describe('OAuthClientCredentialsClient', () => {
 
         describe('error', () => {
             it('should throw error for incorrect email and password', async () => {
-                const client = new OAuthClientCredentialsClient('BugSplat', 'rocks', host);
+                const client = new OAuthClientCredentialsClient(clientId, 'rocks', host);
                 
                 await expectAsync(client.login()).toBeRejectedWithError(
                     Error,
