@@ -1,2 +1,2 @@
 
-export type QueryFilterCondition = 'EQUAL' | 'NOT_EQUAL' | 'CONTAINS' | 'DOES_NOT_CONTAIN' | 'EMPTY' | 'NOT_EMPTY' | 'STARTS_WITH' | 'ENDS_WITH' | 'LESS_THAN' | 'GREATER_THAN';
+export type QueryFilterCondition = 'EQUAL' | 'NOT_EQUAL' | 'CONTAINS' | 'DOES_NOT_CONTAIN' | 'EMPTY' | 'NOT_EMPTY' | 'STARTS_WITH' | 'ENDS_WITH' | 'LESS_THAN' | 'GREATER_THAN' | 'IN' | 'IN_NUMERIC' | 'NOT_IN' | 'NOT_IN_NUMERIC';
