@@ -1,3 +1,10 @@
+# [14.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.0.0...v14.1.0) (2025-12-03)
+
+
+### Features
+
+* support for IN, IN_NUMERIC, NOT_IN, and NOT_IN_NUMERIC ([#153](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/153)) ([3eacc5b](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/3eacc5b9b511f45f3a69b8029cc7da2ed5e28f1d))
+
 # [14.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v13.1.0...v14.0.0) (2025-11-03)
 
 
