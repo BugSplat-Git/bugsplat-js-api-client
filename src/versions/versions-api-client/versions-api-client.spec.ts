@@ -84,8 +84,9 @@ describe('VersionsApiClient', () => {
             ];
             await versionsApiClient.deleteVersions(database, appVersions);
 
+            const appVersionsParam = `${appVersions[0].application},${appVersions[0].version},${appVersions[1].application},${appVersions[1].version}`;
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                `/api/v2/versions?database=${database}&appVersions=${appVersions[0].application},${appVersions[0].version},${appVersions[1].application},${appVersions[1].version}`,
+                `/api/v2/versions?database=${encodeURIComponent(database)}&appVersions=${encodeURIComponent(appVersionsParam)}`,
                 jasmine.anything()
             );
         });
@@ -116,7 +117,7 @@ describe('VersionsApiClient', () => {
 
         it('should call fetch with route containing database, application, version, and fullDumps', () => {
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                `/api/v2/versions?database=${database}&appName=${application}&appVersion=${version}&fullDumps=${fullDumps ? 1 : 0}`,
+                `/api/v2/versions?database=${encodeURIComponent(database)}&appName=${encodeURIComponent(application)}&appVersion=${encodeURIComponent(version)}&fullDumps=${encodeURIComponent(fullDumps ? '1' : '0')}`,
                 jasmine.anything()
             );
         });
@@ -144,7 +145,7 @@ describe('VersionsApiClient', () => {
 
         it('should call fetch with route containing database, application, version, and fullDumps', () => {
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                `/api/v2/versions?database=${database}&appName=${application}&appVersion=${version}&retired=${retired ? 1 : 0}`,
+                `/api/v2/versions?database=${encodeURIComponent(database)}&appName=${encodeURIComponent(application)}&appVersion=${encodeURIComponent(version)}&retired=${encodeURIComponent(retired ? '1' : '0')}`,
                 jasmine.anything()
             );
         });
@@ -175,7 +176,7 @@ describe('VersionsApiClient', () => {
 
         it('should call fetch with route containing database, application and version', () => {
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                `/api/v2/versions?database=${database}&appName=${application}&appVersion=${version}`,
+                `/api/v2/versions?database=${encodeURIComponent(database)}&appName=${encodeURIComponent(application)}&appVersion=${encodeURIComponent(version)}`,
                 jasmine.anything()
             );
         });
