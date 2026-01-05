@@ -44,8 +44,9 @@ export class VersionsApiClient {
     ): Promise<BugSplatResponse> {
         const appVersionsParam = appVersions
             .reduce((prev, curr) => [...prev, curr.application, curr.version], [] as Array<string>)
+            .map(encodeURIComponent)
             .join(',');
-        const route = `${this.route}?database=${encodeURIComponent(database)}&appVersions=${encodeURIComponent(appVersionsParam)}`;
+        const route = `${this.route}?database=${encodeURIComponent(database)}&appVersions=${appVersionsParam}`;
         const request = {
             method: 'DELETE',
             cache: 'no-cache',

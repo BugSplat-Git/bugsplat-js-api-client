@@ -84,9 +84,42 @@ describe('VersionsApiClient', () => {
             ];
             await versionsApiClient.deleteVersions(database, appVersions);
 
-            const appVersionsParam = `${appVersions[0].application},${appVersions[0].version},${appVersions[1].application},${appVersions[1].version}`;
+            const appVersionsParam = [
+                appVersions[0].application,
+                appVersions[0].version,
+                appVersions[1].application,
+                appVersions[1].version
+            ].map(encodeURIComponent).join(',');
             expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
-                `/api/v2/versions?database=${encodeURIComponent(database)}&appVersions=${encodeURIComponent(appVersionsParam)}`,
+                `/api/v2/versions?database=${encodeURIComponent(database)}&appVersions=${appVersionsParam}`,
+                jasmine.anything()
+            );
+        });
+
+        it('should properly encode appVersions with special characters like plus signs', async () => {
+            const appVersions = [
+                { application: 'myApp', version: '1.0.0+build.123' },
+                { application: 'myApp', version: '2.0.0+beta' }
+            ];
+            await versionsApiClient.deleteVersions(database, appVersions);
+
+            const appVersionsParam = [
+                appVersions[0].application,
+                appVersions[0].version,
+                appVersions[1].application,
+                appVersions[1].version
+            ].map(encodeURIComponent).join(',');
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                `/api/v2/versions?database=${encodeURIComponent(database)}&appVersions=${appVersionsParam}`,
+                jasmine.anything()
+            );
+            // Verify the plus signs are encoded as %2B, not left as + (which would be decoded as space)
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                jasmine.stringContaining('1.0.0%2Bbuild.123'),
+                jasmine.anything()
+            );
+            expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+                jasmine.stringContaining('2.0.0%2Bbeta'),
                 jasmine.anything()
             );
         });
