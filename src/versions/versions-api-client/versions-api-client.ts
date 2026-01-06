@@ -44,8 +44,9 @@ export class VersionsApiClient {
     ): Promise<BugSplatResponse> {
         const appVersionsParam = appVersions
             .reduce((prev, curr) => [...prev, curr.application, curr.version], [] as Array<string>)
+            .map(encodeURIComponent)
             .join(',');
-        const route = `${this.route}?database=${database}&appVersions=${appVersionsParam}`;
+        const route = `${this.route}?database=${encodeURIComponent(database)}&appVersions=${appVersionsParam}`;
         const request = {
             method: 'DELETE',
             cache: 'no-cache',
@@ -75,7 +76,7 @@ export class VersionsApiClient {
         fullDumps: boolean
     ): Promise<BugSplatResponse> {
         const fullDumpsFlag = fullDumps ? '1' : '0';
-        const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}&fullDumps=${fullDumpsFlag}`;
+        const route = `${this.route}?database=${encodeURIComponent(database)}&appName=${encodeURIComponent(application)}&appVersion=${encodeURIComponent(version)}&fullDumps=${encodeURIComponent(fullDumpsFlag)}`;
         const request = {
             method: 'PUT',
             cache: 'no-cache',
@@ -93,7 +94,7 @@ export class VersionsApiClient {
         retired: boolean
     ): Promise<BugSplatResponse<PutRetiredResponse>> {
         const retiredFlag = retired ? '1' : '0';
-        const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}&retired=${retiredFlag}`;
+        const route = `${this.route}?database=${encodeURIComponent(database)}&appName=${encodeURIComponent(application)}&appVersion=${encodeURIComponent(version)}&retired=${encodeURIComponent(retiredFlag)}`;
         const request = {
             method: 'PUT',
             cache: 'no-cache',
@@ -109,7 +110,7 @@ export class VersionsApiClient {
         application: string,
         version: string
     ): Promise<BugSplatResponse> {
-        const route = `${this.route}?database=${database}&appName=${application}&appVersion=${version}`;
+        const route = `${this.route}?database=${encodeURIComponent(database)}&appName=${encodeURIComponent(application)}&appVersion=${encodeURIComponent(version)}`;
         const request = {
             method: 'DELETE',
             cache: 'no-cache',
