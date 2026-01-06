@@ -1,3 +1,10 @@
+## [14.1.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.1.0...v14.1.1) (2026-01-06)
+
+
+### Bug Fixes
+
+* added URI encoding to versions endpoints ([#154](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/154)) ([f7690e2](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/f7690e2149374be57b4d8997c655af2602360262))
+
 # [14.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.0.0...v14.1.0) (2025-12-03)
 
 
