@@ -30,14 +30,14 @@ export class TableDataFormDataBuilder {
           group.filters.forEach((filter, i) => {
             const firstFilter = i === 0;
             const lastFilter = i === group.filters.length - 1;
-            this._formParts[`filtergroupopen${filtersCount}`] = firstFilter ? '1' : '0';
+            this._formParts[`filtergroupopen${filtersCount}`] = firstFilter ? `${group.groupOpenCount}` : '0';
             this._formParts[`filteroperator${filtersCount}`] = firstFilter ? group.groupOperator?.value : group.filterOperator?.value;
             this._formParts[`filterdatafield${filtersCount}`] = filter.filterDataField;
             this._formParts[`filtercondition${filtersCount}`] = filter.filterCondition;
-            this._formParts[`filtervalue${filtersCount}`] = Array.isArray(filter.filterValue) 
-              ? filter.filterValue.join(',') 
+            this._formParts[`filtervalue${filtersCount}`] = Array.isArray(filter.filterValue)
+              ? filter.filterValue.join(',')
               : filter.filterValue.toString();
-            this._formParts[`filtergroupclose${filtersCount}`] = lastFilter ? '1' : '0';
+            this._formParts[`filtergroupclose${filtersCount}`] = lastFilter ? `${group.groupCloseCount}` : '0';
             filtersCount++;
           });
         }

@@ -1,6 +1,26 @@
 import { QueryFilter, QueryFilterGroup, FilterOperator } from '@common';
 
 describe('QueryFilterGroup', () => {
+  describe('constructor', () => {
+    it('should default groupOpenCount and groupCloseCount to 1', () => {
+      const filter = new QueryFilter('value', 'EQUAL', 'field');
+
+      const result = new QueryFilterGroup([filter]);
+
+      expect(result.groupOpenCount).toEqual(1);
+      expect(result.groupCloseCount).toEqual(1);
+    });
+
+    it('should set groupOpenCount and groupCloseCount when provided', () => {
+      const filter = new QueryFilter('value', 'EQUAL', 'field');
+
+      const result = new QueryFilterGroup([filter], FilterOperator.and, FilterOperator.and, 2, 3);
+
+      expect(result.groupOpenCount).toEqual(2);
+      expect(result.groupCloseCount).toEqual(3);
+    });
+  });
+
   describe('fromQueryFilter', () => {
     it('should return filter group containing filter, filter operator and group operator', () => {
       const filter = new QueryFilter('value', 'EQUAL', 'field');
