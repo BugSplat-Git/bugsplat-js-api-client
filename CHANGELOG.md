@@ -1,3 +1,10 @@
+## [14.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.1.1...v14.1.2) (2026-02-06)
+
+
+### Bug Fixes
+
+* support nested group parentheses in QueryFilterGroup serializer ([#156](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/156)) ([d653472](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/d653472cc673b04d6d1e75d827143a3e92677692)), closes [#155](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/155)
+
 ## [14.1.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.1.0...v14.1.1) (2026-01-06)
 
 
