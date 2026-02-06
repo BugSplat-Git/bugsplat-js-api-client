@@ -4,7 +4,9 @@ export class QueryFilterGroup {
   constructor(
     public filters: Array<QueryFilter>,
     public filterOperator: FilterOperator = FilterOperator.and,
-    public groupOperator: FilterOperator = FilterOperator.and
+    public groupOperator: FilterOperator = FilterOperator.and,
+    public groupOpenCount: number = 1,
+    public groupCloseCount: number = 1
   ) {
     Object.freeze(this);
   }

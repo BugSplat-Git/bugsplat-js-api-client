@@ -1,4 +1,4 @@
-import { QueryFilter, QueryFilterGroup } from '@common';
+import { FilterOperator, QueryFilter, QueryFilterGroup } from '@common';
 import { TableDataFormDataBuilder } from './table-data-form-data-builder';
 
 describe('TableDataFormDataBuilder', () => {
@@ -70,6 +70,21 @@ describe('TableDataFormDataBuilder', () => {
       expect(result.get('filteroperator2')).toEqual(filterGroup1.filterOperator.value);
       expect(result.get('filterdatafield2')).toContain(filter2.filterDataField);
       expect(result.get('filtergroupclose2')).toEqual('1');
+    });
+
+    it('should use groupOpenCount and groupCloseCount for nested parentheses', () => {
+      const filterGroup0 = new QueryFilterGroup([filter0], FilterOperator.and, FilterOperator.and, 2, 1);
+      const filterGroup1 = new QueryFilterGroup([filter1, filter2], FilterOperator.and, FilterOperator.or, 1, 2);
+      const result = <FakeFormData><unknown>new TableDataFormDataBuilder(formDataFactory)
+        .withFilterGroups([filterGroup0, filterGroup1])
+        .build();
+
+      expect(result.get('filtergroupopen0')).toEqual('2');
+      expect(result.get('filtergroupclose0')).toEqual('1');
+      expect(result.get('filtergroupopen1')).toEqual('1');
+      expect(result.get('filtergroupclose1')).toEqual('0');
+      expect(result.get('filtergroupopen2')).toEqual('0');
+      expect(result.get('filtergroupclose2')).toEqual('2');
     });
   });
 
