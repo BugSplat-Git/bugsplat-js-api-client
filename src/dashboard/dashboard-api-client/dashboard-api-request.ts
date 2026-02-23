@@ -1,7 +1,7 @@
 export interface DashboardApiRequest {
     database: string;
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
     appNames?: string;
     appVersions?: string;
     timezone?: string;

@@ -9,9 +9,15 @@ export class DashboardApiClient {
     async getDashboard(request: DashboardApiRequest): Promise<DashboardApiResponse> {
         const params = new URLSearchParams({
             database: request.database,
-            startDate: request.startDate,
-            endDate: request.endDate,
         });
+
+        if (request.startDate) {
+            params.set('startDate', request.startDate);
+        }
+
+        if (request.endDate) {
+            params.set('endDate', request.endDate);
+        }
 
         if (request.appNames) {
             params.set('appNames', request.appNames);

@@ -88,6 +88,15 @@ describe('DashboardApiClient', () => {
             expect(url).not.toContain('interval');
         });
 
+        it('should not include startDate or endDate when not provided', async () => {
+            await client.getDashboard({ database });
+
+            const url = fakeBugSplatApiClient.fetch.calls.mostRecent().args[0] as string;
+            expect(url).toContain('database=Fred');
+            expect(url).not.toContain('startDate');
+            expect(url).not.toContain('endDate');
+        });
+
         it('should return dashboard response', async () => {
             const result = await client.getDashboard({ database, startDate, endDate });
 
