@@ -26,6 +26,9 @@
       "@crashes": [
         "src/crashes/index"
       ],
+      "@dashboard": [
+        "src/dashboard/index"
+      ],
       "@events": [
         "src/events/index"
       ],

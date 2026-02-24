@@ -1,6 +1,7 @@
 export * from './common';
 export * from './crash';
 export * from './crashes';
+export * from './dashboard';
 export * from './events';
 export * from './issue';
 export * from './post';
