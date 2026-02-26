@@ -7,6 +7,8 @@ export interface DashboardApiResponse {
     recentCrashes: Array<RecentCrash>;
     statusCounts: StatusCounts;
     topStackKeys: Array<TopStackKey>;
+    totalThrottled: number;
+    totalThrottledPrevious: number;
 }
 
 export interface CrashHistory {
