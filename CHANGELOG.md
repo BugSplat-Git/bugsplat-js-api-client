@@ -1,3 +1,10 @@
+# [14.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.1.2...v14.2.0) (2026-02-24)
+
+
+### Features
+
+* add DashboardApiClient for BFF endpoint ([#157](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/157)) ([0747109](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/0747109b9ffad5c8c5bd54cb81ade54b006ec73c))
+
 ## [14.1.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.1.1...v14.1.2) (2026-02-06)
 
 
