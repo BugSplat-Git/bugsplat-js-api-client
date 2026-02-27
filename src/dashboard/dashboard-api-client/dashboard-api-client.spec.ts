@@ -25,6 +25,8 @@ describe('DashboardApiClient', () => {
             previous: { open: 4, closed: 2, regression: 0, ignored: 1, total: 7 },
         },
         topStackKeys: [],
+        totalThrottled: 10,
+        totalThrottledPrevious: 5,
     };
 
     let client: DashboardApiClient;
