@@ -1,3 +1,10 @@
+# [14.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.2.0...v14.3.0) (2026-02-27)
+
+
+### Features
+
+* add totalThrottled fields to DashboardApiResponse ([#158](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/158)) ([d2e443f](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/d2e443fd37837652ef8dead189f44849e67ca2eb))
+
 # [14.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.1.2...v14.2.0) (2026-02-24)
 
 
