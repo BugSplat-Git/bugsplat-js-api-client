@@ -4,6 +4,7 @@ export interface DashboardApiResponse {
     volume30Day: number;
     crashDataDays: number;
     crashHistory: CrashHistory;
+    lastCrashTime: string | null;
     recentCrashes: Array<RecentCrash>;
     statusCounts: StatusCounts;
     topStackKeys: Array<TopStackKey>;
