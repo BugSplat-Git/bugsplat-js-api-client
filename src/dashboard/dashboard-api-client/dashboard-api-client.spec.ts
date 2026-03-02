@@ -19,6 +19,7 @@ describe('DashboardApiClient', () => {
             totalCrashes: 100,
             rows: [{ appName: 'All', series: [] }],
         },
+        lastCrashTime: '2026-02-23T12:00:00Z',
         recentCrashes: [],
         statusCounts: {
             current: { open: 5, closed: 3, regression: 1, ignored: 0, total: 9 },
