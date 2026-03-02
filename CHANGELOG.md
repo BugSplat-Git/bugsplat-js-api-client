@@ -1,3 +1,10 @@
+## [14.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.3.0...v14.3.1) (2026-03-02)
+
+
+### Bug Fixes
+
+* add lastCrashTime to DashboardApiResponse ([#159](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/159)) ([937a292](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/937a29284be9881946687175ddb436902fc513e4))
+
 # [14.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.2.0...v14.3.0) (2026-02-27)
 
 
