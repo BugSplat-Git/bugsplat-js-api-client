@@ -23,8 +23,23 @@ export class VersionsApiClient {
         this._tableDataClient = new TableDataClient(this._client, this.route);
     }
 
-    async getVersions(request: TableDataRequest): Promise<TableDataResponse<VersionsApiRow>> {
-        const response = await this._tableDataClient.getData<VersionsApiResponseRow>(request);
+    async getVersions(
+        request: TableDataRequest,
+        options?: { crashCountStartDate?: string; crashCountEndDate?: string }
+    ): Promise<TableDataResponse<VersionsApiRow>> {
+        const extraParams: Record<string, string> = {};
+        if (options?.crashCountStartDate) {
+            extraParams.crashCountStartDate = options.crashCountStartDate;
+        }
+        if (options?.crashCountEndDate) {
+            extraParams.crashCountEndDate = options.crashCountEndDate;
+        }
+
+        const hasExtraParams = Object.keys(extraParams).length > 0;
+        const response = hasExtraParams
+            ? await this._tableDataClient.getData<VersionsApiResponseRow>(request, extraParams)
+            : await this._tableDataClient.getData<VersionsApiResponseRow>(request);
+
         if (isErrorResponse(response)) {
             throw new Error((await response.json()).message);
         }

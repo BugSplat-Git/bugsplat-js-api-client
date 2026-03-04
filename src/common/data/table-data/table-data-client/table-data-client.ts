@@ -31,7 +31,8 @@ export class TableDataClient {
     }
 
     async getData<T, U = Record<string, unknown> | undefined>(
-        request: TableDataRequest
+        request: TableDataRequest,
+        extraParams?: Record<string, string>
     ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
         const factory = () => this._apiClient.createFormData();
         const formData = new TableDataFormDataBuilder(factory)
@@ -43,6 +44,11 @@ export class TableDataClient {
             .withSortColumn(request.sortColumn)
             .withSortOrder(request.sortOrder)
             .entries();
+
+        if (extraParams) {
+            Object.assign(formData, extraParams);
+        }
+
         const requestInit = {
             method: 'GET',
             cache: 'no-cache',
