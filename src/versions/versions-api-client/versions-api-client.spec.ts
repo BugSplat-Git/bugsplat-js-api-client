@@ -74,6 +74,33 @@ describe('VersionsApiClient', () => {
                 ])
             );
         });
+
+        describe('with crash count date options', () => {
+            it('should call getData with extraParams when both dates are provided', async () => {
+                const options = {
+                    crashCountStartDate: '2024-01-01',
+                    crashCountEndDate: '2024-12-31'
+                };
+
+                await versionsApiClient.getVersions({ database }, options);
+
+                expect(tableDataClient.getData).toHaveBeenCalledWith(
+                    jasmine.objectContaining({ database }),
+                    jasmine.objectContaining({
+                        crashCountStartDate: '2024-01-01',
+                        crashCountEndDate: '2024-12-31'
+                    })
+                );
+            });
+
+            it('should call getData without extraParams when no options are provided', async () => {
+                await versionsApiClient.getVersions({ database });
+
+                expect(tableDataClient.getData).toHaveBeenCalledWith(
+                    jasmine.objectContaining({ database })
+                );
+            });
+        });
     });
 
     describe('deleteVersions', () => {

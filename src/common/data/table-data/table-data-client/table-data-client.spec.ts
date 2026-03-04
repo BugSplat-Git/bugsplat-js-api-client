@@ -24,6 +24,7 @@ describe('TableDataClient', () => {
             'withSortColumn',
             'withSortOrder',
             'build',
+            'entries',
         ]);
         dataTableFormDataBuilder.withDatabase.and.returnValue(dataTableFormDataBuilder);
         dataTableFormDataBuilder.withColumnGroups.and.returnValue(dataTableFormDataBuilder);
@@ -33,6 +34,7 @@ describe('TableDataClient', () => {
         dataTableFormDataBuilder.withSortColumn.and.returnValue(dataTableFormDataBuilder);
         dataTableFormDataBuilder.withSortOrder.and.returnValue(dataTableFormDataBuilder);
         dataTableFormDataBuilder.build.and.returnValue(formData);
+        dataTableFormDataBuilder.entries.and.returnValue(formData);
         spyOn(TableDataFormDataBuilder, 'TableDataFormDataBuilder').and.returnValue(
             dataTableFormDataBuilder
         );
@@ -153,6 +155,77 @@ describe('TableDataClient', () => {
                 expect(error).toBeInstanceOf(Error);
                 expect(error.message).toBe(expectedErrorMessage);
             }
+        });
+    });
+
+    describe('getData (GET)', () => {
+        let database;
+        let result;
+
+        beforeEach(async () => {
+            database = 'TestDatabase';
+            const resp = await service.getData({ database });
+            if (isErrorResponse(resp)) {
+                throw new Error((await resp.json()).message);
+            }
+            result = await resp.json();
+        });
+
+        it('should call fetch with a GET request using query params', () => {
+            const expectedQueryString = new URLSearchParams(formData).toString();
+            expect(bugSplatApiClient.fetch).toHaveBeenCalledWith(
+                `${url}?${expectedQueryString}`,
+                jasmine.objectContaining({
+                    method: 'GET',
+                })
+            );
+        });
+
+        it('should call entries on DataTableFormDataBuilder', () => {
+            expect(dataTableFormDataBuilder.entries).toHaveBeenCalled();
+        });
+
+        it('should return value from api', () => {
+            expect(result).toEqual(
+                jasmine.objectContaining({
+                    rows: response.rows,
+                    pageData: response.pageData,
+                })
+            );
+        });
+
+        describe('with extraParams', () => {
+            it('should merge extraParams into the query string', async () => {
+                const extraParams = {
+                    crashCountStartDate: '2024-01-01',
+                    crashCountEndDate: '2024-12-31'
+                };
+
+                await service.getData({ database }, extraParams);
+
+                const mergedParams = { ...formData, ...extraParams };
+                const expectedQueryString = new URLSearchParams(mergedParams).toString();
+                expect(bugSplatApiClient.fetch).toHaveBeenCalledWith(
+                    `${url}?${expectedQueryString}`,
+                    jasmine.objectContaining({
+                        method: 'GET',
+                    })
+                );
+            });
+        });
+
+        describe('without extraParams', () => {
+            it('should use only the base form data params in the query string', async () => {
+                await service.getData({ database });
+
+                const expectedQueryString = new URLSearchParams(formData).toString();
+                expect(bugSplatApiClient.fetch).toHaveBeenCalledWith(
+                    `${url}?${expectedQueryString}`,
+                    jasmine.objectContaining({
+                        method: 'GET',
+                    })
+                );
+            });
         });
     });
 });

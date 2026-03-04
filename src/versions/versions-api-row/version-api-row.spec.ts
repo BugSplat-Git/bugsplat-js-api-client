@@ -32,4 +32,36 @@ describe('VersionApiRow', () => {
 
         expect(result.retired).toEqual(false);
     });
+
+    it('should convert totalCrashCount string to number', () => {
+        const row = { totalCrashCount: '100' };
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.totalCrashCount).toEqual(100);
+    });
+
+    it('should convert periodCrashCount string to number', () => {
+        const row = { periodCrashCount: '50' };
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.periodCrashCount).toEqual(50);
+    });
+
+    it('should default totalCrashCount to 0 when undefined', () => {
+        const row = {};
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.totalCrashCount).toEqual(0);
+    });
+
+    it('should default periodCrashCount to 0 when undefined', () => {
+        const row = {};
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.periodCrashCount).toEqual(0);
+    });
 });
