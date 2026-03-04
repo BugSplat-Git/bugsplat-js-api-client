@@ -37,6 +37,8 @@ module.exports = [
         URL: 'readonly',
         Response: 'readonly',
         ReadableStream: 'readonly',
+        Blob: 'readonly',
+        Uint8Array: 'readonly',
         process: 'readonly',
         HeadersInit: 'readonly',
         setTimeout: 'readonly'
