@@ -12,6 +12,8 @@ export interface VersionsApiResponseRow {
   rejectedCount: string;
   retired: '0' | '1';
   fullDumps: '0' | '1';
+  totalCrashCount: string;
+  periodCrashCount: string;
 }
 
 export class VersionsApiRow {
@@ -26,6 +28,8 @@ export class VersionsApiRow {
   rejectedCount: number;
   retired: boolean;
   fullDumps: boolean;
+  totalCrashCount: number;
+  periodCrashCount: number;
 
   constructor(rawApiRow: VersionsApiResponseRow) {
     ac.assertType(rawApiRow, Object, 'rawApiRow');
@@ -52,6 +56,8 @@ export class VersionsApiRow {
     this.rejectedCount = Number(rawApiRow.rejectedCount);
     this.retired = Boolean(Number(rawApiRow.retired));
     this.fullDumps = Boolean(Number(rawApiRow.fullDumps));
+    this.totalCrashCount = Number(rawApiRow.totalCrashCount ?? 0);
+    this.periodCrashCount = Number(rawApiRow.periodCrashCount ?? 0);
 
     Object.freeze(this);
   }
