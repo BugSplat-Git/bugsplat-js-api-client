@@ -1,3 +1,10 @@
+# [14.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.3.1...v14.4.0) (2026-03-04)
+
+
+### Features
+
+* add crash count fields to versions API client ([#160](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/160)) ([35aa34a](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/35aa34ac2b9a6fb21f5b15ce9b049edd3ef4e0a6))
+
 ## [14.3.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.3.0...v14.3.1) (2026-03-02)
 
 
