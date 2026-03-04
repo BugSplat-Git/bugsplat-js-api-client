@@ -16,21 +16,10 @@ export function buildFeedbackXml(title: string, description?: string): string {
 
     return [
         '<?xml version="1.0" encoding="utf-8"?>',
-        '<bsCrashReport>',
-        '  <process>',
-        `    <exception>${escapedDescription}</exception>`,
-        '  </process>',
-        '  <threads>',
-        '    <thread id="0">',
-        '      <frame>',
-        `        <symbol>${escapedTitle}</symbol>`,
-        '        <file></file>',
-        '        <line>0</line>',
-        '        <offset>0</offset>',
-        '      </frame>',
-        '    </thread>',
-        '  </threads>',
-        '</bsCrashReport>',
+        '<report version="1">',
+        `  <title>${escapedTitle}</title>`,
+        `  <description>${escapedDescription}</description>`,
+        '</report>',
     ].join('\n');
 }
 
