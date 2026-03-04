@@ -7,5 +7,6 @@ export class CrashType {
     static readonly ps4 = new CrashType('PlayStation 4', 28);
     static readonly ps5 = new CrashType('PlayStation 5', 29);
     static readonly xml = new CrashType('Xml.Report', 21);
+    static readonly userFeedback = new CrashType('User.Feedback', 36);
     private constructor(public readonly name: string, public readonly id: number) { }
 }
