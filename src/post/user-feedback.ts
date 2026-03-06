@@ -11,26 +11,11 @@ export interface UserFeedbackOptions {
     attributes?: Record<string, string>;
 }
 
-export function buildFeedbackXml(title: string, description?: string): string {
-    const escapedTitle = escapeXml(title);
-    const escapedDescription = description ? escapeXml(description) : '';
-
-    return [
-        '<?xml version="1.0" encoding="utf-8"?>',
-        '<feedback version="1">',
-        `  <title>${escapedTitle}</title>`,
-        `  <description>${escapedDescription}</description>`,
-        '</feedback>',
-    ].join('\n');
-}
-
-function escapeXml(str: string): string {
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&apos;');
+export function buildFeedbackJson(title: string, description?: string): string {
+    return JSON.stringify({
+        title,
+        description: description ?? '',
+    });
 }
 
 export async function postUserFeedback(
@@ -39,9 +24,9 @@ export async function postUserFeedback(
     version: string,
     options: UserFeedbackOptions,
 ): Promise<ReturnType<CrashPostClient['postCrash']>> {
-    const xml = buildFeedbackXml(options.title, options.description);
-    const xmlBuffer = Buffer.from(xml, 'utf-8');
-    const xmlFile = new UploadableFile('feedback.xml', xmlBuffer.length, xmlBuffer);
+    const json = buildFeedbackJson(options.title, options.description);
+    const jsonBuffer = Buffer.from(json, 'utf-8');
+    const jsonFile = new UploadableFile('feedback.json', jsonBuffer.length, jsonBuffer);
 
     const attributes: Record<string, string> = { ...options.attributes };
     if (options.user) {
@@ -55,7 +40,7 @@ export async function postUserFeedback(
         application,
         version,
         CrashType.userFeedback,
-        xmlFile,
+        jsonFile,
         Object.keys(attributes).length > 0 ? attributes : undefined
     );
 }
