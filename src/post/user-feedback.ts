@@ -41,7 +41,7 @@ export async function postUserFeedback(
 ): Promise<ReturnType<CrashPostClient['postCrash']>> {
     const xml = buildFeedbackXml(options.title, options.description);
     const xmlBuffer = Buffer.from(xml, 'utf-8');
-    const xmlFile = new UploadableFile('bsCrashReport.xml', xmlBuffer.length, xmlBuffer);
+    const xmlFile = new UploadableFile('feedback.xml', xmlBuffer.length, xmlBuffer);
 
     const attributes: Record<string, string> = { ...options.attributes };
     if (options.user) {
