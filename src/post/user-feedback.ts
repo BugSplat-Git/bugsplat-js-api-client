@@ -8,6 +8,7 @@ export interface UserFeedbackOptions {
     user?: string;
     email?: string;
     attachments?: UploadableFile[];
+    attributes?: Record<string, string>;
 }
 
 export function buildFeedbackXml(title: string, description?: string): string {
@@ -16,10 +17,10 @@ export function buildFeedbackXml(title: string, description?: string): string {
 
     return [
         '<?xml version="1.0" encoding="utf-8"?>',
-        '<report version="1">',
+        '<feedback version="1">',
         `  <title>${escapedTitle}</title>`,
         `  <description>${escapedDescription}</description>`,
-        '</report>',
+        '</feedback>',
     ].join('\n');
 }
 
@@ -42,7 +43,7 @@ export async function postUserFeedback(
     const xmlBuffer = Buffer.from(xml, 'utf-8');
     const xmlFile = new UploadableFile('bsCrashReport.xml', xmlBuffer.length, xmlBuffer);
 
-    const attributes: Record<string, string> = {};
+    const attributes: Record<string, string> = { ...options.attributes };
     if (options.user) {
         attributes['user'] = options.user;
     }

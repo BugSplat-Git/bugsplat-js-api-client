@@ -4,10 +4,10 @@ describe('buildFeedbackXml', () => {
     it('should produce userFeedback XML with title and description', () => {
         const xml = buildFeedbackXml('Login button broken', 'Nothing happens when I tap login');
 
-        expect(xml).toContain('<report version="1">');
+        expect(xml).toContain('<feedback version="1">');
         expect(xml).toContain('<title>Login button broken</title>');
         expect(xml).toContain('<description>Nothing happens when I tap login</description>');
-        expect(xml).toContain('</report>');
+        expect(xml).toContain('</feedback>');
         expect(xml).not.toContain('<bsCrashReport>');
         expect(xml).not.toContain('<threads>');
         expect(xml).not.toContain('<frame>');
