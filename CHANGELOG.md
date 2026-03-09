@@ -1,3 +1,10 @@
+# [14.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.4.0...v14.5.0) (2026-03-09)
+
+
+### Features
+
+* add UserFeedback crash type and feedback submission helper ([#162](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/162)) ([a50c684](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/a50c684838171d1cbfc8d34c8e4a2f9006a4c58f))
+
 # [14.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.3.1...v14.4.0) (2026-03-04)
 
 
