@@ -67,6 +67,7 @@ export enum CrashTypeId {
   ps4 = 28,
   ps5 = 29,
   playStationRecap = 30,
+  userFeedback = 36,
 }
 
 export class CrashesApiRow implements CrashDataWithMappedProperties {
