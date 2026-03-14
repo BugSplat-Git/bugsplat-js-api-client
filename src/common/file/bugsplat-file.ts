@@ -4,6 +4,6 @@ export class UploadableFile {
     constructor(
         public readonly name: string,
         public readonly size: number,
-        public readonly file: File | Buffer | ReadableStream
+        public readonly file: File | Blob | Buffer | ReadableStream
     ) { }
 }

@@ -114,6 +114,42 @@ describe('SymbolsApiClient', () => {
             expect(result).toEqual([fakeUploadResponse]);
         });
 
+        describe('blob', () => {
+            let fakeBlob;
+
+            beforeEach(() => {
+                fakeBlob = new Blob([new Uint8Array([0x1f, 0x8b, 0x08, 0x00])], { type: 'application/gzip' });
+                files = [{ file: fakeBlob }];
+            });
+
+            it('should accept Blob as file input', async () => {
+                const result = await symbolsApiClient.postSymbols(database, application, version, files);
+
+                expect(result).toEqual([fakeUploadResponse]);
+            });
+
+            it('should upload Blob directly without tee', async () => {
+                await symbolsApiClient.postSymbols(database, application, version, files);
+
+                expect((symbolsApiClient as any)._s3ApiClient.uploadFileToPresignedUrl).toHaveBeenCalledWith(
+                    url,
+                    jasmine.objectContaining({
+                        file: fakeBlob
+                    }),
+                    jasmine.objectContaining({
+                        'content-encoding': 'gzip'
+                    })
+                );
+            });
+
+            it('should throw if Blob does not start with gzip magic bytes', () => {
+                fakeBlob = new Blob([new Uint8Array([0xde, 0xad])], { type: 'application/octet-stream' });
+                files = [{ file: fakeBlob }];
+
+                return expectAsync(symbolsApiClient.postSymbols(database, application, version, files)).toBeRejectedWithError(/is not a gzipped stream/);
+            });
+        });
+
         describe('error', () => {
             it('should release checkStream reader lock, cancel checkStream reader, and cancel checkStream', async () => {
                 const releaseLock = jasmine.createSpy('releaseLock');
