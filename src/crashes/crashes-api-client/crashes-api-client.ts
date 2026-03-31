@@ -7,6 +7,7 @@ import {
     isErrorResponse,
 } from '@common';
 import { CrashesApiRow, CrashesPageData } from '@crashes';
+import { CrashesColumn } from '../crashes-column';
 import { CrashesApiResponseRow } from '../crashes-api-row/crashes-api-row';
 
 export class CrashesApiClient {
@@ -29,7 +30,7 @@ export class CrashesApiClient {
     }
 
     async getCrashes(
-        request: TableDataRequest
+        request: TableDataRequest<CrashesColumn>
     ): Promise<TableDataResponse<CrashesApiRow, CrashesPageData>> {
         const response = await this._tableDataClient.postGetData<
             CrashesApiResponseRow,

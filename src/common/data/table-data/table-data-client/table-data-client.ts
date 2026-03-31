@@ -1,4 +1,5 @@
-import { ApiClient, BugSplatResponse, TableDataRequest, TableDataResponse } from '@common';
+import { ApiClient, BugSplatResponse, TableDataResponse } from '@common';
+import { TableDataRequest } from './table-data-request';
 import { TableDataFormDataBuilder } from '../table-data-form-data-builder/table-data-form-data-builder';
 
 export class TableDataClient {
@@ -6,7 +7,7 @@ export class TableDataClient {
 
     // We use POST to get data in most cases because it supports longer queries
     async postGetData<T, U = Record<string, unknown> | undefined>(
-        request: TableDataRequest,
+        request: TableDataRequest<string>,
         formParts: Record<string, string> = {}
     ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
         const factory = () => this._apiClient.createFormData();
@@ -31,7 +32,7 @@ export class TableDataClient {
     }
 
     async getData<T, U = Record<string, unknown> | undefined>(
-        request: TableDataRequest,
+        request: TableDataRequest<string>,
         extraParams?: Record<string, string>
     ): Promise<BugSplatResponse<TableDataResponse<T, U>> | BugSplatResponse<ErrorResponse>> {
         const factory = () => this._apiClient.createFormData();

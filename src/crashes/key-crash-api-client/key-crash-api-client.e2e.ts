@@ -1,6 +1,6 @@
 import { QueryFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
 import { CrashApiClient } from '@crash';
-import { KeyCrashApiClient } from '@crashes';
+import { KeyCrashApiClient, CrashesColumn } from '@crashes';
 import { config } from '@spec/config';
 import { postNativeCrash, postNativeCrashAndWaitForCrashToProcess } from '@spec/files/native/post-native-crash';
 
@@ -46,7 +46,7 @@ describe('KeyCrashApiClient', () => {
 
         it('should return 200 and groupByCount for grouped crashes query', async () => {
             const pageSize = 1;
-            const columnGroups = ['stackKey'];
+            const columnGroups: CrashesColumn[] = ['stackKey'];
 
             const result = await keyCrashClient.getCrashes({ database, stackKeyId, pageSize, columnGroups });
 
