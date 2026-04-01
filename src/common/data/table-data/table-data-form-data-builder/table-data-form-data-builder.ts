@@ -22,7 +22,7 @@ export class TableDataFormDataBuilder {
     return this;
   }
 
-  withFilterGroups(groups: Array<QueryFilterGroup> | undefined): TableDataFormDataBuilder {
+  withFilterGroups(groups: Array<QueryFilterGroup<string>> | undefined): TableDataFormDataBuilder {
     if (groups) {
       let filtersCount = 0;
       groups.forEach((group) => {

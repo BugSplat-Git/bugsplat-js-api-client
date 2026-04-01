@@ -9,6 +9,7 @@ import {
     isErrorResponse,
 } from '@common';
 import { delay } from '../../common/delay';
+import { VersionsColumn } from '../versions-column';
 import { VersionsApiResponseRow, VersionsApiRow } from '../versions-api-row/versions-api-row';
 import { PutRetiredResponse } from './put-retired-response';
 
@@ -24,7 +25,7 @@ export class VersionsApiClient {
     }
 
     async getVersions(
-        request: TableDataRequest,
+        request: TableDataRequest<VersionsColumn>,
         options?: { crashCountStartDate?: string; crashCountEndDate?: string }
     ): Promise<TableDataResponse<VersionsApiRow>> {
         const extraParams: Record<string, string> = {};

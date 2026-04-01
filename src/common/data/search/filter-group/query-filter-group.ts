@@ -1,8 +1,8 @@
 import { QueryFilter, FilterOperator } from '@common';
 
-export class QueryFilterGroup {
+export class QueryFilterGroup<TColumn extends string> {
   constructor(
-    public filters: Array<QueryFilter>,
+    public filters: Array<QueryFilter<TColumn>>,
     public filterOperator: FilterOperator = FilterOperator.and,
     public groupOperator: FilterOperator = FilterOperator.and,
     public groupOpenCount: number = 1,
@@ -11,20 +11,20 @@ export class QueryFilterGroup {
     Object.freeze(this);
   }
 
-  static fromApiTableFilter(filter: QueryFilter): QueryFilterGroup {
+  static fromApiTableFilter<TColumn extends string>(filter: QueryFilter<TColumn>): QueryFilterGroup<TColumn> {
     return new QueryFilterGroup([filter]);
   }
 
-  static fromColumnValues(
+  static fromColumnValues<TColumn extends string>(
     values: Array<string>,
-    columnName: string,
+    columnName: TColumn,
     filterOperator: FilterOperator = FilterOperator.or
-  ): QueryFilterGroup {
+  ): QueryFilterGroup<TColumn> {
     return new QueryFilterGroup(values.map(value => new QueryFilter(value, 'EQUAL', columnName)), filterOperator);
   }
 
-  static fromTimeFrame(columnName: string, startDate?: Date, endDate?: Date): QueryFilterGroup {
-    const filters: Array<QueryFilter> = [];
+  static fromTimeFrame<TColumn extends string>(columnName: TColumn, startDate?: Date, endDate?: Date): QueryFilterGroup<TColumn> {
+    const filters: Array<QueryFilter<TColumn>> = [];
 
     if (startDate) {
       filters.push(new QueryFilter(startDate.toISOString(), 'GREATER_THAN', columnName));
