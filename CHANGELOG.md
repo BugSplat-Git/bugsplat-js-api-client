@@ -1,3 +1,17 @@
+# [15.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.5.0...v15.0.0) (2026-04-01)
+
+
+* feat!: add typed column parameters to QueryFilter, QueryFilterGroup, and TableDataRequest ([#163](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/163)) ([e1314c9](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/e1314c92e72089c125f52bb13f22ffa90f5e4000))
+
+
+### BREAKING CHANGES
+
+* QueryFilter, QueryFilterGroup, and TableDataRequest now require a generic
+type parameter specifying valid column names. This prevents invalid column names (e.g. using
+'date' instead of 'crashTime') from being passed to filter, sort, and group operations.
+
+Co-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+
 # [14.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.4.0...v14.5.0) (2026-03-09)
 
 
