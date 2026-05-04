@@ -12,7 +12,8 @@ describe('Module', () => {
         fileversion: 'Dustin Johnson',
         productversion: 'Phil Mickelson',
         checksum: 'Rory McIlroy',
-        timedatestamp: 'Brooks Keopka'
+        timedatestamp: 'Brooks Keopka',
+        debugguid: 'Collin Morikawa'
       };
 
       const result = Module.fromResponseObject(responseObject);
@@ -26,6 +27,7 @@ describe('Module', () => {
       expect(result.productVersion).toEqual(responseObject.productversion);
       expect(result.checksum).toEqual(responseObject.checksum);
       expect(result.timestamp).toEqual(responseObject.timedatestamp);
+      expect(result.debugguid).toEqual(responseObject.debugguid);
     });
   });
 });
