@@ -29,23 +29,5 @@ describe('Module', () => {
       expect(result.timestamp).toEqual(responseObject.timedatestamp);
       expect(result.debugGuid).toEqual(responseObject.debugguid);
     });
-
-    it('should leave debugGuid undefined when the response omits debugguid', () => {
-      const responseObject = {
-        order: 'Tiger Woods',
-        name: 'Tony Fineau',
-        address: 'Justin Thomas',
-        path: 'Rickie Fowler',
-        symbolsloaded: 'Jordan Speith',
-        fileversion: 'Dustin Johnson',
-        productversion: 'Phil Mickelson',
-        checksum: 'Rory McIlroy',
-        timedatestamp: 'Brooks Keopka'
-      };
-
-      const result = Module.fromResponseObject(responseObject);
-
-      expect(result.debugGuid).toBeUndefined();
-    });
   });
 });

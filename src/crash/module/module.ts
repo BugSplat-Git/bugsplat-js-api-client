@@ -8,7 +8,7 @@ export interface ModuleResponseObject {
   productversion: string;
   checksum: string;
   timedatestamp: string;
-  debugguid?: string;
+  debugguid: string;
 }
 
 export class Module {
@@ -22,7 +22,7 @@ export class Module {
     public readonly productVersion: string,
     public readonly checksum: string,
     public readonly timestamp: string,
-    public readonly debugGuid?: string
+    public readonly debugGuid: string
   ) {
     Object.freeze(this);
   }
