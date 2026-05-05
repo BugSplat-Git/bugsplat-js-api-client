@@ -1,3 +1,10 @@
+# [15.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.0.0...v15.1.0) (2026-05-05)
+
+
+### Features
+
+* pass debugguid through Module from crash details response ([#165](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/165)) ([87ff821](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/87ff82194cf5b83c7b0c0c6a13b1d62bbb254245)), closes [BugSplat-Git/bugsplat-web-app#3109](https://github.com/BugSplat-Git/bugsplat-web-app/issues/3109)
+
 # [15.0.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v14.5.0...v15.0.0) (2026-04-01)
 
 
