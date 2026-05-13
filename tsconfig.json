@@ -7,6 +7,10 @@
       "ESNext",
       "DOM"
     ],
+    "types": [
+      "node",
+      "jasmine"
+    ],
     "moduleResolution": "Node",
     "outDir": "./dist/cjs",
     "declaration": true,
