@@ -19,7 +19,7 @@ export class BugSplatRateLimitError extends Error {
 
     constructor(
         message: string,
-        readonly status: number = 429,
+        readonly status: number = 429
     ) {
         super(message);
         this.name = 'BugSplatRateLimitError';
