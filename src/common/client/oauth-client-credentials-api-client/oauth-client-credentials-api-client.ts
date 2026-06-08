@@ -84,7 +84,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
             json: async () => response.clone().json(),
             text: async () => response.clone().text()
         };
-    }  
+    }
 }
 
 type ErrorResponse = { error: string };

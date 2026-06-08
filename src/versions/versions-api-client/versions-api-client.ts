@@ -1,5 +1,6 @@
 import {
     ApiClient,
+    BugSplatRateLimitError,
     BugSplatResponse,
     S3ApiClient,
     SymbolFile,
@@ -203,7 +204,7 @@ export class VersionsApiClient {
 
         const response = await this._client.fetch(this.route, request);
         if (response.status === 429) {
-            throw new Error('Error getting presigned URL, too many requests');
+            throw new BugSplatRateLimitError('Error getting presigned URL, too many requests');
         }
 
         if (response.status === 403) {

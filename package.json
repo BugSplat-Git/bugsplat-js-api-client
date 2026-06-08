@@ -8,7 +8,6 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "husky install",
     "pretest": "npm run lint:fix",
     "test": "NODE_OPTIONS='--no-experimental-strip-types' ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine --config=spec/support/jasmine.spec.json",
     "lint": "eslint .",
@@ -49,8 +48,6 @@
     "argument-contracts": "^1.2.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
-    "@commitlint/config-conventional": "^19.6.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/jasmine": "^5.1.7",
@@ -59,7 +56,6 @@
     "@typescript-eslint/parser": "^8.17.0",
     "dotenv": "^16.5.0",
     "eslint": "^9.16.0",
-    "husky": "^9.1.7",
     "jasmine": "^5.7.0",
     "jasmine-reporters": "^2.5.2",
     "semantic-release": "^25.0.3",

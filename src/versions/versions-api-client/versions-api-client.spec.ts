@@ -344,6 +344,21 @@ describe('VersionsApiClient', () => {
         });
 
         describe('error', () => {
+            it('should throw a BugSplatRateLimitError when status is 429', async () => {
+                const fakeErrorResponse = createFakeResponseBody(429, {}, false);
+                fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
+
+                await expectAsync(versionsApiClient.postSymbols(
+                    database,
+                    application,
+                    version,
+                    files
+                )).toBeRejectedWith(jasmine.objectContaining({
+                    isRateLimitError: true,
+                    status: 429
+                }));
+            });
+
             it('should throw if error with invalid credentials message if status is 403', async () => {
                 const fakeErrorResponse = createFakeResponseBody(403);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);

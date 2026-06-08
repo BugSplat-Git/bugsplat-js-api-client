@@ -96,4 +96,16 @@ describe('CrashPostClient', () => {
             expect(result).toEqual(fakeCommitS3UploadResponse);
         });
     });
+
+    describe('error', () => {
+        it('should throw a BugSplatRateLimitError when getCrashUploadUrl returns 429', async () => {
+            bugsplatApiClient.fetch.and.resolveTo(createFakeResponseBody(429, {}, false));
+
+            await expectAsync(sut.postCrash(application, version, type, file, attributes))
+                .toBeRejectedWith(jasmine.objectContaining({
+                    isRateLimitError: true,
+                    status: 429
+                }));
+        });
+    });
 });
