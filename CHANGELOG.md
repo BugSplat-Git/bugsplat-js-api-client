@@ -1,3 +1,10 @@
+# [15.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.1.0...v15.2.0) (2026-06-08)
+
+
+### Features
+
+* surface 429s as typed BugSplatRateLimitError ([#168](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/168)) ([d7afcb1](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/d7afcb1330cf26be6a453557f04658da850ea419))
+
 # [15.1.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.0.0...v15.1.0) (2026-05-05)
 
 
