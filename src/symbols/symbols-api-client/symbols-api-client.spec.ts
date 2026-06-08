@@ -115,6 +115,17 @@ describe('SymbolsApiClient', () => {
         });
 
         describe('error', () => {
+            it('should throw a BugSplatRateLimitError when status is 429', async () => {
+                const fakeErrorResponse = createFakeResponseBody(429, {}, false);
+                apiClient.fetch.and.resolveTo(fakeErrorResponse as any);
+
+                await expectAsync(symbolsApiClient.postSymbols(database, application, version, files))
+                    .toBeRejectedWith(jasmine.objectContaining({
+                        isRateLimitError: true,
+                        status: 429
+                    }));
+            });
+
             it('should release checkStream reader lock, cancel checkStream reader, and cancel checkStream', async () => {
                 const releaseLock = jasmine.createSpy('releaseLock');
                 fakeCheckStream = createFakeStream(new Uint8Array([]), false, releaseLock);

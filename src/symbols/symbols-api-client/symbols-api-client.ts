@@ -1,4 +1,4 @@
-import { ApiClient, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
+import { ApiClient, BugSplatRateLimitError, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
 import { delay } from '../../common/delay';
 import { safeCancel } from '../../common/cancel';
 
@@ -107,7 +107,7 @@ export class SymbolsApiClient {
 
         const response = await this._client.fetch(this.uploadUrl, request);
         if (response.status === 429) {
-            throw new Error('Error getting presigned URL, too many requests');
+            throw new BugSplatRateLimitError('Error getting presigned URL, too many requests');
         }
 
         if (response.status === 403) {

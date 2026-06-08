@@ -13,3 +13,15 @@ export interface BugSplatResponse<T = unknown> {
 export class BugSplatAuthenticationError extends Error {
     readonly isAuthenticationError = true;
 }
+
+export class BugSplatRateLimitError extends Error {
+    readonly isRateLimitError = true;
+
+    constructor(
+        message: string,
+        readonly status: number = 429,
+    ) {
+        super(message);
+        this.name = 'BugSplatRateLimitError';
+    }
+}

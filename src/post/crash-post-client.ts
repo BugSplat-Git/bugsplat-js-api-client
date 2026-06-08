@@ -1,4 +1,4 @@
-import { BugSplatApiClient, BugSplatResponse, Environment, S3ApiClient, UploadableFile } from '@common';
+import { BugSplatApiClient, BugSplatRateLimitError, BugSplatResponse, Environment, S3ApiClient, UploadableFile } from '@common';
 import { CrashType } from '@post';
 import { PostCrashResponse } from './post-crash-response';
 
@@ -58,7 +58,7 @@ export class CrashPostClient {
             + `&crashPostSize=${size}`;
         const response = await this._processorApiClient.fetch<{ url: string}>(route);
         if (response.status === 429) {
-            throw new Error('Failed to get crash upload URL, too many requests');
+            throw new BugSplatRateLimitError('Failed to get crash upload URL, too many requests');
         }
 
         if (response.status !== 200) {
