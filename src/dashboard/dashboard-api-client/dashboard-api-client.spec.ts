@@ -13,11 +13,26 @@ describe('DashboardApiClient', () => {
         status: 'success',
         database,
         volume30Day: 100,
+        uploaded30Day: 80,
         crashDataDays: 30,
         crashHistory: {
             totalRows: 1,
             totalCrashes: 100,
-            rows: [{ appName: 'All', series: [] }],
+            totalUploaded: 80,
+            rows: [
+                {
+                    appName: 'All',
+                    series: [
+                        {
+                            timestamp: 1700000000,
+                            totalCrashCount: 100,
+                            uploadedCount: 80,
+                            throttleCrashCount: 10,
+                            retireCrashCount: 5,
+                        },
+                    ],
+                },
+            ],
         },
         lastCrashTime: '2026-02-23T12:00:00Z',
         recentCrashes: [],
@@ -105,8 +120,11 @@ describe('DashboardApiClient', () => {
 
             expect(result.status).toEqual('success');
             expect(result.volume30Day).toEqual(100);
+            expect(result.uploaded30Day).toEqual(80);
             expect(result.crashDataDays).toEqual(30);
             expect(result.crashHistory.totalCrashes).toEqual(100);
+            expect(result.crashHistory.totalUploaded).toEqual(80);
+            expect(result.crashHistory.rows[0].series[0].uploadedCount).toEqual(80);
             expect(result.statusCounts.current.total).toEqual(9);
         });
 

@@ -64,4 +64,20 @@ describe('VersionApiRow', () => {
 
         expect(result.periodCrashCount).toEqual(0);
     });
+
+    it('should convert periodUploadedCount string to number', () => {
+        const row = { periodUploadedCount: '42' };
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.periodUploadedCount).toEqual(42);
+    });
+
+    it('should default periodUploadedCount to 0 when undefined', () => {
+        const row = {};
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.periodUploadedCount).toEqual(0);
+    });
 });

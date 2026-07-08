@@ -14,6 +14,7 @@ export interface VersionsApiResponseRow {
   fullDumps: '0' | '1';
   totalCrashCount: string;
   periodCrashCount: string;
+  periodUploadedCount: string;
 }
 
 export class VersionsApiRow {
@@ -30,6 +31,7 @@ export class VersionsApiRow {
   fullDumps: boolean;
   totalCrashCount: number;
   periodCrashCount: number;
+  periodUploadedCount: number;
 
   constructor(rawApiRow: VersionsApiResponseRow) {
     ac.assertType(rawApiRow, Object, 'rawApiRow');
@@ -58,6 +60,7 @@ export class VersionsApiRow {
     this.fullDumps = Boolean(Number(rawApiRow.fullDumps));
     this.totalCrashCount = Number(rawApiRow.totalCrashCount ?? 0);
     this.periodCrashCount = Number(rawApiRow.periodCrashCount ?? 0);
+    this.periodUploadedCount = Number(rawApiRow.periodUploadedCount ?? 0);
 
     Object.freeze(this);
   }

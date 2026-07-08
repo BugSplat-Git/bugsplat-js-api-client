@@ -2,6 +2,7 @@ export interface DashboardApiResponse {
     status: string;
     database: string;
     volume30Day: number;
+    uploaded30Day: number;
     crashDataDays: number;
     crashHistory: CrashHistory;
     lastCrashTime: string | null;
@@ -15,6 +16,7 @@ export interface DashboardApiResponse {
 export interface CrashHistory {
     totalRows: number;
     totalCrashes: number;
+    totalUploaded: number;
     rows: Array<CrashHistoryRow>;
 }
 
@@ -27,6 +29,7 @@ export interface CrashHistoryRow {
 export interface CrashHistoryDataPoint {
     timestamp: number;
     totalCrashCount: number;
+    uploadedCount: number;
     throttleCrashCount: number;
     retireCrashCount: number;
     day?: number;
