@@ -2,7 +2,8 @@ export interface DashboardApiResponse {
     status: string;
     database: string;
     volume30Day: number;
-    uploaded30Day: number;
+    /** Absent until the backend nUploaded change ships; callers should fall back to volume30Day. */
+    uploaded30Day?: number;
     crashDataDays: number;
     crashHistory: CrashHistory;
     lastCrashTime: string | null;
@@ -16,7 +17,8 @@ export interface DashboardApiResponse {
 export interface CrashHistory {
     totalRows: number;
     totalCrashes: number;
-    totalUploaded: number;
+    /** Absent until the backend nUploaded change ships; callers should fall back to totalCrashes. */
+    totalUploaded?: number;
     rows: Array<CrashHistoryRow>;
 }
 
@@ -29,7 +31,8 @@ export interface CrashHistoryRow {
 export interface CrashHistoryDataPoint {
     timestamp: number;
     totalCrashCount: number;
-    uploadedCount: number;
+    /** Absent until the backend nUploaded change ships; callers should fall back to totalCrashCount. */
+    uploadedCount?: number;
     throttleCrashCount: number;
     retireCrashCount: number;
     day?: number;
