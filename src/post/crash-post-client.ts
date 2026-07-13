@@ -8,13 +8,13 @@ export class CrashPostClient {
     private _s3ApiClient = new S3ApiClient();
 
     constructor(
-        private _database: string,
-        private _environment: Environment = Environment.Node,
+        public readonly database: string,
+        public readonly environment: Environment = Environment.Node,
         private _processor: string = '' // Internal use only
     ) {
         this._processorApiClient = new BugSplatApiClient(
-            `https://${this._database}.bugsplat.com`,
-            this._environment
+            `https://${this.database}.bugsplat.com`,
+            this.environment
         );
     }
 
@@ -26,7 +26,7 @@ export class CrashPostClient {
         attributes?: Record<string, string>
     ): Promise<BugSplatResponse<PostCrashResponse>> {
         const uploadUrl = await this.getCrashUploadUrl(
-            this._database,
+            this.database,
             application,
             version,
             file.size
@@ -36,7 +36,7 @@ export class CrashPostClient {
 
         return this.commitS3CrashUpload(
             uploadUrl,
-            this._database,
+            this.database,
             application,
             version,
             type,
