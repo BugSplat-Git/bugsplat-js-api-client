@@ -1,3 +1,10 @@
+## [15.2.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.2.0...v15.2.1) (2026-07-13)
+
+
+### Bug Fixes
+
+* post user feedback via multipart /post/feedback/ endpoint ([#171](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/171)) ([ffba25d](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/ffba25db0480be5ac8f70d5f081df5bb80935434))
+
 # [15.2.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.1.0...v15.2.0) (2026-06-08)
 
 
