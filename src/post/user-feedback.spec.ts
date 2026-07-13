@@ -1,4 +1,4 @@
-import { Environment, UploadableFile } from '@common';
+import { BugSplatRateLimitError, Environment, UploadableFile } from '@common';
 import * as BugSplatApiClientModule from '../common/client/bugsplat-api-client/bugsplat-api-client';
 import { buildFeedbackJson, postUserFeedback } from './user-feedback';
 
@@ -125,7 +125,11 @@ describe('postUserFeedback', () => {
 
         await expectAsync(
             postUserFeedback(client as any, 'MyApp', '1.0.0', { title: 'Hello' })
-        ).toBeRejectedWithError(/too many requests/);
+        ).toBeRejectedWith(jasmine.objectContaining({
+            name: BugSplatRateLimitError.name,
+            isRateLimitError: true,
+            status: 429,
+        }));
     });
 });
 

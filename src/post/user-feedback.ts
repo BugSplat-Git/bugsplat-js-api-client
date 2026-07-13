@@ -97,7 +97,8 @@ export async function postUserFeedback(
 function appendUploadableAttachment(formData: FormData, file: UploadableFile): void {
     const content = file.file;
 
-    if (Buffer.isBuffer(content)) {
+    // Guard Buffer access — Buffer is not defined in browser builds
+    if (typeof Buffer !== 'undefined' && Buffer.isBuffer(content)) {
         // Pass a view of only this buffer's bytes (not the whole ArrayBuffer).
         // Cast narrows buffer type to ArrayBuffer for BlobPart compatibility —
         // SharedArrayBuffer-backed views are not expected here.
@@ -115,7 +116,7 @@ function appendUploadableAttachment(formData: FormData, file: UploadableFile): v
         return;
     }
 
-    // ReadableStream — wrap as Blob via Response when available
+    // ReadableStream attachments are not supported; convert to Buffer or File first
     if (isReadableStream(content)) {
         throw new Error(
             `Attachment "${file.name}" is a ReadableStream; convert to Buffer or File before posting feedback`
