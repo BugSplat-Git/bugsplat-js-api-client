@@ -98,8 +98,14 @@ function appendUploadableAttachment(formData: FormData, file: UploadableFile): v
     const content = file.file;
 
     if (Buffer.isBuffer(content)) {
-        // Pass a Uint8Array view so only the buffer's bytes are included
-        const bytes = new Uint8Array(content.buffer, content.byteOffset, content.byteLength);
+        // Pass a view of only this buffer's bytes (not the whole ArrayBuffer).
+        // Cast narrows buffer type to ArrayBuffer for BlobPart compatibility —
+        // SharedArrayBuffer-backed views are not expected here.
+        const bytes = new Uint8Array(
+            content.buffer,
+            content.byteOffset,
+            content.byteLength
+        ) as Uint8Array<ArrayBuffer>;
         formData.append(file.name, new Blob([bytes]), file.name);
         return;
     }
