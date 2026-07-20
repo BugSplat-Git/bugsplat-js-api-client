@@ -1,3 +1,10 @@
+# [15.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.2.2...v15.3.0) (2026-07-20)
+
+
+### Features
+
+* surface nUploaded metric fields on dashboard and versions responses ([#170](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/170)) ([32bb974](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/32bb974efcf7d602cc28cc10a83ee9f5579c6c5e)), closes [BugSplat-Git/webroot#1824](https://github.com/BugSplat-Git/webroot/issues/1824) [BugSplat-Git/bugsplat-web-app#3180](https://github.com/BugSplat-Git/bugsplat-web-app/issues/3180) [BugSplat-Git/webroot#1824](https://github.com/BugSplat-Git/webroot/issues/1824)
+
 ## [15.2.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.2.1...v15.2.2) (2026-07-20)
 
 
