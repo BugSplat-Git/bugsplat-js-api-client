@@ -1,3 +1,10 @@
+## [15.2.2](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.2.1...v15.2.2) (2026-07-20)
+
+
+### Bug Fixes
+
+* **deps:** resolve Dependabot security alerts via lockfile updates ([#172](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/172)) ([f072907](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/f0729073f0791539fca419b92c618c5a41b80071))
+
 ## [15.2.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.2.0...v15.2.1) (2026-07-13)
 
 
