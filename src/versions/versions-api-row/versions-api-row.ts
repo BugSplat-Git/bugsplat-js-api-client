@@ -8,6 +8,7 @@ export interface VersionsApiResponseRow {
   firstReport: string;
   lastReport: string;
   size: string;
+  sharedSize: string;
   reportsPerDay: string | null;
   rejectedCount: string;
   retired: '0' | '1';
@@ -25,6 +26,7 @@ export class VersionsApiRow {
   firstReport: string;
   lastReport: string;
   size: number;
+  sharedSize: number;
   reportsPerDay: number;
   rejectedCount: number;
   retired: boolean;
@@ -54,6 +56,8 @@ export class VersionsApiRow {
     this.firstReport = rawApiRow.firstReport;
     this.lastReport = rawApiRow.lastReport;
     this.size = Number(rawApiRow.size);
+    // Older backends omit sharedSize; default to 0 rather than NaN
+    this.sharedSize = Number(rawApiRow.sharedSize ?? 0);
     this.reportsPerDay = Number(safeReportsPerDay);
     this.rejectedCount = Number(rawApiRow.rejectedCount);
     this.retired = Boolean(Number(rawApiRow.retired));
