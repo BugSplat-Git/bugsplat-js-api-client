@@ -8,7 +8,8 @@ export interface VersionsApiResponseRow {
   firstReport: string;
   lastReport: string;
   size: string;
-  sharedSize: string;
+  // Optional: older backends predating schema 75 omit this field
+  sharedSize?: string;
   reportsPerDay: string | null;
   rejectedCount: string;
   retired: '0' | '1';
