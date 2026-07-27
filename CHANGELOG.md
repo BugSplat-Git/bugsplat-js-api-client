@@ -1,3 +1,15 @@
+# [15.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.3.0...v15.4.0) (2026-07-27)
+
+
+### Bug Fixes
+
+* **versions:** make sharedSize optional on VersionsApiResponseRow ([f76c039](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/f76c039beab0d847c1703e6da9b5a9bcea257d40))
+
+
+### Features
+
+* **versions:** add sharedSize to VersionsApiRow and VersionsColumn ([3f59e96](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/3f59e96ca92823d320f7fd836fabf15dca9a88a8))
+
 # [15.3.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.2.2...v15.3.0) (2026-07-20)
 
 
