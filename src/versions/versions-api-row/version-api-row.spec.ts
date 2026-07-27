@@ -65,6 +65,22 @@ describe('VersionApiRow', () => {
         expect(result.periodCrashCount).toEqual(0);
     });
 
+    it('should convert sharedSize string to number', () => {
+        const row = { sharedSize: '19.4219' };
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.sharedSize).toEqual(19.4219);
+    });
+
+    it('should default sharedSize to 0 when undefined', () => {
+        const row = {};
+
+        const result = new VersionsApiRow(row as any);
+
+        expect(result.sharedSize).toEqual(0);
+    });
+
     it('should convert periodUploadedCount string to number', () => {
         const row = { periodUploadedCount: '42' };
 

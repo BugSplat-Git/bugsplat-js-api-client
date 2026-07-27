@@ -5,6 +5,7 @@ export type VersionsColumn =
   | 'appName'
   | 'version'
   | 'size'
+  | 'sharedSize'
   | 'lastUpdate'
   | 'lastReport'
   | 'firstReport'
