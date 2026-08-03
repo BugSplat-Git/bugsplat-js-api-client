@@ -86,6 +86,18 @@ describe('S3ApiClient', () => {
 
                 await expectAsync(s3ApiClient.uploadFileToPresignedUrl(url, file)).toBeRejectedWithError(`Error uploading to presigned URL ${url}`);
             });
+
+            it('should throw a BugSplatApiError carrying the status', async () => {
+                const url = 'https://bugsplat.com';
+                const file = { name: '🐛.txt', size: 1337 } as any;
+                (s3ApiClient as any)._fetch.and.resolveTo({ status: 403 });
+
+                await expectAsync(s3ApiClient.uploadFileToPresignedUrl(url, file))
+                    .toBeRejectedWith(jasmine.objectContaining({
+                        isApiError: true,
+                        status: 403
+                    }));
+            });
         });
     });
 });

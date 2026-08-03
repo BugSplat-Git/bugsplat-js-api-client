@@ -126,6 +126,28 @@ describe('SymbolsApiClient', () => {
                     }));
             });
 
+            it('should throw a BugSplatApiError with status 403 when credentials can\'t upload', async () => {
+                const fakeErrorResponse = createFakeResponseBody(403, {}, false);
+                apiClient.fetch.and.resolveTo(fakeErrorResponse as any);
+
+                await expectAsync(symbolsApiClient.postSymbols(database, application, version, files))
+                    .toBeRejectedWith(jasmine.objectContaining({
+                        isApiError: true,
+                        status: 403
+                    }));
+            });
+
+            it('should throw a BugSplatApiError carrying the status for other failures', async () => {
+                const fakeErrorResponse = createFakeResponseBody(500, {}, false);
+                apiClient.fetch.and.resolveTo(fakeErrorResponse as any);
+
+                await expectAsync(symbolsApiClient.postSymbols(database, application, version, files))
+                    .toBeRejectedWith(jasmine.objectContaining({
+                        isApiError: true,
+                        status: 500
+                    }));
+            });
+
             it('should release checkStream reader lock, cancel checkStream reader, and cancel checkStream', async () => {
                 const releaseLock = jasmine.createSpy('releaseLock');
                 fakeCheckStream = createFakeStream(new Uint8Array([]), false, releaseLock);

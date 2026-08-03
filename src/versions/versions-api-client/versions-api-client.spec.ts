@@ -368,7 +368,11 @@ describe('VersionsApiClient', () => {
                     application,
                     version,
                     files
-                )).toBeRejectedWithError('Error getting presigned URL, invalid credentials');
+                )).toBeRejectedWith(jasmine.objectContaining({
+                    message: 'Error getting presigned URL, invalid credentials',
+                    isApiError: true,
+                    status: 403
+                }));
             });
 
             it('should throw if response status is not 200, or 403', async () => {
@@ -380,7 +384,11 @@ describe('VersionsApiClient', () => {
                     application,
                     version,
                     files
-                )).toBeRejectedWithError(`Error getting presigned URL for ${files[0].name}`);
+                )).toBeRejectedWith(jasmine.objectContaining({
+                    message: `Error getting presigned URL for ${files[0].name}`,
+                    isApiError: true,
+                    status: 400
+                }));
             });
 
             it('should throw if response json Status is \'Failed\'', async () => {

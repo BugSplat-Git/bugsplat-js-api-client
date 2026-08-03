@@ -1,4 +1,5 @@
 import { UploadableFile } from '@common';
+import { BugSplatApiError } from '../api-client';
 
 export class S3ApiClient {
 
@@ -17,7 +18,7 @@ export class S3ApiClient {
         } as RequestInit);
 
         if (response.status !== 200) {
-            throw new Error(`Error uploading to presigned URL ${presignedUrl}`);
+            throw new BugSplatApiError(`Error uploading to presigned URL ${presignedUrl}`, response.status);
         }
 
         return response;
