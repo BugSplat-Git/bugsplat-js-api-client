@@ -1,3 +1,10 @@
+# [15.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.4.0...v15.5.0) (2026-08-03)
+
+
+### Features
+
+* surface upload failures as typed BugSplatApiError with status ([#174](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/174)) ([c1fb5c0](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/c1fb5c01cd04b42533f1d691002e0192877ac281))
+
 # [15.4.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.3.0...v15.4.0) (2026-07-27)
 
 
