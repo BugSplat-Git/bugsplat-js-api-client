@@ -15,8 +15,9 @@ export class BugSplatAuthenticationError extends Error {
 }
 
 /**
- * An unsuccessful HTTP response from the BugSplat API. Carries the status so callers can decide how to
- * react — for example retrying a 5xx or a 429, but failing fast on a 403 that no amount of retrying fixes.
+ * An unsuccessful HTTP response to a request this client made — either to the BugSplat API, or to the
+ * S3 presigned URL a symbol upload is PUT to. Carries the status so callers can decide how to react —
+ * for example retrying a 5xx or a 429, but failing fast on a 403 that no amount of retrying fixes.
  */
 export class BugSplatApiError extends Error {
     readonly isApiError = true;
