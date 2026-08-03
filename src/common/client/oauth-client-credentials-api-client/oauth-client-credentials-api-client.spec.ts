@@ -106,6 +106,16 @@ describe('OAuthClientCredentialsClient', () => {
                 expect((sut as any)._tokenType).toBeFalsy();
             });
 
+            it('should reject a 2xx that carries no access_token', async () => {
+                // #142: a success status is not on its own proof that authentication succeeded.
+                sut = createLoginFailureClient(createFakeResponseBody(200, { token_type: 'Bearer' }));
+
+                await expectAsync(sut.login()).toBeRejectedWith(jasmine.objectContaining({
+                    isAuthenticationError: true,
+                    message: 'Could not authenticate, check credentials and try again: status 200'
+                }));
+            });
+
             it('should prefer error_description over other details', async () => {
                 sut = createLoginFailureClient(createFakeResponseBody(400, {
                     error: 'invalid_request',
