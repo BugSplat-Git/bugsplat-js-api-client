@@ -111,7 +111,10 @@ export class SymbolsApiClient {
         }
 
         if (response.status === 403) {
-            throw new BugSplatApiError('Error getting presigned URL, invalid credentials', response.status);
+            throw new BugSplatApiError(
+                `Not authorized to upload symbols to ${database}, check the database name and that your credentials have access to it`,
+                response.status
+            );
         }
 
         if (response.status !== 200) {
