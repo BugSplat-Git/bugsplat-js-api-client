@@ -50,6 +50,16 @@ export class OAuthClientCredentialsClient implements ApiClient {
         }
 
         const loginResponse = responseJson as OAuthLoginResponse;
+
+        // Only a bad secret answers with `invalid_client`. An unknown client id comes back as
+        // 400 { "message": "Unknown clientId ..." }, which matches no error shape we look for — the
+        // absent token is the only signal that authentication failed. Without this login() resolves,
+        // the token stays empty, and every later request 401s in the middle of the caller's work.
+        if (!loginResponse.access_token) {
+            const detail = describeLoginFailure(responseJson, response.status);
+            throw new BugSplatAuthenticationError(`Could not authenticate, check credentials and try again: ${detail}`);
+        }
+
         this._accessToken = loginResponse.access_token;
         this._tokenType = loginResponse.token_type;
 
@@ -87,5 +97,11 @@ export class OAuthClientCredentialsClient implements ApiClient {
     }
 }
 
-type ErrorResponse = { error: string };
+/** Surfaces whatever the server said about the failure, so callers aren't left guessing at the cause. */
+function describeLoginFailure(responseJson: LoginResponse, status: number): string {
+    const errorResponse = responseJson as ErrorResponse;
+    return errorResponse.error_description ?? errorResponse.message ?? errorResponse.error ?? `status ${status}`;
+}
+
+type ErrorResponse = { error?: string, error_description?: string, message?: string };
 type LoginResponse = ErrorResponse | OAuthLoginResponse;

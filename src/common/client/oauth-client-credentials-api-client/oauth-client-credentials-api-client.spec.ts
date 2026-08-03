@@ -86,6 +86,48 @@ describe('OAuthClientCredentialsClient', () => {
                     /Could not authenticate, check credentials and try again/
                 );
             });
+
+            it('should reject when the response carries no access_token', async () => {
+                // An unknown client id answers 400 with a message rather than an OAuth error payload.
+                sut = createLoginFailureClient(createFakeResponseBody(400, { message: 'Unknown clientId 🤷' }));
+
+                await expectAsync(sut.login()).toBeRejectedWith(jasmine.objectContaining({
+                    isAuthenticationError: true,
+                    message: 'Could not authenticate, check credentials and try again: Unknown clientId 🤷'
+                }));
+            });
+
+            it('should not store a token when the response carries no access_token', async () => {
+                sut = createLoginFailureClient(createFakeResponseBody(400, { message: 'Unknown clientId 🤷' }));
+
+                await expectAsync(sut.login()).toBeRejected();
+
+                expect((sut as any)._accessToken).toBeFalsy();
+                expect((sut as any)._tokenType).toBeFalsy();
+            });
+
+            it('should prefer error_description over other details', async () => {
+                sut = createLoginFailureClient(createFakeResponseBody(400, {
+                    error: 'invalid_request',
+                    error_description: 'grant_type is required',
+                    message: 'ignored'
+                }));
+
+                await expectAsync(sut.login()).toBeRejectedWithError(Error, /grant_type is required/);
+            });
+
+            it('should fall back to the status when the response carries no detail', async () => {
+                sut = createLoginFailureClient(createFakeResponseBody(500, {}));
+
+                await expectAsync(sut.login()).toBeRejectedWithError(
+                    Error,
+                    /Could not authenticate, check credentials and try again: status 500/
+                );
+            });
+
+            function createLoginFailureClient(responseBody) {
+                return createFakeOAuthClientCredentialsClient(clientId, clientSecret, host, responseBody, fakeFormData);
+            }
         });
     });
 
