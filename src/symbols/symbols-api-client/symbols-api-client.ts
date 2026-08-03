@@ -1,4 +1,4 @@
-import { ApiClient, BugSplatRateLimitError, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
+import { ApiClient, BugSplatApiError, BugSplatRateLimitError, BugSplatResponse, GZippedSymbolFile, S3ApiClient } from '@common';
 import { delay } from '../../common/delay';
 import { safeCancel } from '../../common/cancel';
 
@@ -111,11 +111,14 @@ export class SymbolsApiClient {
         }
 
         if (response.status === 403) {
-            throw new Error('Error getting presigned URL, invalid credentials');
+            throw new BugSplatApiError(
+                `Not authorized to upload symbols to ${database}, check the database name and that your credentials have access to it`,
+                response.status
+            );
         }
 
         if (response.status !== 200) {
-            throw new Error(`Error getting presigned URL for ${file.name}`);
+            throw new BugSplatApiError(`Error getting presigned URL for ${file.name}`, response.status);
         }
 
         const json = await response.json() as Response & { url?: string };
@@ -155,7 +158,7 @@ export class SymbolsApiClient {
         const response = await this._client.fetch(this.uploadCompleteUrl, request);
 
         if (response.status !== 200) {
-            throw new Error(`Error completing symbol upload for ${file.name}, status ${response.status}`);
+            throw new BugSplatApiError(`Error completing symbol upload for ${file.name}, status ${response.status}`, response.status);
         }
 
         const json = await response.json() as Response & { url?: string };

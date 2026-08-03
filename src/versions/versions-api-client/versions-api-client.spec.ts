@@ -359,7 +359,7 @@ describe('VersionsApiClient', () => {
                 }));
             });
 
-            it('should throw if error with invalid credentials message if status is 403', async () => {
+            it('should throw a not authorized error naming the database if status is 403', async () => {
                 const fakeErrorResponse = createFakeResponseBody(403);
                 fakeBugSplatApiClient.fetch.and.resolveTo(fakeErrorResponse);
 
@@ -368,7 +368,11 @@ describe('VersionsApiClient', () => {
                     application,
                     version,
                     files
-                )).toBeRejectedWithError('Error getting presigned URL, invalid credentials');
+                )).toBeRejectedWith(jasmine.objectContaining({
+                    message: `Not authorized to upload symbols to ${database}, check the database name and that your credentials have access to it`,
+                    isApiError: true,
+                    status: 403
+                }));
             });
 
             it('should throw if response status is not 200, or 403', async () => {
@@ -380,7 +384,11 @@ describe('VersionsApiClient', () => {
                     application,
                     version,
                     files
-                )).toBeRejectedWithError(`Error getting presigned URL for ${files[0].name}`);
+                )).toBeRejectedWith(jasmine.objectContaining({
+                    message: `Error getting presigned URL for ${files[0].name}`,
+                    isApiError: true,
+                    status: 400
+                }));
             });
 
             it('should throw if response json Status is \'Failed\'', async () => {

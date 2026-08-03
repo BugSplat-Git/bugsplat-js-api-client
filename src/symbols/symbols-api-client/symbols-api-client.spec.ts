@@ -126,6 +126,29 @@ describe('SymbolsApiClient', () => {
                     }));
             });
 
+            it('should throw a not authorized error naming the database when status is 403', async () => {
+                const fakeErrorResponse = createFakeResponseBody(403, {}, false);
+                apiClient.fetch.and.resolveTo(fakeErrorResponse as any);
+
+                await expectAsync(symbolsApiClient.postSymbols(database, application, version, files))
+                    .toBeRejectedWith(jasmine.objectContaining({
+                        message: `Not authorized to upload symbols to ${database}, check the database name and that your credentials have access to it`,
+                        isApiError: true,
+                        status: 403
+                    }));
+            });
+
+            it('should throw a BugSplatApiError carrying the status for other failures', async () => {
+                const fakeErrorResponse = createFakeResponseBody(500, {}, false);
+                apiClient.fetch.and.resolveTo(fakeErrorResponse as any);
+
+                await expectAsync(symbolsApiClient.postSymbols(database, application, version, files))
+                    .toBeRejectedWith(jasmine.objectContaining({
+                        isApiError: true,
+                        status: 500
+                    }));
+            });
+
             it('should release checkStream reader lock, cancel checkStream reader, and cancel checkStream', async () => {
                 const releaseLock = jasmine.createSpy('releaseLock');
                 fakeCheckStream = createFakeStream(new Uint8Array([]), false, releaseLock);

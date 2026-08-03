@@ -1,5 +1,6 @@
 import {
     ApiClient,
+    BugSplatApiError,
     BugSplatRateLimitError,
     BugSplatResponse,
     S3ApiClient,
@@ -137,8 +138,9 @@ export class VersionsApiClient {
 
         const response = await this._client.fetch(route, request);
         if (response.status !== 200) {
-            throw new Error(
-                `Error deleting symbols for ${database}-${application}-${version} status ${response.status}`
+            throw new BugSplatApiError(
+                `Error deleting symbols for ${database}-${application}-${version} status ${response.status}`,
+                response.status
             );
         }
 
@@ -208,11 +210,14 @@ export class VersionsApiClient {
         }
 
         if (response.status === 403) {
-            throw new Error('Error getting presigned URL, invalid credentials');
+            throw new BugSplatApiError(
+                `Not authorized to upload symbols to ${database}, check the database name and that your credentials have access to it`,
+                response.status
+            );
         }
 
         if (response.status !== 200) {
-            throw new Error(`Error getting presigned URL for ${file.name}`);
+            throw new BugSplatApiError(`Error getting presigned URL for ${file.name}`, response.status);
         }
 
         const json = (await response.json()) as Response & { url?: string };
