@@ -26,48 +26,44 @@ If you need to use a version of Node.js that's older than 18, you can install `@
 
 ## ⚙️ Configuration
 
-Import `BugSplatApiClient` and `Environment` from `@bugsplat\js-api-client`
+Import `OAuthClientCredentialsClient` from `@bugsplat/js-api-client`
 
 ```ts
-import { BugSplatApiClient, Environment } from '@bugsplat/js-api-client';
+import { OAuthClientCredentialsClient } from '@bugsplat/js-api-client';
 ```
 
-Create an authenticated `BugSplatApiClient` following the steps below. Authentication is slightly different depending on if you are use `@bugsplat/js-api-client` in a Node.js or Web Browser environment. The method used to authenticate also depends on if you already have access to the user's email and password, or if you have to prompt for it at a later time.
+Authentication uses an [OAuth2 Client Credentials](https://docs.bugsplat.com/introduction/development/web-services/oauth2#client-credentials) Client ID and Client Secret. Username and password authentication is no longer supported.
 
-The `host` value used to create a new instance of `BugSplatApiClient` is `https://app.bugsplat.com` for most scenarios. When using this library to upload a crash reports the host value will be `https://{{database}}.bugsplat.com`.
+The `host` value used to create a new client is `https://app.bugsplat.com` for most scenarios. When using this library to upload crash reports the host value will be `https://{{database}}.bugsplat.com`.
 
 ### Node.js
-The static factory function `createAuthenticatedClientForNode` can be used to return an authenticated instance of `BugSplatApiClient` in Node.js environments.
+
+The static factory function `createAuthenticatedClient` returns an authenticated instance of `OAuthClientCredentialsClient`.
 
 ```ts
-const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
+const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
 ```
 
-If you need to authenticate at a later time, you can create an instance of `BugSplatApiClient` and call `login` manually.
+If you need to authenticate at a later time, you can create an instance of `OAuthClientCredentialsClient` and call `login` manually.
 
 ```ts
-const bugsplat = new BugSplatApiClient(host, Environment.Node);
-await bugsplat.login(email, password);
+const bugsplat = new OAuthClientCredentialsClient(clientId, clientSecret, host);
+await bugsplat.login();
 ```
 
 ### Web Browser
 
-The static factory function `createAuthenticatedClientForWebBrowser` can be used to return an authenticated instance of `BugSplatApiClient`.
+`OAuthClientCredentialsClient` works in the browser too, but don't ship a client secret to one. If your page is already signed in to BugSplat, create a `BugSplatApiClient` with `Environment.WebBrowser` instead and requests will be sent with the session cookie.
 
 ```ts
-const bugsplat = await BugSplatApiClient.createAuthenticatedClientForBrowser(email, password, host);
-```
+import { BugSplatApiClient, Environment } from '@bugsplat/js-api-client';
 
-If you need to authenticate at a later time, you can create an instance of `BugSplatApiClient` and call `login` manually.
-
-```ts
 const bugsplat = new BugSplatApiClient(host, Environment.WebBrowser);
-await bugsplat.login(email, password);
 ```
 
 ## ⌨️ Usage
 
-Create an instance of `CrashApiClient` or any of the API clients and pass a reference to the `BugSplatApiClient` instance
+Create an instance of `CrashApiClient` or any of the API clients and pass a reference to the authenticated client
 
 ```ts
 const client = new CrashApiClient(bugsplat);

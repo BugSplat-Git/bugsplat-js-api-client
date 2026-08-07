@@ -1,4 +1,4 @@
-import { BugSplatApiClient } from '@common';
+import { OAuthClientCredentialsClient } from '@common';
 import { config } from '@spec/config';
 import { createSymbolFile } from '@spec/files/create-symbol-file';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
@@ -15,11 +15,7 @@ describe('VersionsApiClient', () => {
         application = 'bugsplat-js-api-client';
         version = `${Math.random() * 1000000}`;
 
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(
-            config.email,
-            config.password,
-            config.host
-        );
+        const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(config.clientId, config.clientSecret, config.host);
 
         await postNativeCrashAndSymbols(
             bugsplat,

@@ -1,4 +1,4 @@
-import { BugSplatApiClient } from '@common';
+import { OAuthClientCredentialsClient } from '@common';
 import { CrashApiClient, CrashStatus } from '@crash';
 import { config } from '@spec/config';
 import { postNativeCrashAndWaitForCrashToProcess } from '@spec/files/native/post-native-crash';
@@ -11,12 +11,8 @@ describe('CrashApiClient', () => {
   let stackKeyId: number;
 
   beforeEach(async () => {
-    const { host, email, password } = config;
-    const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(
-      email,
-      password,
-      host
-    );
+    const { host, clientId, clientSecret } = config;
+    const bugsplatApiClient = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
     application = 'myConsoleCrasher';
     version = `${Math.random() * 1000000}`;
     crashClient = new CrashApiClient(bugsplatApiClient);

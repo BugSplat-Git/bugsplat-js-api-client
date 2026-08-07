@@ -1,4 +1,4 @@
-import { BugSplatApiClient } from '@common';
+import { OAuthClientCredentialsClient } from '@common';
 import { config } from '@spec/config';
 import { SymbolsApiClient } from '@symbols';
 import { createReadStream, createWriteStream, ReadStream } from 'node:fs';
@@ -18,11 +18,7 @@ describe('SymbolsApiClient', () => {
         application = 'bugsplat-js-api-client';
         version = `${Math.random() * 1000000}`;
 
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(
-            config.email,
-            config.password,
-            config.host
-        );
+        const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(config.clientId, config.clientSecret, config.host);
 
         client = new SymbolsApiClient(bugsplat);
     });

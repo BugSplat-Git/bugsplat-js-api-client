@@ -1,11 +1,11 @@
-import { QueryFilterGroup, BugSplatApiClient, FilterOperator } from '@common';
+import { QueryFilterGroup, OAuthClientCredentialsClient, FilterOperator } from '@common';
 import { CrashApiClient } from '@crash';
 import { KeyCrashApiClient, CrashesColumn } from '@crashes';
 import { config } from '@spec/config';
 import { postNativeCrash, postNativeCrashAndWaitForCrashToProcess } from '@spec/files/native/post-native-crash';
 
 describe('KeyCrashApiClient', () => {
-    const { database, host, email, password } = config;
+    const { database, host, clientId, clientSecret } = config;
     let crashClient: CrashApiClient;
     let keyCrashClient: KeyCrashApiClient;
     let application;
@@ -14,7 +14,7 @@ describe('KeyCrashApiClient', () => {
     let stackKeyId;
 
     beforeEach(async () => {
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
+        const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
         keyCrashClient = new KeyCrashApiClient(bugsplat);
         crashClient = new CrashApiClient(bugsplat);
         application = 'myConsoleCrasher';

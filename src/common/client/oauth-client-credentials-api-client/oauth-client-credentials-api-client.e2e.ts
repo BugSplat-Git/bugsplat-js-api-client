@@ -1,4 +1,3 @@
-import { BugSplatApiClient } from '@common';
 import { CrashApiClient } from '@crash';
 import { config } from '@spec/config';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
@@ -9,9 +8,7 @@ describe('OAuthClientCredentialsClient', () => {
         clientId,
         clientSecret,
         database,
-        email,
-        host,
-        password
+        host
     } = config;
 
     describe('login', () => {
@@ -27,7 +24,7 @@ describe('OAuthClientCredentialsClient', () => {
         });
 
         describe('error', () => {
-            it('should throw error for incorrect email and password', async () => {
+            it('should throw error for incorrect client secret', async () => {
                 const client = new OAuthClientCredentialsClient(clientId, 'rocks', host);
                 
                 await expectAsync(client.login()).toBeRejectedWithError(
@@ -44,11 +41,11 @@ describe('OAuthClientCredentialsClient', () => {
         let id: number;
 
         beforeEach(async () => {
-            const bugsplatApiClient = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
+            const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
             application = 'myConsoleCrasher';
             version = `${Math.random() * 1000000}`;
             const result = await postNativeCrashAndSymbols(
-                bugsplatApiClient,
+                bugsplat,
                 config.database,
                 application,
                 version

@@ -32,7 +32,6 @@ jobs:
         env:
           BUGSPLAT_HOST: ${{ secrets.BUGSPLAT_HOST }}
           BUGSPLAT_USER: ${{ secrets.BUGSPLAT_USER }}
-          BUGSPLAT_PASSWORD: ${{ secrets.BUGSPLAT_PASSWORD }}
           BUGSPLAT_DATABASE: ${{ secrets.BUGSPLAT_DATABASE }}
           BUGSPLAT_CLIENT_ID: ${{ secrets.BUGSPLAT_CLIENT_ID }}
           BUGSPLAT_CLIENT_SECRET: ${{ secrets.BUGSPLAT_CLIENT_SECRET }}

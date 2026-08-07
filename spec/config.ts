@@ -2,8 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const host = <string>process.env.BUGSPLAT_HOST;
+// An email belonging to a user of BUGSPLAT_DATABASE, used as lookup data by the users e2e tests.
 const email = <string>process.env.BUGSPLAT_USER;
-const password = <string>process.env.BUGSPLAT_PASSWORD;
 const database = <string>process.env.BUGSPLAT_DATABASE;
 const clientId = <string>process.env.BUGSPLAT_CLIENT_ID;
 const clientSecret = <string>process.env.BUGSPLAT_CLIENT_SECRET;
@@ -14,10 +14,6 @@ if (!host) {
 
 if (!email) {
     throw new Error('Please set BUGSPLAT_USER env variable');
-}
-
-if (!password) {
-    throw new Error('Please set BUGSPLAT_PASSWORD env variable');
 }
 
 if (!database) {
@@ -42,7 +38,6 @@ if (host.includes('octomore')) {
 export const config = {
     host,
     email,
-    password,
     database,
     clientId,
     clientSecret

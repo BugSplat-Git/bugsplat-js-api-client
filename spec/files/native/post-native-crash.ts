@@ -1,4 +1,4 @@
-import { BugSplatApiClient } from '@common';
+import { ApiClient } from '@common';
 import { CrashApiClient } from '@crash';
 import { CrashPostClient, CrashType } from '@post';
 import { VersionsApiClient } from '@versions';
@@ -8,7 +8,7 @@ import { createSymbolFile } from '../create-symbol-file';
 import { delay } from '../../../src/common/delay';
 
 export async function postNativeCrashAndSymbols(
-    authenticatedClient: BugSplatApiClient,
+    authenticatedClient: ApiClient,
     database: string,
     application: string,
     version: string
@@ -45,7 +45,7 @@ export async function postNativeCrash(
 }
 
 export async function postNativeCrashAndWaitForCrashToProcess(
-    bugsplat: BugSplatApiClient,
+    bugsplat: ApiClient,
     crashClient: CrashApiClient,
     database: string,
     application: string,

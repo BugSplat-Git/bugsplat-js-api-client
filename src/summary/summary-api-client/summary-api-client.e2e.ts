@@ -1,4 +1,4 @@
-import { BugSplatApiClient } from '@common';
+import { OAuthClientCredentialsClient } from '@common';
 import { config } from '@spec/config';
 import { postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
 import { SummaryApiClient } from './summary-api-client';
@@ -10,8 +10,8 @@ describe('SummaryApiClient', () => {
     let version;
 
     beforeEach(async () => {
-        const { host, email, password } = config;
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
+        const { host, clientId, clientSecret } = config;
+        const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
         summaryClient = new SummaryApiClient(bugsplat);
         application = 'myConsoleCrasher';
         version = `${Math.random() * 1000000}`;

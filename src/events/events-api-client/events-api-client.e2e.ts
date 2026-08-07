@@ -1,4 +1,4 @@
-import { BugSplatApiClient } from '@common';
+import { OAuthClientCredentialsClient } from '@common';
 import { CrashApiClient } from '@crash';
 import { EventsApiClient } from '@events';
 import { config } from '@spec/config';
@@ -6,13 +6,13 @@ import { postNativeCrashAndWaitForCrashToProcess } from '@spec/files/native/post
 
 describe('EventsApiClient', () => {
     let client: EventsApiClient;
-    const { host, email, password, database } = config;
+    const { host, clientId, clientSecret, database } = config;
     const expectedMessage = 'hello world!';
     let crashId;
     let stackKeyId;
 
     beforeEach(async () => {
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
+        const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
         const crashClient = new CrashApiClient(bugsplat);
         const response = await postNativeCrashAndWaitForCrashToProcess(
             bugsplat,

@@ -1,4 +1,4 @@
-import { BugSplatApiClient, FilterOperator, QueryFilterGroup } from '@common';
+import { OAuthClientCredentialsClient, FilterOperator, QueryFilterGroup } from '@common';
 import { CrashesApiClient, CrashesColumn } from '@crashes';
 import { config } from '@spec/config';
 import { postNativeCrash, postNativeCrashAndSymbols } from '@spec/files/native/post-native-crash';
@@ -10,12 +10,8 @@ describe('CrashesApiClient', () => {
   let id: number;
 
   beforeEach(async () => {
-    const { host, email, password } = config;
-    const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(
-      email,
-      password,
-      host
-    );
+    const { host, clientId, clientSecret } = config;
+    const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
     crashesClient = new CrashesApiClient(bugsplat);
     application = 'myConsoleCrasher';
     version = `${Math.random() * 1000000}`;

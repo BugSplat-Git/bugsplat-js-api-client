@@ -1,4 +1,4 @@
-import { BugSplatApiClient } from '@common';
+import { OAuthClientCredentialsClient } from '@common';
 import { config } from '@spec/config';
 import { UserApiResponseStatus, UsersApiClient } from './users-api-client';
 
@@ -8,8 +8,8 @@ describe('UsersApiClient', () => {
     let usersClient: UsersApiClient;
 
     beforeEach(async () => {
-        const { host, email, password } = config;
-        const bugsplat = await BugSplatApiClient.createAuthenticatedClientForNode(email, password, host);
+        const { host, clientId, clientSecret } = config;
+        const bugsplat = await OAuthClientCredentialsClient.createAuthenticatedClient(clientId, clientSecret, host);
         companyId = await getCompanyId(bugsplat, config.database);
         usersClient = new UsersApiClient(bugsplat);
         testEmail = 'bobby+unittests@bugsplat.com';
@@ -92,7 +92,7 @@ describe('UsersApiClient', () => {
     });
 });
 
-async function getCompanyId(apiClient: BugSplatApiClient, database: string): Promise<number> {
+async function getCompanyId(apiClient: OAuthClientCredentialsClient, database: string): Promise<number> {
     const rows = await apiClient.fetch<Array<{ dbName: string, companyId: string }>>('/api/databases.php').then(response => response.json());
     const row = rows.find(row => row.dbName === database);
     if (!row?.companyId) {
