@@ -1,3 +1,10 @@
+## [15.5.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.5.0...v15.5.1) (2026-08-07)
+
+
+### Bug Fixes
+
+* reject login when the authorize response carries no access_token ([#176](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/176)) ([1d2d8ae](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/1d2d8aee0c2da23c141bc55a9eed4ce9ce8cb1f2)), closes [#142](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/142)
+
 # [15.5.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.4.0...v15.5.0) (2026-08-03)
 
 
