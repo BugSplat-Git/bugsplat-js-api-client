@@ -190,7 +190,7 @@ describe('OAuthClientCredentialsClient', () => {
 
             // Stands in for a response the server never encoded as JSON: the real Response rejects
             // json() while text() still hands back whatever arrived.
-            function createUnparseableResponseBody(status: number, text: string, headers = new Map<string, string>()) {
+            function createUnparseableResponseBody(status: number, text: string, headers = new Headers()) {
                 const body = {
                     status,
                     headers,
