@@ -1,6 +1,6 @@
 import { ApiClient, bugsplatAppHostUrl, BugSplatResponse } from '@common';
 import { OAuthLoginResponse } from './oauth-login-response';
-import { BugSplatAuthenticationError } from '../api-client';
+import { BugSplatApiError, BugSplatAuthenticationError, BugSplatRateLimitError } from '../api-client';
 
 export class OAuthClientCredentialsClient implements ApiClient {
 
@@ -43,7 +43,20 @@ export class OAuthClientCredentialsClient implements ApiClient {
         } as RequestInit;
 
         const response = await this.fetch<LoginResponse>(route, request);
-        const responseJson = await response.json();
+
+        // The rate limiter answers with an empty body, so parsing first turns a 429 into
+        // "Unexpected end of JSON input" and throws the status away with it.
+        if (response.status === 429) {
+            const retryAfterSeconds = parseRetryAfter(response.headers);
+            const retry = retryAfterSeconds ? `, retry after ${retryAfterSeconds} seconds` : '';
+            throw new BugSplatRateLimitError(
+                `Could not authenticate, too many requests${retry}`,
+                response.status,
+                retryAfterSeconds
+            );
+        }
+
+        const responseJson = await readLoginResponse(response);
 
         if ((responseJson as ErrorResponse).error === 'invalid_client') {
             throw new BugSplatAuthenticationError('Could not authenticate, check credentials and try again');
@@ -83,7 +96,7 @@ export class OAuthClientCredentialsClient implements ApiClient {
         const response = await this._fetch(url.href, init);
         const status = response.status;
         const body = response.body;
-        
+
         if (status === 401) {
             throw new BugSplatAuthenticationError('Could not authenticate, check credentials and try again');
         }
@@ -91,9 +104,28 @@ export class OAuthClientCredentialsClient implements ApiClient {
         return {
             status,
             body,
+            headers: response.headers,
             json: async () => response.clone().json(),
             text: async () => response.clone().text()
         };
+    }
+}
+
+/**
+ * A proxy error page, a gateway timeout, or anything else that isn't JSON would otherwise escape as a
+ * bare SyntaxError, which names neither the endpoint nor the status the caller needs to act on.
+ */
+async function readLoginResponse(response: BugSplatResponse<LoginResponse>): Promise<LoginResponse> {
+    try {
+        return await response.json();
+    } catch {
+        const body = await response.text().catch(() => '');
+        const snippet = body.trim().slice(0, 200);
+        const detail = snippet || 'the response body was empty';
+        throw new BugSplatApiError(
+            `Could not authenticate, the authorize endpoint returned status ${response.status} and a response that isn't JSON: ${detail}`,
+            response.status
+        );
     }
 }
 
@@ -101,6 +133,12 @@ export class OAuthClientCredentialsClient implements ApiClient {
 function describeLoginFailure(responseJson: LoginResponse, status: number): string {
     const errorResponse = responseJson as ErrorResponse;
     return errorResponse.error_description ?? errorResponse.message ?? errorResponse.error ?? `status ${status}`;
+}
+
+/** Retry-After is either a delay in seconds or an HTTP date; only the former is worth reporting. */
+function parseRetryAfter(headers: Headers | undefined): number | undefined {
+    const value = Number(headers?.get('retry-after'));
+    return Number.isFinite(value) && value > 0 ? value : undefined;
 }
 
 type ErrorResponse = { error?: string, error_description?: string, message?: string };

@@ -135,8 +135,71 @@ describe('OAuthClientCredentialsClient', () => {
                 );
             });
 
+            it('should reject a rate limited authorize request as a rate limit error', async () => {
+                sut = createLoginFailureClient(createUnparseableResponseBody(429, '', new Map([['retry-after', '60']])));
+
+                await expectAsync(sut.login()).toBeRejectedWith(jasmine.objectContaining({
+                    isRateLimitError: true,
+                    status: 429,
+                    retryAfterSeconds: 60,
+                    message: 'Could not authenticate, too many requests, retry after 60 seconds'
+                }));
+            });
+
+            it('should omit the retry hint when the rate limit response carries no Retry-After', async () => {
+                sut = createLoginFailureClient(createUnparseableResponseBody(429, ''));
+
+                await expectAsync(sut.login()).toBeRejectedWith(jasmine.objectContaining({
+                    isRateLimitError: true,
+                    retryAfterSeconds: undefined,
+                    message: 'Could not authenticate, too many requests'
+                }));
+            });
+
+            it('should not report a rate limit as an authentication failure', async () => {
+                // symbol-upload fails fast on isAuthenticationError, so a retryable 429 must not carry it.
+                sut = createLoginFailureClient(createUnparseableResponseBody(429, ''));
+
+                const error = await sut.login().catch(error => error);
+
+                expect(error.isAuthenticationError).toBeUndefined();
+            });
+
+            it('should reject with the status and body when the response is not json', async () => {
+                sut = createLoginFailureClient(createUnparseableResponseBody(502, '<html>Bad Gateway</html>'));
+
+                await expectAsync(sut.login()).toBeRejectedWith(jasmine.objectContaining({
+                    isApiError: true,
+                    status: 502,
+                    message: 'Could not authenticate, the authorize endpoint returned status 502 and a response that isn\'t JSON: <html>Bad Gateway</html>'
+                }));
+            });
+
+            it('should say the body was empty when an unparseable response carries no body', async () => {
+                sut = createLoginFailureClient(createUnparseableResponseBody(504, ''));
+
+                await expectAsync(sut.login()).toBeRejectedWithError(
+                    Error,
+                    /status 504 and a response that isn't JSON: the response body was empty/
+                );
+            });
+
             function createLoginFailureClient(responseBody) {
                 return createFakeOAuthClientCredentialsClient(clientId, clientSecret, host, responseBody, fakeFormData);
+            }
+
+            // Stands in for a response the server never encoded as JSON: the real Response rejects
+            // json() while text() still hands back whatever arrived.
+            function createUnparseableResponseBody(status: number, text: string, headers = new Map<string, string>()) {
+                const body = {
+                    status,
+                    headers,
+                    ok: false,
+                    json: () => Promise.reject(new SyntaxError('Unexpected end of JSON input')),
+                    text: () => Promise.resolve(text),
+                    clone: () => body
+                };
+                return body;
             }
         });
     });

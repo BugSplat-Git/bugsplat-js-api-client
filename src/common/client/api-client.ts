@@ -6,6 +6,7 @@ export interface ApiClient {
 export interface BugSplatResponse<T = unknown> {
     status: number;
     body: ReadableStream<Uint8Array> | null;
+    headers?: Headers;
     json: () => Promise<T>;
     text: () => Promise<string>;
 }
@@ -37,7 +38,7 @@ export class BugSplatApiError extends Error {
 export class BugSplatRateLimitError extends BugSplatApiError {
     readonly isRateLimitError = true;
 
-    constructor(message: string, status = 429) {
+    constructor(message: string, status = 429, readonly retryAfterSeconds?: number) {
         super(message, status);
         Object.setPrototypeOf(this, BugSplatRateLimitError.prototype);
         this.name = 'BugSplatRateLimitError';
