@@ -136,7 +136,7 @@ describe('OAuthClientCredentialsClient', () => {
             });
 
             it('should reject a rate limited authorize request as a rate limit error', async () => {
-                sut = createLoginFailureClient(createUnparseableResponseBody(429, '', new Map([['retry-after', '60']])));
+                sut = createLoginFailureClient(createUnparseableResponseBody(429, '', new Headers({ 'retry-after': '60' })));
 
                 await expectAsync(sut.login()).toBeRejectedWith(jasmine.objectContaining({
                     isRateLimitError: true,
