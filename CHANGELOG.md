@@ -1,3 +1,10 @@
+# [15.6.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.5.1...v15.6.0) (2026-08-13)
+
+
+### Features
+
+* surface the authorize status so a rate limited login is recognizable ([#178](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/178)) ([b18b807](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/b18b807068b1b7e5433f8c25cf539c0c4c41099f))
+
 ## [15.5.1](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.5.0...v15.5.1) (2026-08-07)
 
 
