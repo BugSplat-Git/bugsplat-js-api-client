@@ -41,6 +41,7 @@ module.exports = [
         ReadableStream: 'readonly',
         process: 'readonly',
         HeadersInit: 'readonly',
+        Headers: 'readonly',
         setTimeout: 'readonly'
       }
     },
