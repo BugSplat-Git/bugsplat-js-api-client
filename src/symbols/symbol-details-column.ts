@@ -9,4 +9,5 @@ export type SymbolDetailsColumn =
   | 'size'
   | 'lastUploaded'
   | 'lastModified'
-  | 'lastAccessed';
+  | 'lastAccessed'
+  | 'downloadFile';
