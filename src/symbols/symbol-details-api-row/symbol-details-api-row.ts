@@ -8,7 +8,7 @@ export interface SymbolDetailsApiResponseRow {
   s3Bucket: string | null;
   symbolType: string | null;
   guid: string | null;
-  size: number;
+  size: number | string;
   lastUploaded: string | null;
   lastModified: string | null;
   lastAccessed: string | null;
