@@ -1,3 +1,10 @@
+# [15.7.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.6.0...v15.7.0) (2026-08-26)
+
+
+### Features
+
+* add SymbolDetailsApiClient for /api/v2/symbols ([#180](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/180)) ([187a1da](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/187a1dac2c7829fcdbd11a5fce14c7aae9383502))
+
 # [15.6.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.5.1...v15.6.0) (2026-08-13)
 
 
