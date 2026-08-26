@@ -11,7 +11,9 @@ describe('SymbolDetailsApiClient', () => {
     let application;
     let version;
 
-    beforeEach(async () => {
+    // Uploaded once for the whole suite: none of these specs mutate the data, and
+    // the e2e suite is sensitive to auth rate limiting.
+    beforeAll(async () => {
         database = config.database;
         application = 'bugsplat-js-api-client';
         version = `${Math.random() * 1000000}`;
@@ -32,7 +34,7 @@ describe('SymbolDetailsApiClient', () => {
         client = new SymbolDetailsApiClient(bugsplat);
     });
 
-    afterEach(async () => {
+    afterAll(async () => {
         await new VersionsApiClient(bugsplat).deleteVersions(
             database,
             [{ application, version }]
