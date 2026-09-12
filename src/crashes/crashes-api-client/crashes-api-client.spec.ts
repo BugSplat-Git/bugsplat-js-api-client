@@ -29,7 +29,7 @@ describe('CrashesApiClient', () => {
     Comments = 'it\'s over 9000!';
     IpAddress = '🏡';
     pageData = { coffee: 'black rifle' };
-    rows = [{ id, Comments, IpAddress }];
+    rows = [{ id, Comments, IpAddress, environment: 'macOS 14.5 (23F79) arm64', reportKind: 'hang' }];
     tableDataClientResponse = createFakeResponseBody(200, { pageData, rows });
     tableDataClient = jasmine.createSpyObj('TableDataClient', ['postGetData']);
     tableDataClient.postGetData.and.resolveTo(tableDataClientResponse);
@@ -56,6 +56,16 @@ describe('CrashesApiClient', () => {
       expect(result.rows[0].id).toEqual(id);
       expect(result.rows[0].comments).toEqual(Comments);
       expect(result.rows[0].ipAddress).toEqual(IpAddress);
+    });
+
+    it('should carry environment and reportKind through, defaulting to empty', async () => {
+      expect(result.rows[0].environment).toEqual('macOS 14.5 (23F79) arm64');
+      expect(result.rows[0].reportKind).toEqual('hang');
+
+      tableDataClient.postGetData.and.resolveTo(createFakeResponseBody(200, { pageData, rows: [{ id, Comments, IpAddress }] }));
+      const legacy = await sut.getCrashes(request);
+      expect(legacy.rows[0].environment).toEqual('');
+      expect(legacy.rows[0].reportKind).toEqual('');
     });
   });
 });
