@@ -22,6 +22,7 @@ export enum DefectTrackerType {
   Monday = 'Monday',
   GitLab = 'GitLab',
   Favro = 'Favro',
+  ClickUp = 'ClickUp',
 }
 
 export enum CrashStatus {
