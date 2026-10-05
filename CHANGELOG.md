@@ -1,3 +1,10 @@
+# [15.8.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.7.0...v15.8.0) (2026-10-05)
+
+
+### Features
+
+* add ClickUp to DefectTrackerType ([#182](https://github.com/BugSplat-Git/bugsplat-js-api-client/issues/182)) ([7fd6d19](https://github.com/BugSplat-Git/bugsplat-js-api-client/commit/7fd6d1907fd3d9f99fe87b152f2cd13acd925553))
+
 # [15.7.0](https://github.com/BugSplat-Git/bugsplat-js-api-client/compare/v15.6.0...v15.7.0) (2026-08-26)
 
 
