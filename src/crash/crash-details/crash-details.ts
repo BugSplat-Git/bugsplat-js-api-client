@@ -25,6 +25,13 @@ export enum DefectTrackerType {
   ClickUp = 'ClickUp',
 }
 
+/**
+ * What kind of report a row is (bugsplat-native 9.x): a crash, a hang the watchdog dumped,
+ * a non-fatal capture, a client-generated structured report, or user feedback.
+ * Empty for reports from clients that predate the field; treat as 'crash'.
+ */
+export type ReportKind = 'crash' | 'hang' | 'capture' | 'structured' | 'feedback' | '';
+
 export enum CrashStatus {
   Open = 0,
   Closed = 1,
@@ -49,6 +56,8 @@ export interface CrashDetails {
   dumpfile: string;
   dumpfileSize: number;
   email: string;
+  /** OS and hardware the application ran on, e.g. 'Windows 11 10.0.26200 x64' (9.x clients). */
+  environment: string;
   events: Array<Event>;
   exceptionCode: string;
   exceptionMessage: string;
@@ -59,6 +68,7 @@ export interface CrashDetails {
   platform: string;
   previousCrashId: number;
   processor: string;
+  reportKind: ReportKind;
   status: CrashStatus;
   stackKey: string;
   stackKeyComment: string;
@@ -90,11 +100,13 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   const description = defaultToEmptyString(options.description, 'options.description');
   const dumpfile = defaultToEmptyString(options.dumpfile, 'options.dumpfile');
   const email = defaultToEmptyString(options.email, 'options.email');
+  const environment = defaultToEmptyString(options.environment, 'options.environment');
   const exceptionCode = defaultToEmptyString(options.exceptionCode, 'options.exceptionCode');
   const exceptionMessage = defaultToEmptyString(options.exceptionMessage, 'options.exceptionMessage');
   const ipAddress = defaultToEmptyString(options.ipAddress, 'options.ipAddress');
   const platform = defaultToEmptyString(options.platform, 'options.platform');
   const processor = defaultToEmptyString(options.processor, 'options.processor');
+  const reportKind = defaultToEmptyString(options.reportKind, 'options.reportKind') as ReportKind;
   const stackKey = defaultToEmptyString(options.stackKey, 'options.stackKey');
   const stackKeyComment = defaultToEmptyString(options.stackKeyComment, 'options.stackKeyComment');
   const stackKeyDefectLabel = defaultToEmptyString(options.stackKeyDefectLabel, 'options.stackKeyDefectLabel');
@@ -127,11 +139,13 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
     description,
     dumpfile,
     email,
+    environment,
     exceptionCode,
     exceptionMessage,
     ipAddress,
     platform,
     processor,
+    reportKind,
     status,
     stackKey,
     stackKeyComment,

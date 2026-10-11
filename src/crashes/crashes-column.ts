@@ -23,4 +23,6 @@ export type CrashesColumn =
   | 'functionName'
   | 'fileName'
   | 'lineNumber'
+  | 'environment'
+  | 'reportKind'
   | 'attachments';

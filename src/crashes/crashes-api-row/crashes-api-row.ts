@@ -1,4 +1,4 @@
-import { CrashStatus } from '@crash';
+import { CrashStatus, ReportKind } from '@crash';
 import { safeParseJson } from '../../common/parse';
 
 interface CrashData {
@@ -22,6 +22,9 @@ interface CrashData {
   skComments: string;
   exceptionCode: string;
   exceptionMessage: string;
+  /** OS and hardware the application ran on (9.x clients); empty otherwise. */
+  environment: string;
+  reportKind: ReportKind;
 }
 
 interface CrashDataWithMappedProperties extends CrashData {
@@ -96,6 +99,8 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
   skComments: string;
   exceptionCode: string;
   exceptionMessage: string;
+  environment: string;
+  reportKind: ReportKind;
   attributes: Record<string, unknown>;
 
   constructor(rawApiRow: CrashesApiResponseRow) {
@@ -124,6 +129,8 @@ export class CrashesApiRow implements CrashDataWithMappedProperties {
     this.skComments = rawApiRow.skComments;
     this.exceptionCode = rawApiRow.exceptionCode;
     this.exceptionMessage = rawApiRow.exceptionMessage;
+    this.environment = rawApiRow.environment || '';
+    this.reportKind = (rawApiRow.reportKind || '') as ReportKind;
     this.attributes = safeParseJson(rawApiRow.attributes);
 
     Object.freeze(this);
