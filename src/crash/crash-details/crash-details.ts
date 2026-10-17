@@ -4,6 +4,7 @@ import ac from 'argument-contracts';
 import { safeParseJson } from '../../common/parse';
 import { EventResponseObject, createEvents } from '../../events/events-api-client/event';
 import { AdditionalInfoResponseObject } from '../additional-info/additional-info';
+import { GpuCrashSummary, createGpuCrashSummary } from '../gpu/gpu-crash-summary';
 
 export enum ProcessingStatus {
   Processing,
@@ -69,6 +70,7 @@ export interface CrashDetails {
   thread: GroupableThreadCollection;
   user: string;
   additionalInfo: AdditionalInfo;
+  gpu?: GpuCrashSummary | null;
 }
 
 export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetails {
@@ -113,6 +115,7 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
   const additionalInfo = AdditionalInfo.fromRawResponse(
     options.debuggerOutput
   );
+  const gpu = createGpuCrashSummary(options.gpu);
 
   return {
     ...options,
@@ -141,11 +144,13 @@ export function createCrashDetails(options: CrashDetailsRawResponse): CrashDetai
     thread,
     additionalInfo,
     events,
+    gpu,
   } as CrashDetails;
 }
 
-export interface CrashDetailsRawResponse extends Partial<Omit<CrashDetails, 'events' | 'debuggerOutput' | 'attributes'>> {
+export interface CrashDetailsRawResponse extends Partial<Omit<CrashDetails, 'events' | 'debuggerOutput' | 'attributes' | 'gpu'>> {
   attributes?: string;
+  gpu?: GpuCrashSummary | string | null;
   events?: Array<EventResponseObject>;
   debuggerOutput?: AdditionalInfoResponseObject;
 }

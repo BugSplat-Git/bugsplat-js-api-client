@@ -1,6 +1,22 @@
 export { AdditionalInfo } from './additional-info/additional-info';
 export { CrashApiClient } from './crash-api-client/crash-api-client';
 export { CrashDetails, DefectTrackerType, ProcessingStatus, CrashStatus } from './crash-details/crash-details';
+export {
+  GpuAdapter,
+  GpuAftermathStatus,
+  GpuBreadcrumbNode,
+  GpuBreadcrumbState,
+  GpuCrashSummary,
+  GpuFaultType,
+  GpuPageFault,
+  GpuPageFaultResource,
+  GpuQueue,
+  GpuResourceState,
+  GpuShader,
+  GpuSummarySource,
+  GpuSystem,
+} from './gpu/gpu-crash-summary';
+export { GpuBreakdown, GpuSignatureCount, GpuValueCount } from './gpu/gpu-breakdown';
 export { Module } from './module/module';
 export { Register } from './register/register';
 export { StackFrame, VariableValuePair } from './stack-frame/stack-frame';

@@ -1,5 +1,6 @@
 import { AdditionalInfo, CrashStatus, ProcessingStatus } from '@crash';
 import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
+import { createFakeGpuCrashSummary } from '@spec/fakes/crash/gpu';
 import ac from 'argument-contracts';
 import { createEvents } from '../../events/events-api-client/event';
 import * as ThreadCollectionModule from '../thread-collection/thread-collection';
@@ -18,6 +19,30 @@ describe('createCrashDetails', () => {
       events: createEvents(options.events),
       additionalInfo: jasmine.any(AdditionalInfo),
     }));
+  });
+
+  it('should set gpu to null when the response has no gpu summary', () => {
+    const result = createCrashDetails(createFakeCrashApiResponse());
+
+    expect(result.gpu).toBeNull();
+  });
+
+  it('should set gpu when the response has a gpu summary object', () => {
+    const gpu = createFakeGpuCrashSummary();
+    const options = { ...createFakeCrashApiResponse(), gpu };
+
+    const result = createCrashDetails(options);
+
+    expect(result.gpu).toEqual(gpu);
+  });
+
+  it('should parse gpu when the response has a gpu summary JSON string', () => {
+    const gpu = createFakeGpuCrashSummary();
+    const options = { ...createFakeCrashApiResponse(), gpu: JSON.stringify(gpu) };
+
+    const result = createCrashDetails(options);
+
+    expect(result.gpu).toEqual(gpu);
   });
 
   it('should default comments and description to empty string if null', () => {

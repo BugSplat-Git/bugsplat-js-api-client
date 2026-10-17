@@ -6,6 +6,7 @@ import {
   CrashStatus,
   createCrashDetails,
 } from '../crash-details/crash-details';
+import { GpuBreakdown, GpuBreakdownRawResponse, createGpuBreakdown } from '../gpu/gpu-breakdown';
 
 export class CrashApiClient {
   constructor(private _client: ApiClient) {}
@@ -71,6 +72,27 @@ export class CrashApiClient {
     }
 
     return createCrashDetails(json as CrashDetailsRawResponse);
+  }
+
+  async getGpuBreakdown(database: string, stackKeyId: number): Promise<GpuBreakdown> {
+    ac.assertNonWhiteSpaceString(database, 'database');
+    if (stackKeyId <= 0) {
+      throw new Error(
+        `Expected stackKeyId to be a positive non-zero number. Value received: "${stackKeyId}"`
+      );
+    }
+
+    const params = new URLSearchParams({ database, stackKeyId: stackKeyId.toString() });
+    const response = await this._client.fetch<GetGpuBreakdownResponse>(
+      `/api/crash/gpu-breakdown?${params}`
+    );
+    const json = await response.json();
+
+    if (response.status !== 200) {
+      throw new Error((json as ErrorResponse).message);
+    }
+
+    return createGpuBreakdown(json as GpuBreakdownRawResponse);
   }
 
   async reprocessCrash(
@@ -183,5 +205,6 @@ export class CrashApiClient {
 type SuccessResponse = { status: 'success' };
 type ErrorResponse = { message: string };
 type GetCrashByIdResponse = CrashDetailsRawResponse | ErrorResponse;
+type GetGpuBreakdownResponse = GpuBreakdownRawResponse | ErrorResponse;
 type ReprocessCrashResponse = SuccessResponse | ErrorResponse;
 type PostStatusResponse = SuccessResponse | ErrorResponse;
