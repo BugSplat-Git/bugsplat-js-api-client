@@ -3,6 +3,7 @@ import { createFakeBugSplatApiClient } from '@spec/fakes/common/bugsplat-api-cli
 import { createFakeFormData } from '@spec/fakes/common/form-data';
 import { createFakeResponseBody, FakeResponseBody } from '@spec/fakes/common/response';
 import { createFakeCrashApiResponse } from '@spec/fakes/crash/crash-api-response';
+import { createFakeGpuBreakdown } from '@spec/fakes/crash/gpu';
 import { CrashStatus, createCrashDetails } from '../crash-details/crash-details';
 import { ApiClient } from '@common';
 
@@ -171,6 +172,74 @@ describe('CrashApiClient', () => {
       try {
         await client.getCrashByGroupId(database, -1);
         fail('getCrashByGroupId was supposed to throw!');
+      } catch (error: any) {
+        expect(error.message).toMatch(/to be a positive non-zero number/);
+      }
+    });
+  });
+
+  describe('getGpuBreakdown', () => {
+    let client: CrashApiClient;
+    let fakeBugSplatApiClient;
+    let fakeGpuBreakdown;
+    let result;
+    const stackKeyId = 117;
+
+    beforeEach(async () => {
+      fakeGpuBreakdown = createFakeGpuBreakdown();
+      const fakeResponse = createFakeResponseBody(200, fakeGpuBreakdown);
+      fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
+      client = new CrashApiClient(fakeBugSplatApiClient);
+
+      result = await client.getGpuBreakdown(database, stackKeyId);
+    });
+
+    it('should call fetch with correct route and query', () => {
+      expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+        `/api/crash/gpu-breakdown?database=${database}&stackKeyId=${stackKeyId}`
+      );
+    });
+
+    it('should encode the database name', async () => {
+      await client.getGpuBreakdown('fred & barney', stackKeyId);
+
+      expect(fakeBugSplatApiClient.fetch).toHaveBeenCalledWith(
+        `/api/crash/gpu-breakdown?database=fred+%26+barney&stackKeyId=${stackKeyId}`
+      );
+    });
+
+    it('should return response json', () => {
+      expect(result).toEqual(fakeGpuBreakdown);
+    });
+
+    it('should throw if status is not 200', async () => {
+      const message = 'Bad request';
+
+      try {
+        const fakeResponse = createFakeResponseBody(400, { message }, false);
+        const fakeBugSplatApiClient = createFakeBugSplatApiClient(fakeFormData, fakeResponse);
+        const client = new CrashApiClient(fakeBugSplatApiClient);
+
+        await client.getGpuBreakdown(database, stackKeyId);
+        fail('getGpuBreakdown was supposed to throw!');
+      } catch (error: any) {
+        expect(error.message).toEqual(message);
+      }
+    });
+
+    it('should throw if database is falsy', async () => {
+      try {
+        await client.getGpuBreakdown('', stackKeyId);
+        fail('getGpuBreakdown was supposed to throw!');
+      } catch (error: any) {
+        expect(error.message).toMatch(/to be a non white space string/);
+      }
+    });
+
+    it('should throw if stackKeyId is less than or equal to 0', async () => {
+      try {
+        await client.getGpuBreakdown(database, 0);
+        fail('getGpuBreakdown was supposed to throw!');
       } catch (error: any) {
         expect(error.message).toMatch(/to be a positive non-zero number/);
       }
